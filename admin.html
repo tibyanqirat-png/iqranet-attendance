@@ -443,8 +443,9 @@ async function loadUstazs() {
 
     const { data, error } = await supabaseClient
         .from("ustaz_registrations")
-        .select("id, full_name, gender, phone, email, approval_status, created_at")
-        .order("created_at", { ascending:false });
+        .select("id, full_name, gender, phone, email, approval_status, created_at, is_admin")
+.eq("is_admin", false)
+.order("created_at", { ascending:false });
 
     if (error) {
         tbody.innerHTML = '<tr><td colspan="7" class="table-message">Could not load registrations. ' +
