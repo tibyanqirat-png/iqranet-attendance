@@ -1,580 +1,320 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IqraNet | Admin Panel</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-<style>
-:root {
-    --navy:#091345;
-    --teal:#20bfa9;
-    --mint:#e8fff5;
-    --white:#fff;
-    --text:#17233f;
-    --muted:#718096;
-    --border:rgba(9,19,69,.10);
-    --sidebar-width:255px;
-}
-
-* {margin:0;padding:0;box-sizing:border-box}
-body {font-family:Arial,sans-serif;background:var(--mint);color:var(--text);min-height:100vh}
-button,input,select {font:inherit}
-.loading {min-height:100vh;display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:bold}
-
-.sidebar {
-    width:var(--sidebar-width);height:100vh;position:fixed;left:0;top:0;
-    background:var(--navy);color:white;padding:20px 14px;
-    display:flex;flex-direction:column;z-index:100;transition:transform .25s;
-}
-.logo-area {height:105px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(255,255,255,.13);margin-bottom:20px}
-.logo-area img {width:155px;max-height:85px;object-fit:contain}
-.nav-menu {display:flex;flex-direction:column;gap:6px;overflow-y:auto}
-.nav-item {
-    width:100%;border:0;background:transparent;color:#dce5ff;text-align:left;
-    padding:12px 13px;border-radius:9px;cursor:pointer;display:flex;
-    align-items:center;gap:12px;font-size:13px;transition:.2s;
-}
-.nav-item i {width:19px;text-align:center;font-size:15px}
-.nav-item:hover,.nav-item.active {background:var(--teal);color:var(--navy);font-weight:bold}
-.sidebar-bottom {margin-top:auto;border-top:1px solid rgba(255,255,255,.13);padding-top:12px}
-.logout-btn {border:0;background:transparent;color:#ffb7b7;padding:12px;width:100%;text-align:left;cursor:pointer;display:flex;gap:12px;align-items:center}
-
-.main {margin-left:var(--sidebar-width);padding:25px 30px;min-height:100vh}
-.topbar {display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px}
-.topbar h1 {color:var(--navy);font-size:25px}
-.topbar p {color:var(--muted);font-size:13px;margin-top:5px}
-.menu-toggle {display:none;width:42px;height:42px;border:0;border-radius:8px;background:var(--navy);color:white;cursor:pointer}
-
-.section {display:none}
-.section.active {display:block}
-.welcome {background:white;padding:24px;border-radius:14px;border:1px solid var(--border);margin-bottom:20px}
-.welcome h2 {color:var(--navy);font-size:21px;margin-bottom:8px}
-.welcome p {color:var(--muted);font-size:14px;line-height:1.6}
-
-.stats {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:22px}
-.stat-card {background:white;border:1px solid var(--border);border-radius:12px;padding:19px;min-height:125px}
-.stat-card i {color:var(--teal);font-size:21px;margin-bottom:13px}
-.stat-card h3 {color:var(--muted);font-size:12px;font-weight:normal;margin-bottom:9px}
-.stat-card .value {color:var(--navy);font-size:25px;font-weight:bold}
-
-.panel {background:white;border:1px solid var(--border);border-radius:13px;padding:22px;margin-bottom:19px}
-.panel h2 {color:var(--navy);font-size:18px;margin-bottom:17px}
-.empty-state {min-height:145px;border:1px dashed #bdc9d9;border-radius:10px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;gap:10px;color:var(--muted)}
-.empty-state i {color:#9aabc0;font-size:27px}
-.empty-state strong {color:var(--navy);font-size:14px}
-.empty-state p {font-size:13px;line-height:1.5}
-
-.management-toolbar {
-    display:flex;gap:10px;flex-wrap:wrap;align-items:center;
-    justify-content:space-between;margin-bottom:18px;
-}
-.search-box {flex:1;min-width:200px;position:relative}
-.search-box i {position:absolute;left:13px;top:13px;color:var(--muted)}
-.search-box input {
-    width:100%;padding:12px 12px 12px 38px;border:1px solid var(--border);
-    border-radius:8px;outline:none;
-}
-.search-box input:focus,.filter-select:focus {border-color:var(--teal)}
-.filter-select {padding:12px;border:1px solid var(--border);border-radius:8px;background:white;outline:none}
-.refresh-btn,.action-btn {
-    border:0;border-radius:8px;padding:11px 15px;cursor:pointer;font-weight:bold;
-}
-.refresh-btn {background:var(--navy);color:white}
-.refresh-btn:hover {opacity:.9}
-
-.table-wrap {width:100%;overflow-x:auto}
-table {width:100%;border-collapse:collapse;min-width:750px}
-th,td {padding:13px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:13px}
-th {background:#f5f8fc;color:var(--navy);font-size:12px}
-td {color:var(--text)}
-.status {display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:bold}
-.status.pending {background:#fff4d6;color:#946200}
-.status.approved {background:#d9f8e8;color:#137547}
-.status.rejected {background:#ffe2e2;color:#b42318}
-
-.action-group {display:flex;gap:6px;flex-wrap:wrap}
-.action-btn {font-size:11px;padding:8px 10px}
-.approve-btn {background:#d9f8e8;color:#137547}
-.reject-btn {background:#ffe2e2;color:#b42318}
-.action-btn:disabled {opacity:.5;cursor:not-allowed}
-
-.table-message {padding:22px;text-align:center;color:var(--muted);font-size:13px}
-.result-count {font-size:12px;color:var(--muted);margin-top:13px}
-.notice {padding:12px 14px;border-radius:8px;margin-bottom:15px;font-size:13px;display:none}
-.notice.error {display:block;background:#ffe8e8;color:#a11}
-.notice.success {display:block;background:#def8e9;color:#126b43}
-
-.page-footer {text-align:center;color:var(--muted);font-size:12px;padding:25px 10px}
-.overlay {display:none}
-
-@media(max-width:1000px) {.stats {grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:850px) {
-    .sidebar {transform:translateX(-100%)}
-    .sidebar.open {transform:translateX(0)}
-    .overlay.show {display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90}
-    .main {margin-left:0;padding:18px}
-    .menu-toggle {display:block}
-}
-@media(max-width:480px) {
-    .stats {grid-template-columns:1fr}
-    .main {padding:14px}
-    .panel,.welcome {padding:17px}
-    .topbar h1 {font-size:21px}
-}
-</style>
-</head>
-
-<body>
-
-<div id="loading" class="loading">Checking Admin access...</div>
-
-<div id="app" style="display:none">
-
-<aside class="sidebar" id="sidebar">
-    <div class="logo-area">
-        <img src="https://i.ibb.co/kVjfrCdP/5-removebg-preview.png" alt="IqraNet Logo">
-    </div>
-
-    <nav class="nav-menu">
-        <button class="nav-item active" data-section="overview"><i class="fa-solid fa-house"></i> Overview</button>
-        <button class="nav-item" data-section="ustazs"><i class="fa-solid fa-chalkboard-user"></i> Ustaz Management</button>
-        <button class="nav-item" data-section="students"><i class="fa-solid fa-users"></i> Student Management</button>
-        <button class="nav-item" data-section="schedule"><i class="fa-solid fa-calendar-days"></i> Schedule Management</button>
-        <button class="nav-item" data-section="attendance"><i class="fa-solid fa-clipboard-check"></i> Attendance Management</button>
-        <button class="nav-item" data-section="progress"><i class="fa-solid fa-file-lines"></i> Weekly Progress</button>
-        <button class="nav-item" data-section="penalties"><i class="fa-solid fa-scale-balanced"></i> Penalties & Rules</button>
-        <button class="nav-item" data-section="reports"><i class="fa-solid fa-chart-pie"></i> Reports & Statistics</button>
-        <button class="nav-item" data-section="admins"><i class="fa-solid fa-user-shield"></i> Admin Management</button>
-        <button class="nav-item" data-section="settings"><i class="fa-solid fa-gear"></i> Admin Settings</button>
-        <button class="nav-item" data-section="audit"><i class="fa-solid fa-clock-rotate-left"></i> Audit History</button>
-    </nav>
-
-    <div class="sidebar-bottom">
-        <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-    </div>
-</aside>
-
-<div class="overlay" id="overlay"></div>
-
-<main class="main">
-
-<header class="topbar">
-    <div>
-        <h1 id="pageTitle">Admin Overview</h1>
-        <p>IqraNet Medresa · Administration Panel</p>
-    </div>
-    <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
-</header>
-
-<section class="section active" id="overview">
-    <div class="welcome">
-        <h2>Welcome, Super Admin</h2>
-        <p>This is the central control panel of IqraNet Medresa. Manage Ustazs, students, schedules, attendance, progress reports and system settings from here.</p>
-    </div>
-
-    <div class="stats">
-        <div class="stat-card">
-            <i class="fa-solid fa-chalkboard-user"></i>
-            <h3>Total Ustazs</h3>
-            <div class="value" id="totalUstazs">—</div>
-        </div>
-        <div class="stat-card">
-            <i class="fa-solid fa-users"></i>
-            <h3>Total Students</h3>
-            <div class="value">—</div>
-        </div>
-        <div class="stat-card">
-            <i class="fa-solid fa-user-clock"></i>
-            <h3>Pending Approvals</h3>
-            <div class="value" id="pendingUstazs">—</div>
-        </div>
-        <div class="stat-card">
-            <i class="fa-solid fa-user-check"></i>
-            <h3>Approved Ustazs</h3>
-            <div class="value" id="approvedUstazs">—</div>
-        </div>
-    </div>
-
-    <div class="panel">
-        <h2>System Activity</h2>
-        <div class="empty-state">
-            <i class="fa-solid fa-chart-line"></i>
-            <strong>No activity data yet</strong>
-            <p>System activity will appear here after the management system is connected.</p>
-        </div>
-    </div>
-
-    <div class="panel">
-        <h2>Important Notifications</h2>
-        <div class="empty-state">
-            <i class="fa-solid fa-bell"></i>
-            <strong>No notifications yet</strong>
-            <p>Important system notifications will appear here.</p>
-        </div>
-    </div>
-</section>
-
-<section class="section" id="ustazs">
-    <div class="panel">
-        <h2>Ustaz Management</h2>
-
-        <div id="ustazNotice" class="notice"></div>
-
-        <div class="management-toolbar">
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input id="ustazSearch" type="search" placeholder="Search name, email or phone...">
-            </div>
-
-            <select id="ustazFilter" class="filter-select">
-                <option value="all">All registrations</option>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
-            </select>
-
-            <button class="refresh-btn" id="refreshUstazs">
-                <i class="fa-solid fa-rotate"></i> Refresh
-            </button>
-        </div>
-
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Full Name</th>
-                        <th>Gender</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Registered</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="ustazTableBody">
-                    <tr><td colspan="7" class="table-message">Ustaz registrations will load here.</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="result-count" id="ustazResultCount"></div>
-    </div>
-</section>
-
-<section class="section" id="students">
-    <div class="panel"><h2>Student Management</h2><div class="empty-state"><i class="fa-solid fa-users"></i><strong>No students added yet</strong><p>Add, edit, assign, transfer and manage student records here.</p></div></div>
-</section>
-
-<section class="section" id="schedule">
-    <div class="panel"><h2>Schedule Management</h2><div class="empty-state"><i class="fa-solid fa-calendar-days"></i><strong>No schedules created yet</strong><p>Manage individual student lesson days, free days and timetables here.</p></div></div>
-</section>
-
-<section class="section" id="attendance">
-    <div class="panel"><h2>Attendance Management</h2><div class="empty-state"><i class="fa-solid fa-clipboard-check"></i><strong>No attendance records yet</strong><p>Review, correct and manage daily attendance records here.</p></div></div>
-</section>
-
-<section class="section" id="progress">
-    <div class="panel"><h2>Weekly Progress Reports</h2><div class="empty-state"><i class="fa-solid fa-file-lines"></i><strong>No reports yet</strong><p>Review and manage weekly student progress reports here.</p></div></div>
-</section>
-
-<section class="section" id="penalties">
-    <div class="panel"><h2>Penalties & Rules</h2><div class="empty-state"><i class="fa-solid fa-scale-balanced"></i><strong>No rules configured yet</strong><p>Configure submission deadlines, missed attendance rules and penalties here.</p></div></div>
-</section>
-
-<section class="section" id="reports">
-    <div class="panel"><h2>Reports & Statistics</h2><div class="empty-state"><i class="fa-solid fa-chart-pie"></i><strong>No statistics available yet</strong><p>System-wide attendance, student progress and Ustaz performance reports will appear here.</p></div></div>
-</section>
-
-<section class="section" id="admins">
-    <div class="panel"><h2>Admin Management</h2><div class="empty-state"><i class="fa-solid fa-user-shield"></i><strong>Admin management is not connected yet</strong><p>The Super Admin will be able to add, manage and assign permissions to additional Admins here.</p></div></div>
-</section>
-
-<section class="section" id="settings">
-    <div class="panel"><h2>Admin Settings</h2><div class="empty-state"><i class="fa-solid fa-gear"></i><strong>No settings configured yet</strong><p>System-wide settings and preferences will be managed here.</p></div></div>
-</section>
-
-<section class="section" id="audit">
-    <div class="panel"><h2>Audit History</h2><div class="empty-state"><i class="fa-solid fa-clock-rotate-left"></i><strong>No audit records yet</strong><p>Admin actions and changes will be recorded here once audit logging is connected.</p></div></div>
-</section>
-
-<footer class="page-footer">© 2026 IqraNet Medresa. All Rights Reserved. · @IqraNet</footer>
-
-</main>
-</div>
-
 <script>
 const SUPABASE_URL = "https://tovhgdektjjujcwcdctl.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_4yI3xgqHCCn2HR6yuzXGxw_DfEX-h96";
-
-const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 let ustazRecords = [];
+let currentAdminRole = null;
 
 async function initializeAdmin() {
-    const { data: sessionData, error: sessionError } =
-        await supabaseClient.auth.getSession();
+const {data:sessionData,error:sessionError} = await supabaseClient.auth.getSession();
+const session = sessionData?.session;
 
-    const session = sessionData?.session;
-
-    if (sessionError || !session) {
-        window.location.replace("login.html");
-        return;
-    }
-
-    const { data: admin, error } = await supabaseClient
-        .from("admin_users")
-        .select("role, is_active")
-        .eq("user_id", session.user.id)
-        .maybeSingle();
-
-    if (error || !admin || !admin.is_active) {
-        alert("You do not have permission to access the Admin Panel.");
-        window.location.replace("dashboard.html");
-        return;
-    }
-
-    if (admin.role !== "super_admin") {
-        document.querySelector('[data-section="admins"]').style.display = "none";
-        document.querySelector("#overview .welcome h2").textContent = "Welcome, Admin";
-    }
-
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("app").style.display = "block";
-
-    await loadUstazs();
+if (sessionError || !session) {
+window.location.replace("login.html");
+return;
 }
 
-const navItems = document.querySelectorAll(".nav-item");
-const sections = document.querySelectorAll(".section");
+const {data:admin,error} = await supabaseClient
+.from("admin_users")
+.select("role,is_active")
+.eq("user_id",session.user.id)
+.maybeSingle();
+
+if (error || !admin || !admin.is_active) {
+alert("You do not have permission to access the Admin Panel.");
+window.location.replace("dashboard.html");
+return;
+}
+
+currentAdminRole = admin.role;
+
+if (admin.role !== "super_admin") {
+document.querySelector('[data-section="admins"]').style.display = "none";
+document.getElementById("welcomeTitle").textContent = "Welcome, Admin";
+} else {
+document.getElementById("welcomeTitle").textContent = "Welcome, Super Admin";
+}
+
+document.getElementById("loading").style.display = "none";
+document.getElementById("app").style.display = "block";
+await loadUstazs();
+}
 
 const titles = {
-    overview:"Admin Overview",
-    ustazs:"Ustaz Management",
-    students:"Student Management",
-    schedule:"Schedule Management",
-    attendance:"Attendance Management",
-    progress:"Weekly Progress",
-    penalties:"Penalties & Rules",
-    reports:"Reports & Statistics",
-    admins:"Admin Management",
-    settings:"Admin Settings",
-    audit:"Audit History"
+overview:"Admin Overview",ustazs:"Ustaz Management",
+students:"Student Management",schedule:"Schedule Management",
+attendance:"Attendance Management",progress:"Weekly Progress",
+penalties:"Penalties & Rules",reports:"Reports & Statistics",
+admins:"Admin Management",settings:"Admin Settings",audit:"Audit History"
 };
 
-navItems.forEach(item => {
-    item.addEventListener("click", () => {
-        const target = item.dataset.section;
-
-        navItems.forEach(nav => nav.classList.remove("active"));
-        item.classList.add("active");
-
-        sections.forEach(section => section.classList.remove("active"));
-        document.getElementById(target).classList.add("active");
-
-        document.getElementById("pageTitle").textContent = titles[target];
-
-        if (target === "ustazs") loadUstazs();
-
-        closeSidebar();
-    });
+document.querySelectorAll(".nav-item").forEach(item => {
+item.addEventListener("click", async () => {
+const target = item.dataset.section;
+document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+item.classList.add("active");
+document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+document.getElementById(target).classList.add("active");
+document.getElementById("pageTitle").textContent = titles[target];
+if (target === "ustazs") await loadUstazs();
+if (target === "audit") await loadAuditHistory();
+closeSidebar();
+});
 });
 
 const sidebar = document.getElementById("sidebar");
 const overlay = document.getElementById("overlay");
-
 document.getElementById("menuToggle").addEventListener("click", () => {
-    sidebar.classList.add("open");
-    overlay.classList.add("show");
+sidebar.classList.add("open");
+overlay.classList.add("show");
 });
-
 function closeSidebar() {
-    sidebar.classList.remove("open");
-    overlay.classList.remove("show");
+sidebar.classList.remove("open");
+overlay.classList.remove("show");
 }
+overlay.addEventListener("click",closeSidebar);
 
-overlay.addEventListener("click", closeSidebar);
-
-document.getElementById("logoutBtn").addEventListener("click", async () => {
-    if (!confirm("Are you sure you want to log out?")) return;
-    await supabaseClient.auth.signOut();
-    window.location.replace("login.html");
+document.getElementById("logoutBtn").addEventListener("click",async()=>{
+if (!confirm("Are you sure you want to log out?")) return;
+await supabaseClient.auth.signOut();
+window.location.replace("login.html");
 });
 
 function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
-    })[char]);
+return String(value ?? "").replace(/[&<>"']/g,char=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+})[char]);
 }
-
-function showUstazNotice(message, type) {
-    const notice = document.getElementById("ustazNotice");
-    notice.textContent = message;
-    notice.className = "notice " + type;
-
-    setTimeout(() => {
-        notice.className = "notice";
-        notice.textContent = "";
-    }, 5000);
-}
-
 function formatDate(value) {
-    if (!value) return "—";
+if (!value) return "—";
+const d = new Date(value);
+return Number.isNaN(d.getTime()) ? "—" : d.toLocaleString();
+}
+function showNotice(elementId,message,type) {
+const el = document.getElementById(elementId);
+el.textContent = message;
+el.className = "notice " + type;
+setTimeout(()=>{el.className="notice";el.textContent="";},6000);
+}
 
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "—";
-
-    return date.toLocaleDateString();
+async function managementAction(payload) {
+const {data,error} = await supabaseClient.functions.invoke("manage-ustaz",{body:payload});
+if (error) throw new Error(error.message || "Management request failed.");
+if (data?.error) throw new Error(data.error);
+if (!data?.success) throw new Error("The action could not be confirmed.");
+return data;
 }
 
 async function loadUstazs() {
-    const tbody = document.getElementById("ustazTableBody");
-    tbody.innerHTML = '<tr><td colspan="7" class="table-message">Loading registrations...</td></tr>';
+const tbody = document.getElementById("ustazTableBody");
+tbody.innerHTML = '<tr><td colspan="8" class="table-message">Loading registrations...</td></tr>';
 
-    const { data, error } = await supabaseClient
-        .from("ustaz_registrations")
-        .select("id, full_name, gender, phone, email, approval_status, created_at, is_admin")
-.eq("is_admin", false)
-.order("created_at", { ascending:false });
+const {data,error} = await supabaseClient
+.from("ustaz_registrations")
+.select("id,full_name,gender,phone,email,approval_status,account_status,created_at,is_admin")
+.eq("is_admin",false)
+.order("created_at",{ascending:false});
 
-    if (error) {
-        tbody.innerHTML = '<tr><td colspan="7" class="table-message">Could not load registrations. ' +
-            escapeHTML(error.message) + '</td></tr>';
-
-        showUstazNotice("Unable to load Ustaz registrations. Check your database permissions.", "error");
-        return;
-    }
-
-    ustazRecords = data || [];
-
-    updateUstazStatistics();
-    renderUstazTable();
+if (error) {
+tbody.innerHTML = `<tr><td colspan="8" class="table-message">${escapeHTML(error.message)}</td></tr>`;
+showNotice("ustazNotice","Unable to load Ustaz registrations. Check database permissions.","error");
+return;
 }
 
-function updateUstazStatistics() {
-    const total = ustazRecords.length;
-    const pending = ustazRecords.filter(u => u.approval_status === "pending").length;
-    const approved = ustazRecords.filter(u => u.approval_status === "approved").length;
+ustazRecords = data || [];
+updateStatistics();
+renderUstazTable();
+}
 
-    document.getElementById("totalUstazs").textContent = total;
-    document.getElementById("pendingUstazs").textContent = pending;
-    document.getElementById("approvedUstazs").textContent = approved;
+function updateStatistics() {
+document.getElementById("totalUstazs").textContent = ustazRecords.length;
+document.getElementById("pendingUstazs").textContent =
+ustazRecords.filter(u=>u.approval_status==="pending").length;
+document.getElementById("approvedUstazs").textContent =
+ustazRecords.filter(u=>u.approval_status==="approved").length;
 }
 
 function renderUstazTable() {
-    const tbody = document.getElementById("ustazTableBody");
-    const search = document.getElementById("ustazSearch").value.trim().toLowerCase();
-    const filter = document.getElementById("ustazFilter").value;
+const tbody = document.getElementById("ustazTableBody");
+const search = document.getElementById("ustazSearch").value.trim().toLowerCase();
+const approvalFilter = document.getElementById("ustazFilter").value;
+const accountFilter = document.getElementById("accountFilter").value;
 
-    const filtered = ustazRecords.filter(u => {
-        const matchesSearch =
-            (u.full_name || "").toLowerCase().includes(search) ||
-            (u.email || "").toLowerCase().includes(search) ||
-            (u.phone || "").toLowerCase().includes(search);
-
-        const matchesFilter = filter === "all" || u.approval_status === filter;
-
-        return matchesSearch && matchesFilter;
-    });
-
-    if (!filtered.length) {
-        tbody.innerHTML = '<tr><td colspan="7" class="table-message">No matching Ustaz registrations found.</td></tr>';
-        document.getElementById("ustazResultCount").textContent = "Showing 0 registrations";
-        return;
-    }
-
-    tbody.innerHTML = filtered.map(u => {
-        const status = ["pending","approved","rejected"].includes(u.approval_status)
-            ? u.approval_status : "pending";
-
-        let actions = "";
-
-        if (status === "pending") {
-            actions = `
-                <button class="action-btn approve-btn" data-action="approved" data-id="${escapeHTML(u.id)}">
-                    <i class="fa-solid fa-check"></i> Approve
-                </button>
-                <button class="action-btn reject-btn" data-action="rejected" data-id="${escapeHTML(u.id)}">
-                    <i class="fa-solid fa-xmark"></i> Reject
-                </button>`;
-        } else if (status === "rejected") {
-            actions = `
-                <button class="action-btn approve-btn" data-action="approved" data-id="${escapeHTML(u.id)}">
-                    <i class="fa-solid fa-check"></i> Approve
-                </button>`;
-        } else {
-            actions = `
-                <button class="action-btn reject-btn" data-action="rejected" data-id="${escapeHTML(u.id)}">
-                    <i class="fa-solid fa-xmark"></i> Reject
-                </button>`;
-        }
-
-        return `
-            <tr>
-                <td>${escapeHTML(u.full_name)}</td>
-                <td>${escapeHTML(u.gender)}</td>
-                <td>${escapeHTML(u.phone)}</td>
-                <td>${escapeHTML(u.email)}</td>
-                <td>${formatDate(u.created_at)}</td>
-                <td><span class="status ${status}">${status.toUpperCase()}</span></td>
-                <td><div class="action-group">${actions}</div></td>
-            </tr>`;
-    }).join("");
-
-    document.getElementById("ustazResultCount").textContent =
-        `Showing ${filtered.length} of ${ustazRecords.length} registrations`;
-}
-
-async function changeUstazStatus(id, newStatus) {
-    const record = ustazRecords.find(u => u.id === id);
-    if (!record) return;
-
-    const name = record.full_name || "this Ustaz";
-    const action = newStatus === "approved" ? "approve" : "reject";
-
-    if (!confirm(`Are you sure you want to ${action} ${name}?`)) return;
-
-    const buttons = document.querySelectorAll(`[data-id="${CSS.escape(id)}"]`);
-    buttons.forEach(button => button.disabled = true);
-
-    const { error } = await supabaseClient
-        .from("ustaz_registrations")
-        .update({ approval_status:newStatus })
-        .eq("id", id);
-
-    if (error) {
-        showUstazNotice("Could not update registration: " + error.message, "error");
-        buttons.forEach(button => button.disabled = false);
-        return;
-    }
-
-    showUstazNotice(`${name} has been ${newStatus}.`, "success");
-    await loadUstazs();
-}
-
-document.getElementById("ustazTableBody").addEventListener("click", event => {
-    const button = event.target.closest("button[data-action]");
-    if (!button) return;
-
-    changeUstazStatus(button.dataset.id, button.dataset.action);
+const filtered = ustazRecords.filter(u=>{
+const text = `${u.full_name||""} ${u.email||""} ${u.phone||""}`.toLowerCase();
+return text.includes(search) &&
+(approvalFilter==="all" || u.approval_status===approvalFilter) &&
+(accountFilter==="all" || (u.account_status||"active")===accountFilter);
 });
 
-document.getElementById("ustazSearch").addEventListener("input", renderUstazTable);
-document.getElementById("ustazFilter").addEventListener("change", renderUstazTable);
-document.getElementById("refreshUstazs").addEventListener("click", loadUstazs);
+if (!filtered.length) {
+tbody.innerHTML = '<tr><td colspan="8" class="table-message">No matching Ustaz registrations found.</td></tr>';
+document.getElementById("ustazResultCount").textContent = "Showing 0 registrations";
+return;
+}
+
+tbody.innerHTML = filtered.map(u=>{
+const approval = ["pending","approved","rejected"].includes(u.approval_status)
+? u.approval_status : "pending";
+const account = ["active","suspended","removed"].includes(u.account_status)
+? u.account_status : "active";
+
+let approvalButtons = "";
+if (approval !== "approved") {
+approvalButtons += `<button class="action-btn approve-btn" data-action="approved" data-id="${escapeHTML(u.id)}">Approve</button>`;
+}
+if (approval !== "rejected") {
+approvalButtons += `<button class="action-btn reject-btn" data-action="rejected" data-id="${escapeHTML(u.id)}">Reject</button>`;
+}
+
+let accountButtons = "";
+if (account === "active") {
+accountButtons = `<button class="action-btn suspend-btn" data-action="suspend" data-id="${escapeHTML(u.id)}">Suspend</button>`;
+} else if (account === "suspended") {
+accountButtons = `<button class="action-btn reactivate-btn" data-action="reactivate" data-id="${escapeHTML(u.id)}">Reactivate</button>`;
+}
+
+let archiveButton = account !== "removed"
+? `<button class="action-btn archive-btn" data-action="archive" data-id="${escapeHTML(u.id)}">Archive</button>` : "";
+
+return `<tr>
+<td>${escapeHTML(u.full_name)}</td>
+<td>${escapeHTML(u.gender)}</td>
+<td>${escapeHTML(u.phone)}</td>
+<td>${escapeHTML(u.email)}</td>
+<td>${formatDate(u.created_at)}</td>
+<td><span class="status ${approval}">${approval.toUpperCase()}</span></td>
+<td><span class="status ${account}">${account.toUpperCase()}</span></td>
+<td><div class="action-group">
+<button class="action-btn edit-btn" data-action="edit" data-id="${escapeHTML(u.id)}">Edit</button>
+${approvalButtons}${accountButtons}${archiveButton}
+</div></td>
+</tr>`;
+}).join("");
+
+document.getElementById("ustazResultCount").textContent =
+`Showing ${filtered.length} of ${ustazRecords.length} registrations`;
+}
+
+async function handleUstazAction(id,action) {
+const record = ustazRecords.find(u=>u.id===id);
+if (!record) return;
+
+try {
+if (action === "edit") {
+if ((record.account_status||"active")==="removed") {
+alert("Archived accounts cannot be edited.");
+return;
+}
+
+const full_name = prompt("Full name:",record.full_name||"");
+if (full_name === null) return;
+
+const gender = prompt("Gender: enter Male or Female",record.gender||"");
+if (gender === null) return;
+
+const phone = prompt("Phone number in +251 format:",record.phone||"");
+if (phone === null) return;
+
+if (!full_name.trim() || !["Male","Female"].includes(gender.trim()) ||
+!/^\+251[79][0-9]{8}$/.test(phone.trim())) {
+alert("Invalid information. Name must contain at least two words, gender must be Male or Female, and phone must use +251 followed by 9 valid digits.");
+return;
+}
+
+if (!confirm("Save these profile changes?")) return;
+
+await managementAction({
+action:"edit_profile",
+target_user_id:id,
+full_name:full_name.trim(),
+gender:gender.trim(),
+phone:phone.trim()
+});
+showNotice("ustazNotice","Ustaz profile updated.","success");
+
+} else if (action==="approved" || action==="rejected") {
+if (!confirm(`Are you sure you want to ${action==="approved"?"approve":"reject"} ${record.full_name}?`)) return;
+await managementAction({
+action:"set_approval",
+target_user_id:id,
+approval_status:action
+});
+showNotice("ustazNotice",`${record.full_name} approval status updated.`,"success");
+
+} else if (action==="suspend") {
+if (!confirm(`Suspend ${record.full_name}? They will lose account access.`)) return;
+await managementAction({action:"suspend",target_user_id:id});
+showNotice("ustazNotice",`${record.full_name} has been suspended.`,"success");
+
+} else if (action==="reactivate") {
+if (!confirm(`Reactivate ${record.full_name}?`)) return;
+await managementAction({action:"reactivate",target_user_id:id});
+showNotice("ustazNotice",`${record.full_name} has been reactivated.`,"success");
+
+} else if (action==="archive") {
+const confirmed = confirm(
+`Archive ${record.full_name}?\n\nThis disables their account but does NOT delete their registration or historical records.`
+);
+if (!confirmed) return;
+await managementAction({action:"archive",target_user_id:id});
+showNotice("ustazNotice",`${record.full_name} has been archived. Historical records are retained.`,"success");
+}
+
+await loadUstazs();
+
+} catch (error) {
+showNotice("ustazNotice",error.message || "Action failed.","error");
+}
+}
+
+document.getElementById("ustazTableBody").addEventListener("click",event=>{
+const button = event.target.closest("button[data-action]");
+if (!button) return;
+handleUstazAction(button.dataset.id,button.dataset.action);
+});
+
+document.getElementById("ustazSearch").addEventListener("input",renderUstazTable);
+document.getElementById("ustazFilter").addEventListener("change",renderUstazTable);
+document.getElementById("accountFilter").addEventListener("change",renderUstazTable);
+document.getElementById("refreshUstazs").addEventListener("click",loadUstazs);
+
+async function loadAuditHistory() {
+const tbody = document.getElementById("auditTableBody");
+tbody.innerHTML = '<tr><td colspan="5" class="table-message">Loading audit history...</td></tr>';
+
+const {data,error} = await supabaseClient
+.from("admin_audit_logs")
+.select("id,actor_user_id,action,target_user_id,details,created_at")
+.order("created_at",{ascending:false})
+.limit(200);
+
+if (error) {
+tbody.innerHTML = `<tr><td colspan="5" class="table-message">${escapeHTML(error.message)}</td></tr>`;
+showNotice("auditNotice","Unable to load audit history. Check the audit table policy.","error");
+return;
+}
+
+if (!data || !data.length) {
+tbody.innerHTML = '<tr><td colspan="5" class="table-message">No audit records yet.</td></tr>';
+return;
+}
+
+tbody.innerHTML = data.map(row=>`
+<tr>
+<td>${formatDate(row.created_at)}</td>
+<td>${escapeHTML(row.action)}</td>
+<td>${escapeHTML(row.target_user_id)}</td>
+<td class="audit-details">${escapeHTML(JSON.stringify(row.details||{}))}</td>
+<td>${escapeHTML(row.actor_user_id)}</td>
+</tr>
+`).join("");
+}
+
+document.getElementById("refreshAudit").addEventListener("click",loadAuditHistory);
 
 initializeAdmin();
 </script>
-
 </body>
 </html>
