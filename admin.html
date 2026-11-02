@@ -277,10 +277,10 @@ if (!button) return;
 handleUstazAction(button.dataset.id,button.dataset.action);
 });
 
-document.getElementById("ustazSearch").addEventListener("input",renderUstazTable);
-document.getElementById("ustazFilter").addEventListener("change",renderUstazTable);
-document.getElementById("accountFilter").addEventListener("change",renderUstazTable);
-document.getElementById("refreshUstazs").addEventListener("click",loadUstazs);
+document.getElementById("ustazSearch")?.addEventListener("input",renderUstazTable);
+document.getElementById("ustazFilter")?.addEventListener("change",renderUstazTable);
+document.getElementById("accountFilter")?.addEventListener("change",renderUstazTable);
+document.getElementById("refreshUstazs")?.addEventListener("click",loadUstazs);
 
 async function loadAuditHistory() {
 const tbody = document.getElementById("auditTableBody");
