@@ -1,0 +1,49 @@
+CREATE TABLE public.student_attendance (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_id UUID NOT NULL
+        REFERENCES public.students(id),
+    ustaz_id UUID NOT NULL
+        REFERENCES public.ustaz_registrations(id),
+    attendance_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    status TEXT NOT NULL
+        CHECK (status IN ('present', 'absent')),
+    marked_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    UNIQUE (student_id, attendance_date)
+);
+
+CREATE INDEX student_attendance_ustaz_idx
+ON public.student_attendance(ustaz_id);
+
+CREATE INDEX student_attendance_date_idx
+ON public.student_attendance(attendance_date);
+
+ALTER TABLE public.student_attendance
+ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Ustazs can view their attendance"
+ON public.student_attendance
+FOR SELECT
+TO authenticated
+USING (ustaz_id = auth.uid());
+
+CREATE POLICY "Ustazs can mark their attendance"
+ON public.student_attendance
+FOR INSERT
+TO authenticated
+WITH CHECK (
+    ustaz_id = auth.uid()
+    AND EXISTS (
+        SELECT 1 FROM public.students
+        WHERE students.id = student_id
+        AND students.ustaz_id = auth.uid()
+        AND students.is_active = TRUE
+    )
+);
+
+CREATE POLICY "Ustazs can update their attendance"
+ON public.student_attendance
+FOR UPDATE
+TO authenticated
+USING (ustaz_id = auth.uid())
+WITH CHECK (ustaz_id = auth.uid());
