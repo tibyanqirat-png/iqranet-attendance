@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ኢቅራኔት መድረሳ | IqraNET MEDRESA</title>
+<title>ኢቅራኔት መድረሳ | IqraNet</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
 * {
@@ -12,252 +14,208 @@
     box-sizing: border-box;
 }
 
-html, body {
-    min-height: 100%;
-    font-family: "Noto Sans Ethiopic", Arial, sans-serif;
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e8fff5, #b8f2e2, #70d9cb);
+    color: #091345;
 }
 
 /* HEADER */
 header {
-    height: 130px;
+    width: 100%;
+    min-height: 95px;
+    padding: 12px 6%;
     background: #091345;
     display: flex;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    padding: 10px 20px;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 13px;
+    justify-content: space-between;
 }
 
 .header-logo {
-    width: 105px;
-    height: 105px;
+    width: 75px;
+    height: 75px;
     object-fit: contain;
 }
 
-.brand-text {
-    color: white;
-    line-height: 1.65;
-}
-
-.brand-text .amharic {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.brand-text .english {
-    font-family: Georgia, serif;
-    font-size: 17px;
-}
-
-.login-small {
-    position: absolute;
-    right: 4%;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #73c9c0;
-    color: white;
+.header-login {
     text-decoration: none;
-    border-radius: 30px;
-    padding: 9px 17px;
-    font-size: 14px;
+    color: #091345;
+    background: white;
+    padding: 10px 24px;
+    border-radius: 25px;
     font-weight: bold;
+    transition: 0.3s;
 }
 
-/* MAIN BACKGROUND */
+.header-login:hover {
+    background: #d9f5ed;
+}
+
+/* MAIN */
 main {
-    min-height: 695px;
-    background: linear-gradient(
-        to bottom,
-        #f5fcfb 0%,
-        #c8eeea 35%,
-        #9bded5 68%,
-        #69c7bd 100%
-    );
+    min-height: 540px;
+    padding: 85px 20px 60px;
     text-align: center;
-    padding: 78px 20px 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-/* WELCOME HEADING */
-.welcome-title {
-    max-width: 850px;
-    margin: 0 auto;
-    color: #050505;
-    font-size: clamp(24px, 3.3vw, 35px);
-    font-weight: 800;
-    line-height: 1.65;
+h1 {
+    max-width: 950px;
+    font-size: clamp(25px, 4vw, 38px);
+    line-height: 1.8;
+    margin-bottom: 35px;
+    color: #091345;
 }
 
-/* MAIN LOGIN BUTTON */
-.login-main {
+.main-login {
     display: inline-block;
-    margin-top: 65px;
     background: #091345;
     color: white;
     text-decoration: none;
-    border-radius: 26px;
-    padding: 18px 45px;
-    font-size: 29px;
+    padding: 15px 55px;
+    border-radius: 35px;
+    font-size: 19px;
     font-weight: bold;
-    transition: 0.2s;
+    transition: 0.3s;
 }
 
-.login-main:hover {
-    background: #142765;
-    transform: translateY(-2px);
+.main-login:hover {
+    background: #172568;
+    transform: translateY(-3px);
 }
 
-/* VIDEO SECTION */
+/* VIDEO */
 .video-section {
-    margin-top: 120px;
+    text-align: center;
+    padding: 25px 20px 75px;
 }
 
 .video-section h2 {
-    font-size: 25px;
-    color: #050505;
-    font-weight: bold;
-    margin-bottom: 35px;
+    font-size: clamp(19px, 3vw, 27px);
+    margin-bottom: 25px;
+    color: #091345;
 }
 
-.play-button {
-    width: 69px;
-    height: 56px;
+.video-button {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
     border: none;
-    border-radius: 14px;
     background: #091345;
     color: white;
-    font-size: 32px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 27px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
-/* TELEGRAM FLOATING ICON */
-.telegram {
-    position: absolute;
-    right: 4.8%;
-    margin-top: 35px;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: #279dd5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.video-button:hover {
+    transform: scale(1.1);
+    background: #172568;
+}
+
+/* FLOATING TELEGRAM */
+.telegram-float {
+    position: fixed;
+    right: 22px;
+    bottom: 25px;
+    width: 58px;
+    height: 58px;
+    background: #229ED9;
     color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 29px;
     text-decoration: none;
-    font-size: 25px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    z-index: 9999;
+    animation: telegramFloat 2.5s ease-in-out infinite;
+}
+
+.telegram-float:hover {
+    transform: scale(1.12);
+}
+
+@keyframes telegramFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
 }
 
 /* FOOTER */
 footer {
-    min-height: 175px;
     background: #091345;
     color: white;
     text-align: center;
-    padding: 18px 15px 12px;
+    padding: 30px 20px 25px;
 }
 
 .footer-logo {
-    width: 95px;
+    width: 85px;
     height: 85px;
     object-fit: contain;
-    display: block;
-    margin: 0 auto 7px;
+    margin-bottom: 12px;
 }
 
+/* SOCIAL ICONS */
 .socials {
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 5px;
-    margin-bottom: 5px;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 0;
+    flex-wrap: wrap;
 }
 
 .socials a {
-    width: 21px;
-    height: 21px;
-    border: 1.5px solid white;
-    border-radius: 4px;
-    color: white;
+    width: 34px;
+    height: 34px;
+    background: white;
+    color: #6b4c9a;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 17px;
     text-decoration: none;
-    font-size: 13px;
-    font-weight: bold;
+    transition: 0.3s;
 }
 
-.footer-handle {
-    font-family: Georgia, serif;
-    font-size: 12px;
-    color: white;
+.socials a:hover {
+    transform: translateY(-4px);
 }
 
-/* MOBILE */
-@media(max-width: 600px) {
+footer p {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+@media (max-width: 600px) {
     header {
-        height: 110px;
-        justify-content: flex-start;
-        padding-left: 12px;
+        min-height: 80px;
     }
 
     .header-logo {
-        width: 75px;
-        height: 80px;
-    }
-
-    .brand {
-        gap: 5px;
-    }
-
-    .brand-text .amharic {
-        font-size: 14px;
-    }
-
-    .brand-text .english {
-        font-size: 14px;
-    }
-
-    .login-small {
-        right: 10px;
-        padding: 8px 12px;
-        font-size: 12px;
+        width: 62px;
+        height: 62px;
     }
 
     main {
-        min-height: 695px;
-        padding: 65px 14px 30px;
+        min-height: 460px;
+        padding-top: 65px;
     }
 
-    .welcome-title {
-        font-size: 23px;
-        line-height: 1.8;
-    }
-
-    .login-main {
-        margin-top: 60px;
-        padding: 16px 35px;
-        font-size: 24px;
-    }
-
-    .video-section {
-        margin-top: 120px;
-    }
-
-    .video-section h2 {
-        font-size: 20px;
-    }
-
-    .telegram {
-        right: 5%;
-        margin-top: 30px;
+    .telegram-float {
+        right: 15px;
+        bottom: 18px;
     }
 }
 </style>
@@ -265,80 +223,54 @@ footer {
 
 <body>
 
-<!-- HEADER -->
 <header>
+    <img
+        src="https://i.ibb.co/kVjfrCdP/5-removebg-preview.png"
+        alt="IqraNet Logo"
+        class="header-logo"
+    >
 
-    <div class="brand">
-        <img
-            class="header-logo"
-            src="https://i.ibb.co/kVjfrCdP/5-removebg-preview.png"
-            alt="IqraNET Logo"
-        >
-
-        <div class="brand-text">
-            <div class="amharic">ኢቅራኔት መድረሳ</div>
-            <div class="english">IqraNET MEDRESA</div>
-        </div>
-    </div>
-
-    <a href="login.html" class="login-small">
-        ♙ ግባ
-    </a>
-
+    <a href="login.html" class="header-login">Login</a>
 </header>
 
-<!-- MAIN -->
 <main>
-
-    <h1 class="welcome-title">
-        ለኢቅራኔት መድረሳ አባላትና የተማሪዎች
-        አትንዳንስ መቆጣጠሪያ ድረ ገጽ
+    <h1>
+        ለኢቅራኔት መድረሳ ኡስታዞች የተዘጋጀ የተማሪዎች አቴንዳንስ መቆጣጠሪያ ድህረ ገፅ
     </h1>
 
-    <a href="login.html" class="login-main">
-        ለመግባት
-    </a>
-
-    <section class="video-section">
-
-        <h2>
-            ስለ መድረሳው አጭር ስፖት ለመመልከት
-        </h2>
-
-        <button class="play-button" type="button"
-            aria-label="Introduction video">
-            ▶
-        </button>
-
-    </section>
-
-    <a href="#" class="telegram" aria-label="Telegram">
-        ➤
-    </a>
-
+    <a href="login.html" class="main-login">ለመመዝገብ</a>
 </main>
 
-<!-- FOOTER -->
-<footer>
+<section class="video-section">
+    <h2>ስለ ምዝገባው አጋዥ ቪዲዮ ለመመልከት</h2>
 
+    <button class="video-button" type="button" aria-label="Play video">
+        <i class="fa-solid fa-play"></i>
+    </button>
+</section>
+
+<!-- FLOATING TELEGRAM ICON -->
+<a href="#" class="telegram-float" aria-label="Telegram">
+    <i class="fa-brands fa-telegram"></i>
+</a>
+
+<footer>
     <img
-        class="footer-logo"
         src="https://i.ibb.co/q31WJkdv/6-removebg-preview.png"
-        alt="IqraNET Footer Logo"
+        alt="IqraNet Logo"
+        class="footer-logo"
     >
 
     <div class="socials">
-        <a href="#" aria-label="Instagram">◎</a>
-        <a href="#" aria-label="Facebook">f</a>
-        <a href="#" aria-label="Telegram">➤</a>
-        <a href="#" aria-label="TikTok">♪</a>
-        <a href="#" aria-label="YouTube">▶</a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
     </div>
 
-    <div class="footer-handle">
-        @IqraNet
-    </div>
-
+    <p>© 2026 IqraNet Medresa. All Rights Reserved.</p>
+    <p>@IqraNet</p>
 </footer>
 
 </body>
