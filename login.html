@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | IqraNET MEDRESA</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    font-family:Arial,sans-serif;
+    min-height:100vh;
+    background:linear-gradient(135deg,#e8fff5,#b8f2e2,#70d9cb);
+    color:#091345;
+}
+
+header {
+    width:100%;
+    min-height:95px;
+    padding:12px 6%;
+    background:#091345;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.header-brand { display:flex; align-items:center; gap:12px; }
+.header-logo { width:75px; height:75px; object-fit:contain; }
+.brand-text { color:white; }
+.brand-text h2 { font-size:23px; margin-bottom:4px; }
+.brand-text span { font-size:14px; letter-spacing:2px; font-weight:bold; }
+
+.header-login {
+    text-decoration:none;
+    color:#091345;
+    background:white;
+    padding:10px 24px;
+    border-radius:25px;
+    font-weight:bold;
+}
+
+.login-section {
+    min-height:650px;
+    padding:55px 20px 70px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-card {
+    width:100%;
+    max-width:550px;
+    background:white;
+    padding:38px 35px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(9,19,69,.13);
+}
+
+.login-card h1 {
+    text-align:center;
+    color:#091345;
+    font-size:29px;
+    margin-bottom:10px;
+}
+
+.subtitle {
+    text-align:center;
+    color:#596477;
+    margin-bottom:30px;
+    font-size:15px;
+    line-height:1.6;
+}
+
+.form-group { margin-bottom:22px; }
+
+.form-group label {
+    display:block;
+    font-weight:bold;
+    color:#091345;
+    margin-bottom:9px;
+    font-size:16px;
+}
+
+.form-group input {
+    width:100%;
+    height:49px;
+    padding:0 14px;
+    border:1px solid #cbd5df;
+    border-radius:8px;
+    outline:none;
+    font-size:16px;
+    color:#091345;
+}
+
+.form-group input:focus {
+    border-color:#229e91;
+    box-shadow:0 0 0 3px rgba(34,158,145,.12);
+}
+
+.action-button {
+    width:100%;
+    height:52px;
+    margin-top:8px;
+    border:none;
+    border-radius:30px;
+    background:#091345;
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.action-button:hover { background:#172568; }
+.action-button:disabled { opacity:.6; cursor:not-allowed; }
+
+.form-message {
+    display:none;
+    margin-top:18px;
+    padding:13px;
+    border-radius:8px;
+    text-align:center;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.mode-link {
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#091345;
+    font-weight:bold;
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+.hidden { display:none !important; }
+
+.telegram-float {
+    position:fixed;
+    right:22px;
+    bottom:25px;
+    width:58px;
+    height:58px;
+    background:#229ED9;
+    color:white;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:29px;
+    text-decoration:none;
+    box-shadow:0 4px 14px rgba(0,0,0,.25);
+    z-index:9999;
+    animation:telegramFloat 2.5s ease-in-out infinite;
+}
+
+@keyframes telegramFloat {
+    0%,100% { transform:translateY(0); }
+    50% { transform:translateY(-12px); }
+}
+
+footer {
+    background:#091345;
+    color:white;
+    text-align:center;
+    padding:30px 20px 25px;
+}
+
+.footer-logo {
+    width:85px;
+    height:85px;
+    object-fit:contain;
+    margin-bottom:12px;
+}
+
+.socials {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    margin:18px 0;
+    flex-wrap:wrap;
+}
+
+.socials a {
+    width:34px;
+    height:34px;
+    background:white;
+    color:#6b4c9a;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+    text-decoration:none;
+}
+
+footer p { font-size:14px; margin-top:10px; }
+
+@media(max-width:600px) {
+    header { min-height:80px; padding:10px 4%; }
+    .header-logo { width:62px; height:62px; }
+    .brand-text h2 { font-size:18px; }
+    .brand-text span { font-size:11px; letter-spacing:1px; }
+    .header-brand { gap:8px; }
+    .header-login { padding:9px 16px; font-size:13px; }
+    .login-section { padding:35px 14px 50px; }
+    .login-card { padding:30px 20px; }
+    .login-card h1 { font-size:25px; }
+    .telegram-float { right:15px; bottom:18px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-brand">
+        <img src="https://i.ibb.co/kVjfrCdP/5-removebg-preview.png"
+             alt="IqraNet Logo" class="header-logo">
+        <div class="brand-text">
+            <h2>ኢቅራኔት መድረሳ</h2>
+            <span>IqraNET MEDRESA</span>
+        </div>
+    </div>
+    <a href="index.html" class="header-login">Home</a>
+</header>
+
+<section class="login-section">
+<div class="login-card">
+
+    <!-- FIRST-TIME ACCOUNT SETUP -->
+    <div id="setupSection" class="hidden">
+        <h1>Create Your Account</h1>
+        <p class="subtitle">
+            Your email has been verified. Create your unique username and password.
+        </p>
+
+        <form id="setupForm">
+            <div class="form-group">
+                <label for="newUsername">Username</label>
+                <input id="newUsername" type="text"
+                       placeholder="Choose a username"
+                       minlength="4" maxlength="20"
+                       pattern="[A-Za-z0-9_]{4,20}"
+                       autocomplete="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="newPassword">Password</label>
+                <input id="newPassword" type="password"
+                       placeholder="At least 8 characters"
+                       minlength="8" autocomplete="new-password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input id="confirmPassword" type="password"
+                       placeholder="Enter password again"
+                       minlength="8" autocomplete="new-password" required>
+            </div>
+
+            <button class="action-button" id="setupButton" type="submit">
+                Create Account
+            </button>
+        </form>
+    </div>
+
+    <!-- NORMAL LOGIN -->
+    <div id="loginSection" class="hidden">
+        <h1>Ustaz Login</h1>
+        <p class="subtitle">Enter your username and password to continue.</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" type="text"
+                       placeholder="Enter your username"
+                       autocomplete="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password"
+                       placeholder="Enter your password"
+                       autocomplete="current-password" required>
+            </div>
+
+            <button class="action-button" id="loginButton" type="submit">
+                Login
+            </button>
+        </form>
+    </div>
+
+    <div id="formMessage" class="form-message"></div>
+</div>
+</section>
+
+<a href="#" class="telegram-float" aria-label="Telegram">
+    <i class="fa-brands fa-telegram"></i>
+</a>
+
+<footer>
+    <img src="https://i.ibb.co/q31WJkdv/6-removebg-preview.png"
+         alt="IqraNet Logo" class="footer-logo">
+
+    <div class="socials">
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+
+    <p>© 2026 IqraNet Medresa. All Rights Reserved.</p>
+    <p>@IqraNet</p>
+</footer>
+
+<script>
+const SUPABASE_URL = "https://tovhgdektjjujcwcdctl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_4yI3xgqHCCn2HR6yuzXGxw_DfEX-h96";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+const setupSection = document.getElementById("setupSection");
+const loginSection = document.getElementById("loginSection");
+const message = document.getElementById("formMessage");
+
+function showMessage(text, success = false) {
+    message.style.display = "block";
+    message.textContent = text;
+    message.style.background = success ? "#e3f8e9" : "#ffe5e5";
+    message.style.color = success ? "#17652c" : "#a00000";
+}
+
+function showSetup() {
+    setupSection.classList.remove("hidden");
+    loginSection.classList.add("hidden");
+}
+
+function showLogin() {
+    loginSection.classList.remove("hidden");
+    setupSection.classList.add("hidden");
+}
+
+async function checkApproval(user) {
+    const { data, error } = await supabaseClient
+        .from("ustaz_registrations")
+        .select("approval_status")
+        .eq("id", user.id)
+        .maybeSingle();
+
+    if (error) {
+        showMessage("Could not check account approval: " + error.message);
+        return false;
+    }
+
+    if (!data || data.approval_status !== "approved") {
+        showMessage("Your account is awaiting administrator approval.");
+        return false;
+    }
+
+    window.location.href = "dashboard.html";
+    return true;
+}
+
+async function initializePage() {
+    const { data, error } = await supabaseClient.auth.getSession();
+
+    if (error) {
+        showMessage("Could not check your session: " + error.message);
+        showLogin();
+        return;
+    }
+
+    const user = data.session?.user;
+
+    if (!user) {
+        showLogin();
+        return;
+    }
+
+    if (!user.email_confirmed_at) {
+        await supabaseClient.auth.signOut();
+        showLogin();
+        showMessage("Please verify your email before setting up your account.");
+        return;
+    }
+
+    const { data: usernameRecord, error: usernameError } =
+        await supabaseClient
+            .from("ustaz_usernames")
+            .select("username")
+            .eq("user_id", user.id)
+            .maybeSingle();
+
+    if (usernameError) {
+        showMessage("Could not check username: " + usernameError.message);
+        return;
+    }
+
+    if (usernameRecord) {
+        await checkApproval(user);
+    } else {
+        showSetup();
+    }
+}
+
+document.getElementById("setupForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("newUsername").value.trim();
+    const password = document.getElementById("newPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (!/^[A-Za-z0-9_]{4,20}$/.test(username)) {
+        showMessage("Username must be 4–20 characters using letters, numbers, or underscores.");
+        return;
+    }
+
+    if (password.length < 8) {
+        showMessage("Password must contain at least 8 characters.");
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showMessage("The passwords do not match.");
+        return;
+    }
+
+    const button = document.getElementById("setupButton");
+    button.disabled = true;
+    button.textContent = "Creating account...";
+
+    try {
+        const { data: sessionData } = await supabaseClient.auth.getSession();
+        const user = sessionData.session?.user;
+
+        if (!user || !user.email_confirmed_at) {
+            throw new Error("Your verified email session has expired. Please verify your email again.");
+        }
+
+        const { error: passwordError } = await supabaseClient.auth.updateUser({
+            password: password
+        });
+
+        if (passwordError) throw passwordError;
+
+        const { error: usernameError } = await supabaseClient
+            .from("ustaz_usernames")
+            .insert({
+                user_id: user.id,
+                username: username
+            });
+
+        if (usernameError) {
+            if (usernameError.code === "23505") {
+                throw new Error("This username is already taken. Please choose another one.");
+            }
+            throw usernameError;
+        }
+
+        showMessage(
+            "Your username and password have been created. Your account is now awaiting administrator approval.",
+            true
+        );
+
+        document.getElementById("setupForm").reset();
+        await supabaseClient.auth.signOut();
+        setTimeout(showLogin, 2500);
+
+    } catch (error) {
+        showMessage(error.message);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Create Account";
+    }
+});
+
+document.getElementById("loginForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const button = document.getElementById("loginButton");
+
+    button.disabled = true;
+    button.textContent = "Logging in...";
+
+    try {
+        const response = await fetch(
+            SUPABASE_URL + "/functions/v1/username-login",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": SUPABASE_KEY
+                },
+                body: JSON.stringify({ username, password })
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || "Login failed. Check your username and password.");
+        }
+
+        const { error: sessionError } = await supabaseClient.auth.setSession({
+            access_token: result.access_token,
+            refresh_token: result.refresh_token
+        });
+
+        if (sessionError) throw sessionError;
+
+        const { data: userData } = await supabaseClient.auth.getUser();
+
+        if (!userData.user) {
+            throw new Error("Could not verify your account.");
+        }
+
+        await checkApproval(userData.user);
+
+    } catch (error) {
+        showMessage(error.message);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Login";
+    }
+});
+
+initializePage();
+</script>
+
+</body>
+</html>
