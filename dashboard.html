@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IqraNet | Ustaz Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+:root {
+    --navy: #091345;
+    --teal: #20bfa9;
+    --white: #ffffff;
+    --text: #17233f;
+    --muted: #718096;
+    --border: rgba(9,19,69,.10);
+    --sidebar-width: 250px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: var(--text);
+    background: #e8fff5;
+    min-height: 100vh;
+}
+
+body.male {
+    background: #eaf4ff;
+}
+
+body.female {
+    background: #fff0f6;
+}
+
+button {
+    font: inherit;
+}
+
+.app {
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: var(--navy);
+    color: white;
+    padding: 22px 14px;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    transition: transform .25s ease;
+}
+
+.logo-area {
+    height: 105px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,.13);
+    margin-bottom: 22px;
+}
+
+.logo-area img {
+    width: 155px;
+    max-height: 85px;
+    object-fit: contain;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.nav-item {
+    border: 0;
+    background: transparent;
+    color: #dce5ff;
+    padding: 13px 14px;
+    border-radius: 9px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.nav-item i {
+    width: 19px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background: var(--teal);
+    color: var(--navy);
+    font-weight: bold;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,.13);
+    padding-top: 14px;
+}
+
+.main {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    padding: 25px 30px;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 27px;
+}
+
+.topbar h1 {
+    font-size: 25px;
+    color: var(--navy);
+}
+
+.topbar p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+.menu-toggle {
+    display: none;
+    background: var(--navy);
+    color: white;
+    border: 0;
+    border-radius: 8px;
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.welcome {
+    background: white;
+    border-radius: 15px;
+    padding: 24px;
+    margin-bottom: 22px;
+    border: 1px solid var(--border);
+}
+
+.welcome h2 {
+    color: var(--navy);
+    font-size: 21px;
+    margin-bottom: 8px;
+}
+
+.welcome p {
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 17px;
+    margin-bottom: 23px;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 20px;
+    min-height: 120px;
+}
+
+.stat-card .icon {
+    color: var(--teal);
+    font-size: 21px;
+    margin-bottom: 13px;
+}
+
+.stat-card h3 {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: normal;
+    margin-bottom: 9px;
+}
+
+.stat-card .value {
+    font-size: 25px;
+    color: var(--navy);
+    font-weight: bold;
+}
+
+.panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.panel h2 {
+    font-size: 18px;
+    color: var(--navy);
+    margin-bottom: 17px;
+}
+
+.empty-state {
+    border: 1px dashed #bdc9d9;
+    border-radius: 10px;
+    min-height: 145px;
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--muted);
+    gap: 10px;
+}
+
+.empty-state i {
+    font-size: 28px;
+    color: #9aabc0;
+}
+
+.empty-state strong {
+    color: var(--navy);
+    font-size: 14px;
+}
+
+.empty-state p {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 550px;
+}
+
+th, td {
+    text-align: left;
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+th {
+    color: var(--navy);
+    background: #f5f8fc;
+}
+
+td {
+    color: var(--muted);
+}
+
+.account-info {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 15px;
+    font-size: 14px;
+}
+
+.account-info div {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    overflow-wrap: anywhere;
+}
+
+.account-info .label {
+    color: var(--muted);
+}
+
+.logout-btn {
+    border: 0;
+    background: transparent;
+    color: #ffb7b7;
+    cursor: pointer;
+    width: 100%;
+    padding: 13px 14px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.logout-btn:hover {
+    color: white;
+}
+
+.page-footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 25px 10px;
+}
+
+.overlay {
+    display: none;
+}
+
+.loading {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--navy);
+    font-weight: bold;
+}
+
+@media (max-width: 850px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 90;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 18px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar h1 {
+        font-size: 21px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main {
+        padding: 14px;
+    }
+
+    .welcome,
+    .panel {
+        padding: 17px;
+    }
+
+    .account-info {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="loading" class="loading">Loading your dashboard...</div>
+
+<div class="app" id="app" style="display:none">
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo-area">
+            <img src="https://i.ibb.co/kVjfrCdP/5-removebg-preview.png"
+                 alt="IqraNet Medresa Logo">
+        </div>
+
+        <nav class="nav-menu">
+            <button class="nav-item active" data-section="overview">
+                <i class="fa-solid fa-house"></i> Overview
+            </button>
+
+            <button class="nav-item" data-section="students">
+                <i class="fa-solid fa-users"></i> My Students
+            </button>
+
+            <button class="nav-item" data-section="schedule">
+                <i class="fa-solid fa-calendar-days"></i> Weekly Schedule
+            </button>
+
+            <button class="nav-item" data-section="attendance">
+                <i class="fa-solid fa-clipboard-check"></i> Daily Attendance
+            </button>
+
+            <button class="nav-item" data-section="progress">
+                <i class="fa-solid fa-file-lines"></i> Weekly Progress
+            </button>
+
+            <button class="nav-item" data-section="history">
+                <i class="fa-solid fa-chart-line"></i> Attendance History
+            </button>
+
+            <button class="nav-item" data-section="account">
+                <i class="fa-solid fa-user-gear"></i> My Account
+            </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1 id="pageTitle">Dashboard Overview</h1>
+                <p>IqraNet Medresa · Ustaz Portal</p>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </header>
+
+        <!-- OVERVIEW -->
+        <section class="section active" id="overview">
+
+            <div class="welcome">
+                <h2>Welcome to IqraNet</h2>
+                <p>
+                    This is your teaching dashboard. Your assigned students,
+                    schedules, attendance and progress records will appear here
+                    when they are added and assigned by the Admin.
+                </p>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="icon"><i class="fa-solid fa-users"></i></div>
+                    <h3>Assigned Students</h3>
+                    <div class="value">—</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon"><i class="fa-solid fa-calendar-check"></i></div>
+                    <h3>Today's Lessons</h3>
+                    <div class="value">—</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon"><i class="fa-solid fa-file-circle-check"></i></div>
+                    <h3>Pending Reports</h3>
+                    <div class="value">—</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>Today's Lessons</h2>
+                <div class="empty-state">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    <strong>No lesson data available yet</strong>
+                    <p>The Admin will assign your students and lesson schedule.</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>Attendance Status</h2>
+                <div class="empty-state">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <strong>No attendance data available yet</strong>
+                    <p>Your daily attendance information will appear here.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- STUDENTS -->
+        <section class="section" id="students">
+            <div class="panel">
+                <h2>My Assigned Students</h2>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student Code</th>
+                                <th>Full Name</th>
+                                <th>Gender</th>
+                                <th>Schedule</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTable">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="empty-state">
+                    <i class="fa-solid fa-user-group"></i>
+                    <strong>No students assigned</strong>
+                    <p>Students assigned by the Admin will appear in this table.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCHEDULE -->
+        <section class="section" id="schedule">
+            <div class="panel">
+                <h2>Weekly Schedule</h2>
+                <div class="empty-state">
+                    <i class="fa-solid fa-calendar-week"></i>
+                    <strong>No schedule assigned</strong>
+                    <p>Your Monday–Sunday schedule will appear here after Admin assignment.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ATTENDANCE -->
+        <section class="section" id="attendance">
+            <div class="panel">
+                <h2>Daily Attendance</h2>
+                <div class="empty-state">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <strong>Attendance area is empty</strong>
+                    <p>Students scheduled for today will appear here when the system is connected.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- WEEKLY PROGRESS -->
+        <section class="section" id="progress">
+            <div class="panel">
+                <h2>Weekly Student Progress</h2>
+                <div class="empty-state">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <strong>No progress reports yet</strong>
+                    <p>Weekly reports for your assigned students will appear here.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HISTORY -->
+        <section class="section" id="history">
+            <div class="panel">
+                <h2>Attendance History</h2>
+                <div class="empty-state">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <strong>No history available</strong>
+                    <p>Previously submitted attendance records will appear here.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACCOUNT -->
+        <section class="section" id="account">
+            <div class="panel">
+                <h2>My Account</h2>
+
+                <div class="account-info">
+                    <div class="label">Full Name</div>
+                    <div id="accountName">—</div>
+
+                    <div class="label">Email</div>
+                    <div id="accountEmail">—</div>
+
+                    <div class="label">Phone Number</div>
+                    <div id="accountPhone">—</div>
+
+                    <div class="label">Gender</div>
+                    <div id="accountGender">—</div>
+
+                    <div class="label">Account Status</div>
+                    <div id="accountStatus">—</div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            © 2026 IqraNet Medresa. All Rights Reserved. · @IqraNet
+        </footer>
+
+    </main>
+</div>
+
+<script>
+const SUPABASE_URL = "https://tovhgdektjjujcwcdctl.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_4yI3xgqHCCn2HR6yuzXGxw_DfEX-h96";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+async function initializeDashboard() {
+    const { data: sessionData, error: sessionError } =
+        await supabaseClient.auth.getSession();
+
+    const session = sessionData?.session;
+
+    if (sessionError || !session) {
+        window.location.replace("login.html");
+        return;
+    }
+
+    const { data: registration, error } = await supabaseClient
+        .from("ustaz_registrations")
+        .select("full_name, gender, phone, email, approval_status")
+        .eq("id", session.user.id)
+        .maybeSingle();
+
+    if (error || !registration) {
+        alert("Your registration information could not be loaded.");
+        await supabaseClient.auth.signOut();
+        window.location.replace("login.html");
+        return;
+    }
+
+    if (registration.approval_status !== "approved") {
+        alert("Your account has not been approved by the Admin yet.");
+        await supabaseClient.auth.signOut();
+        window.location.replace("login.html");
+        return;
+    }
+
+    if (registration.gender === "Male") {
+        document.body.classList.add("male");
+    } else if (registration.gender === "Female") {
+        document.body.classList.add("female");
+    }
+
+    document.getElementById("accountName").textContent =
+        registration.full_name || "—";
+
+    document.getElementById("accountEmail").textContent =
+        registration.email || session.user.email || "—";
+
+    document.getElementById("accountPhone").textContent =
+        registration.phone || "—";
+
+    document.getElementById("accountGender").textContent =
+        registration.gender || "—";
+
+    document.getElementById("accountStatus").textContent =
+        registration.approval_status || "—";
+
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("app").style.display = "block";
+}
+
+const navItems = document.querySelectorAll(".nav-item");
+const sections = document.querySelectorAll(".section");
+const pageTitle = document.getElementById("pageTitle");
+
+const titles = {
+    overview: "Dashboard Overview",
+    students: "My Students",
+    schedule: "Weekly Schedule",
+    attendance: "Daily Attendance",
+    progress: "Weekly Progress",
+    history: "Attendance History",
+    account: "My Account"
+};
+
+navItems.forEach(item => {
+    item.addEventListener("click", () => {
+        const target = item.dataset.section;
+
+        navItems.forEach(nav => nav.classList.remove("active"));
+        item.classList.add("active");
+
+        sections.forEach(section => section.classList.remove("active"));
+        document.getElementById(target).classList.add("active");
+
+        pageTitle.textContent = titles[target];
+
+        closeSidebar();
+    });
+});
+
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+document.getElementById("menuToggle").addEventListener("click", () => {
+    sidebar.classList.add("open");
+    overlay.classList.add("show");
+});
+
+function closeSidebar() {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+}
+
+overlay.addEventListener("click", closeSidebar);
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+    const confirmed = confirm("Are you sure you want to log out?");
+    if (!confirmed) return;
+
+    await supabaseClient.auth.signOut();
+    window.location.replace("login.html");
+});
+
+initializeDashboard();
+</script>
+
+</body>
+</html>
