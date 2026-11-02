@@ -67,7 +67,7 @@ closeSidebar();
 
 const sidebar = document.getElementById("sidebar");
 const overlay = document.getElementById("overlay");
-document.getElementById("menuToggle").addEventListener("click", () => {
+document.getElementById("menuToggle")?.addEventListener("click", () => {
 sidebar.classList.add("open");
 overlay.classList.add("show");
 });
