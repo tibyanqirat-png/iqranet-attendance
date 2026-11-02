@@ -314,8 +314,7 @@ tbody.innerHTML = data.map(row=>`
 `).join("");
 }
 
-document.getElementById("refreshAudit").addEventListener("click",loadAuditHistory);
-
+document.getElementById("refreshAudit")?.addEventListener("click",loadAuditHistory);
 initializeAdmin();
 </script>
 </body>
