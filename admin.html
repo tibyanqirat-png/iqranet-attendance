@@ -31,12 +31,10 @@ return;
 
 currentAdminRole = admin.role;
 
-if (admin.role !== "super_admin") {
-document.querySelector('[data-section="admins"]').style.display = "none";
-document.getElementById("welcomeTitle").textContent = "Welcome, Admin";
-} else {
-document.getElementById("welcomeTitle").textContent = "Welcome, Super Admin";
-}
+const welcome = document.getElementById("welcomeTitle");
+if (welcome) welcome.textContent = admin.role === "super_admin"
+    ? "Welcome, Super Admin"
+    : "Welcome, Admin";
 
 document.getElementById("loading").style.display = "none";
 document.getElementById("app").style.display = "block";
