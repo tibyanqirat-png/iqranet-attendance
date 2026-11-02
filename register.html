@@ -6,6 +6,7 @@
 <title>የኡስታዝ ምዝገባ | IqraNET MEDRESA</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 * {
@@ -179,13 +180,20 @@ header {
     transform: translateY(-2px);
 }
 
+.register-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
 .form-message {
     display: none;
     margin-top: 18px;
-    padding: 12px;
+    padding: 13px;
     border-radius: 8px;
     text-align: center;
     font-size: 14px;
+    line-height: 1.6;
 }
 
 /* FLOATING TELEGRAM */
@@ -209,12 +217,8 @@ header {
 }
 
 @keyframes telegramFloat {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-12px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
 }
 
 /* FOOTER */
@@ -376,7 +380,7 @@ footer p {
                         name="phone"
                         placeholder="9XXXXXXXX"
                         inputmode="numeric"
-                        pattern="9[0-9]{8}"
+                        pattern="[79][0-9]{8}"
                         maxlength="9"
                         required
                     >
@@ -395,7 +399,7 @@ footer p {
                 >
             </div>
 
-            <button type="submit" class="register-button">
+            <button type="submit" class="register-button" id="submitButton">
                 ለመመዝገብ / Register
             </button>
 
@@ -419,25 +423,11 @@ footer p {
     >
 
     <div class="socials">
-        <a href="#" aria-label="Instagram">
-            <i class="fa-brands fa-instagram"></i>
-        </a>
-
-        <a href="#" aria-label="Facebook">
-            <i class="fa-brands fa-facebook-f"></i>
-        </a>
-
-        <a href="#" aria-label="Telegram">
-            <i class="fa-brands fa-telegram"></i>
-        </a>
-
-        <a href="#" aria-label="TikTok">
-            <i class="fa-brands fa-tiktok"></i>
-        </a>
-
-        <a href="#" aria-label="YouTube">
-            <i class="fa-brands fa-youtube"></i>
-        </a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
     </div>
 
     <p>© 2026 IqraNet Medresa. All Rights Reserved.</p>
@@ -445,33 +435,87 @@ footer p {
 </footer>
 
 <script>
-document.getElementById("registrationForm").addEventListener("submit", function(event) {
+const SUPABASE_URL = "https://tovhgdektjjujcwcdctl.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_4yI3xgqHCCn2HR6yuzXGxw_DfEX-h96";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+const form = document.getElementById("registrationForm");
+const message = document.getElementById("formMessage");
+const submitButton = document.getElementById("submitButton");
+
+function showMessage(text, type) {
+    message.style.display = "block";
+    message.textContent = text;
+
+    if (type === "success") {
+        message.style.background = "#e3f8e9";
+        message.style.color = "#17652c";
+    } else {
+        message.style.background = "#ffe5e5";
+        message.style.color = "#a00000";
+    }
+}
+
+form.addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const fullName = document.getElementById("fullName").value.trim();
+    const gender = document.getElementById("gender").value;
     const phone = document.getElementById("phone").value.trim();
-    const message = document.getElementById("formMessage");
+    const email = document.getElementById("email").value.trim();
 
     if (fullName.split(/\s+/).length < 2) {
-        message.style.display = "block";
-        message.style.background = "#ffe5e5";
-        message.style.color = "#a00000";
-        message.textContent = "Please enter at least two words for your full name.";
+        showMessage("Please enter at least two words for your full name.", "error");
         return;
     }
 
-    if (!/^9[0-9]{8}$/.test(phone)) {
-        message.style.display = "block";
-        message.style.background = "#ffe5e5";
-        message.style.color = "#a00000";
-        message.textContent = "Enter a valid Ethiopian phone number.";
+    if (!/^[79][0-9]{8}$/.test(phone)) {
+        showMessage("Enter a valid Ethiopian mobile number with 9 digits after +251.", "error");
         return;
     }
 
-    message.style.display = "block";
-    message.style.background = "#fff4d6";
-    message.style.color = "#765000";
-    message.textContent = "The registration form is ready. Email confirmation will work after we connect Supabase.";
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending confirmation email...";
+    message.style.display = "none";
+
+    try {
+        const { data, error } = await supabaseClient.auth.signInWithOtp({
+            email: email,
+            options: {
+                shouldCreateUser: true,
+                emailRedirectTo: "https://iqranet-attendance.vercel.app/",
+                data: {
+                    full_name: fullName,
+                    gender: gender,
+                    phone: "+251" + phone
+                }
+            }
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        showMessage(
+            "Registration started! Please check your email and click the confirmation link to verify your email address.",
+            "success"
+        );
+
+        form.reset();
+
+    } catch (error) {
+        showMessage(
+            "Registration error: " + error.message,
+            "error"
+        );
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "ለመመዝገብ / Register";
+    }
 });
 </script>
 
