@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>የኡስታዝ ምዝገባ | IqraNET MEDRESA</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e8fff5, #b8f2e2, #70d9cb);
+    color: #091345;
+}
+
+/* HEADER */
+header {
+    width: 100%;
+    min-height: 95px;
+    padding: 12px 6%;
+    background: #091345;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-logo {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+}
+
+.brand-text {
+    color: white;
+    text-align: left;
+}
+
+.brand-text h2 {
+    font-size: 23px;
+    margin-bottom: 4px;
+}
+
+.brand-text span {
+    font-size: 14px;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.header-login {
+    text-decoration: none;
+    color: #091345;
+    background: white;
+    padding: 10px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.header-login:hover {
+    background: #d9f5ed;
+}
+
+/* REGISTRATION */
+.registration-section {
+    min-height: 650px;
+    padding: 55px 20px 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.registration-card {
+    width: 100%;
+    max-width: 550px;
+    background: white;
+    padding: 38px 35px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(9, 19, 69, 0.13);
+}
+
+.registration-card h1 {
+    text-align: center;
+    color: #091345;
+    font-size: 29px;
+    margin-bottom: 10px;
+}
+
+.registration-subtitle {
+    text-align: center;
+    color: #596477;
+    margin-bottom: 30px;
+    font-size: 15px;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    color: #091345;
+    margin-bottom: 9px;
+    font-size: 16px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    height: 49px;
+    padding: 0 14px;
+    border: 1px solid #cbd5df;
+    border-radius: 8px;
+    outline: none;
+    font-size: 16px;
+    background: white;
+    color: #091345;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #229e91;
+    box-shadow: 0 0 0 3px rgba(34, 158, 145, 0.12);
+}
+
+.phone-input {
+    display: flex;
+    gap: 9px;
+}
+
+.country-code {
+    width: 85px;
+    height: 49px;
+    border: 1px solid #cbd5df;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.phone-input input {
+    flex: 1;
+    min-width: 0;
+}
+
+.register-button {
+    width: 100%;
+    height: 52px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 30px;
+    background: #091345;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.register-button:hover {
+    background: #172568;
+    transform: translateY(-2px);
+}
+
+.form-message {
+    display: none;
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* FLOATING TELEGRAM */
+.telegram-float {
+    position: fixed;
+    right: 22px;
+    bottom: 25px;
+    width: 58px;
+    height: 58px;
+    background: #229ED9;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 29px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    z-index: 9999;
+    animation: telegramFloat 2.5s ease-in-out infinite;
+}
+
+@keyframes telegramFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+/* FOOTER */
+footer {
+    background: #091345;
+    color: white;
+    text-align: center;
+    padding: 30px 20px 25px;
+}
+
+.footer-logo {
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
+    margin-bottom: 12px;
+}
+
+.socials {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 0;
+    flex-wrap: wrap;
+}
+
+.socials a {
+    width: 34px;
+    height: 34px;
+    background: white;
+    color: #6b4c9a;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.socials a:hover {
+    transform: translateY(-4px);
+}
+
+footer p {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    header {
+        min-height: 80px;
+        padding: 10px 4%;
+    }
+
+    .header-logo {
+        width: 62px;
+        height: 62px;
+    }
+
+    .brand-text h2 {
+        font-size: 18px;
+    }
+
+    .brand-text span {
+        font-size: 11px;
+        letter-spacing: 1px;
+    }
+
+    .header-brand {
+        gap: 8px;
+    }
+
+    .header-login {
+        padding: 9px 16px;
+        font-size: 13px;
+    }
+
+    .registration-section {
+        padding: 35px 14px 50px;
+    }
+
+    .registration-card {
+        padding: 30px 20px;
+    }
+
+    .registration-card h1 {
+        font-size: 25px;
+    }
+
+    .telegram-float {
+        right: 15px;
+        bottom: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="header-brand">
+        <img
+            src="https://i.ibb.co/kVjfrCdP/5-removebg-preview.png"
+            alt="IqraNet Logo"
+            class="header-logo"
+        >
+
+        <div class="brand-text">
+            <h2>ኢቅራኔት መድረሳ</h2>
+            <span>IqraNET MEDRESA</span>
+        </div>
+    </div>
+
+    <a href="login.html" class="header-login">Login</a>
+</header>
+
+<!-- REGISTRATION FORM -->
+<section class="registration-section">
+    <div class="registration-card">
+
+        <h1>የኡስታዝ ምዝገባ</h1>
+        <p class="registration-subtitle">
+            እባክዎ የሚከተሉትን መረጃዎች ይሙሉ
+        </p>
+
+        <form id="registrationForm">
+
+            <div class="form-group">
+                <label for="fullName">ሙሉ ስም / Full Name</label>
+                <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="gender">ፆታ / Gender</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Select gender</option>
+                    <option value="Male">ወንድ / Male</option>
+                    <option value="Female">ሴት / Female</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">ስልክ ቁጥር / Phone Number</label>
+                <div class="phone-input">
+                    <div class="country-code">+251</div>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="9XXXXXXXX"
+                        inputmode="numeric"
+                        pattern="9[0-9]{8}"
+                        maxlength="9"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">ኢሜል አድራሻ / Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email address"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="register-button">
+                ለመመዝገብ / Register
+            </button>
+
+            <div id="formMessage" class="form-message"></div>
+
+        </form>
+    </div>
+</section>
+
+<!-- FLOATING TELEGRAM -->
+<a href="#" class="telegram-float" aria-label="Telegram">
+    <i class="fa-brands fa-telegram"></i>
+</a>
+
+<!-- FOOTER -->
+<footer>
+    <img
+        src="https://i.ibb.co/q31WJkdv/6-removebg-preview.png"
+        alt="IqraNet Logo"
+        class="footer-logo"
+    >
+
+    <div class="socials">
+        <a href="#" aria-label="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+
+        <a href="#" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+        </a>
+
+        <a href="#" aria-label="Telegram">
+            <i class="fa-brands fa-telegram"></i>
+        </a>
+
+        <a href="#" aria-label="TikTok">
+            <i class="fa-brands fa-tiktok"></i>
+        </a>
+
+        <a href="#" aria-label="YouTube">
+            <i class="fa-brands fa-youtube"></i>
+        </a>
+    </div>
+
+    <p>© 2026 IqraNet Medresa. All Rights Reserved.</p>
+    <p>@IqraNet</p>
+</footer>
+
+<script>
+document.getElementById("registrationForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const message = document.getElementById("formMessage");
+
+    if (fullName.split(/\s+/).length < 2) {
+        message.style.display = "block";
+        message.style.background = "#ffe5e5";
+        message.style.color = "#a00000";
+        message.textContent = "Please enter at least two words for your full name.";
+        return;
+    }
+
+    if (!/^9[0-9]{8}$/.test(phone)) {
+        message.style.display = "block";
+        message.style.background = "#ffe5e5";
+        message.style.color = "#a00000";
+        message.textContent = "Enter a valid Ethiopian phone number.";
+        return;
+    }
+
+    message.style.display = "block";
+    message.style.background = "#fff4d6";
+    message.style.color = "#765000";
+    message.textContent = "The registration form is ready. Email confirmation will work after we connect Supabase.";
+});
+</script>
+
+</body>
+</html>
