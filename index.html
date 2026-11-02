@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IqraNet Medresa | ኢቅራኔት መድረሳ</title>
+
+<style>
+:root {
+  --navy: #102b46;
+  --navy-light: #193f60;
+  --teal: #12a9a0;
+  --gold: #d9b76a;
+  --white: #ffffff;
+  --light: #f4f8fa;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--light);
+  color: var(--navy);
+  overflow-x: hidden;
+}
+
+/* HEADER */
+header {
+  background: var(--white);
+  min-height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 7%;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.07);
+  position: relative;
+  z-index: 10;
+}
+
+.header-logo {
+  height: 65px;
+  width: auto;
+  object-fit: contain;
+}
+
+.header-title {
+  color: var(--navy);
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.login-top {
+  background: var(--teal);
+  color: white;
+  padding: 12px 25px;
+  text-decoration: none;
+  border-radius: 7px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.login-top:hover {
+  background: var(--navy);
+}
+
+/* HERO */
+.hero {
+  min-height: 520px;
+  background: linear-gradient(
+    135deg,
+    #102b46 0%,
+    #174b65 65%,
+    #087f83 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 75px 20px;
+  color: white;
+  position: relative;
+}
+
+.hero-content {
+  max-width: 850px;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 5vw, 49px);
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.hero p {
+  font-size: 18px;
+  line-height: 1.9;
+  color: #e0edf3;
+  max-width: 700px;
+  margin: 0 auto 32px;
+}
+
+.hero-button {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--navy);
+  padding: 15px 42px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.hero-button:hover {
+  background: white;
+  transform: translateY(-3px);
+}
+
+/* INTRODUCTION */
+.intro {
+  padding: 75px 7%;
+  text-align: center;
+  background: white;
+}
+
+.section-title {
+  font-size: 30px;
+  color: var(--navy);
+  margin-bottom: 18px;
+}
+
+.section-line {
+  width: 65px;
+  height: 4px;
+  background: var(--teal);
+  margin: 0 auto 25px;
+  border-radius: 5px;
+}
+
+.intro p {
+  max-width: 750px;
+  margin: auto;
+  font-size: 17px;
+  line-height: 2;
+  color: #536575;
+}
+
+/* VIDEO */
+.video-section {
+  padding: 70px 7%;
+  text-align: center;
+  background: #eef4f7;
+}
+
+.video-placeholder {
+  max-width: 850px;
+  height: 350px;
+  margin: 30px auto 0;
+  background: var(--navy);
+  border: 2px solid rgba(217,183,106,0.5);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  overflow: hidden;
+}
+
+.play-icon {
+  font-size: 55px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+/* CONTACT */
+.contact {
+  background: white;
+  text-align: center;
+  padding: 65px 20px;
+}
+
+.telegram-button {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 13px 30px;
+  background: #229ed9;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+/* FOOTER */
+footer {
+  background: #0b2035;
+  color: white;
+  text-align: center;
+  padding: 40px 20px 22px;
+}
+
+.footer-logo {
+  width: 160px;
+  max-height: 100px;
+  object-fit: contain;
+  margin-bottom: 18px;
+}
+
+footer p {
+  color: #c5d2dc;
+  line-height: 1.9;
+  font-size: 14px;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  margin-top: 25px;
+  padding-top: 18px;
+  font-size: 13px;
+  color: #aebdca;
+}
+
+/* MOBILE */
+@media(max-width: 600px) {
+  header {
+    padding: 12px 4%;
+  }
+
+  .header-logo {
+    height: 48px;
+    max-width: 110px;
+  }
+
+  .header-title {
+    font-size: 14px;
+  }
+
+  .login-top {
+    padding: 10px 13px;
+    font-size: 13px;
+  }
+
+  .hero {
+    min-height: 440px;
+    padding: 60px 20px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .video-placeholder {
+    height: 220px;
+  }
+
+  .section-title {
+    font-size: 25px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+  <img
+    src="https://i.ibb.co/kVjfrCdP/5-removebg-preview.png"
+    alt="IqraNet Logo"
+    class="header-logo"
+  >
+
+  <div class="header-title">IQ RANET MEDRESA</div>
+
+  <a href="login.html" class="login-top">
+    መግቢያ
+  </a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+
+    <h1>
+      እንኳን ወደ ኢቅራኔት መድረሳ
+      በደህና መጡ።
+    </h1>
+
+    <p>
+      ቁርአንን በትክክል ለመማርና
+      ለማስተማር የተዘጋጀ የኦንላይን
+      የቁርአን ትምህርት መድረሳ።
+    </p>
+
+    <a href="login.html" class="hero-button">
+      የኡስታዝ መግቢያ
+    </a>
+
+  </div>
+</section>
+
+<!-- INTRODUCTION -->
+<section class="intro">
+
+  <h2 class="section-title">ስለ ኢቅራኔት መድረሳ</h2>
+  <div class="section-line"></div>
+
+  <p>
+    ኢቅራኔት መድረሳ የቁርአን ትምህርትን
+    በኦንላይን ለማዳረስ የተቋቋመ መድረሳ ነው።
+    ተማሪዎች በተመደቡላቸው ኡስታዞች
+    በተዘጋጁ የትምህርት ፕሮግራሞች
+    የቁርአን ትምህርታቸውን ይከታተላሉ።
+  </p>
+
+</section>
+
+<!-- INTRODUCTION VIDEO -->
+<section class="video-section">
+
+  <h2 class="section-title">የመድረሳው መግቢያ</h2>
+  <div class="section-line"></div>
+
+  <div class="video-placeholder">
+    <div>
+      <div class="play-icon">▶</div>
+      <p>የመድረሳው መግቢያ ቪዲዮ በቅርቡ</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- CONTACT -->
+<section class="contact">
+
+  <h2 class="section-title">ያግኙን</h2>
+  <div class="section-line"></div>
+
+  <p>ለተጨማሪ መረጃ በቴሌግራም ያግኙን።</p>
+
+  <a href="#" class="telegram-button">
+    Telegram
+  </a>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+
+  <img
+    src="https://i.ibb.co/q31WJkdv/6-removebg-preview.png"
+    alt="IqraNet Footer Logo"
+    class="footer-logo"
+  >
+
+  <p>ኢቅራኔት መድረሳ</p>
+  <p>Online Quran Learning</p>
+
+  <div class="footer-bottom">
+    © 2026 IqraNet Medresa. All Rights Reserved.
+  </div>
+
+</footer>
+
+</body>
+</html>
