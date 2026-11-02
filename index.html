@@ -3,263 +3,262 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IqraNet Medresa | ኢቅራኔት መድረሳ</title>
+<title>ኢቅራኔት መድረሳ | IqraNET MEDRESA</title>
 
 <style>
-:root {
-  --navy: #102b46;
-  --navy-light: #193f60;
-  --teal: #12a9a0;
-  --gold: #d9b76a;
-  --white: #ffffff;
-  --light: #f4f8fa;
-}
-
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background: var(--light);
-  color: var(--navy);
-  overflow-x: hidden;
+html, body {
+    min-height: 100%;
+    font-family: "Noto Sans Ethiopic", Arial, sans-serif;
 }
 
 /* HEADER */
 header {
-  background: var(--white);
-  min-height: 85px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 7%;
-  box-shadow: 0 3px 15px rgba(0,0,0,0.07);
-  position: relative;
-  z-index: 10;
+    height: 130px;
+    background: #091345;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 10px 20px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
 }
 
 .header-logo {
-  height: 65px;
-  width: auto;
-  object-fit: contain;
+    width: 105px;
+    height: 105px;
+    object-fit: contain;
 }
 
-.header-title {
-  color: var(--navy);
-  font-size: 21px;
-  font-weight: bold;
+.brand-text {
+    color: white;
+    line-height: 1.65;
 }
 
-.login-top {
-  background: var(--teal);
-  color: white;
-  padding: 12px 25px;
-  text-decoration: none;
-  border-radius: 7px;
-  font-weight: bold;
-  transition: 0.3s;
+.brand-text .amharic {
+    font-size: 18px;
+    font-weight: bold;
 }
 
-.login-top:hover {
-  background: var(--navy);
+.brand-text .english {
+    font-family: Georgia, serif;
+    font-size: 17px;
 }
 
-/* HERO */
-.hero {
-  min-height: 520px;
-  background: linear-gradient(
-    135deg,
-    #102b46 0%,
-    #174b65 65%,
-    #087f83 100%
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 75px 20px;
-  color: white;
-  position: relative;
+.login-small {
+    position: absolute;
+    right: 4%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #73c9c0;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    padding: 9px 17px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-.hero-content {
-  max-width: 850px;
+/* MAIN BACKGROUND */
+main {
+    min-height: 695px;
+    background: linear-gradient(
+        to bottom,
+        #f5fcfb 0%,
+        #c8eeea 35%,
+        #9bded5 68%,
+        #69c7bd 100%
+    );
+    text-align: center;
+    padding: 78px 20px 35px;
 }
 
-.hero h1 {
-  font-size: clamp(30px, 5vw, 49px);
-  line-height: 1.5;
-  margin-bottom: 22px;
+/* WELCOME HEADING */
+.welcome-title {
+    max-width: 850px;
+    margin: 0 auto;
+    color: #050505;
+    font-size: clamp(24px, 3.3vw, 35px);
+    font-weight: 800;
+    line-height: 1.65;
 }
 
-.hero p {
-  font-size: 18px;
-  line-height: 1.9;
-  color: #e0edf3;
-  max-width: 700px;
-  margin: 0 auto 32px;
+/* MAIN LOGIN BUTTON */
+.login-main {
+    display: inline-block;
+    margin-top: 65px;
+    background: #091345;
+    color: white;
+    text-decoration: none;
+    border-radius: 26px;
+    padding: 18px 45px;
+    font-size: 29px;
+    font-weight: bold;
+    transition: 0.2s;
 }
 
-.hero-button {
-  display: inline-block;
-  background: var(--gold);
-  color: var(--navy);
-  padding: 15px 42px;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: bold;
-  text-decoration: none;
-  transition: 0.3s;
+.login-main:hover {
+    background: #142765;
+    transform: translateY(-2px);
 }
 
-.hero-button:hover {
-  background: white;
-  transform: translateY(-3px);
-}
-
-/* INTRODUCTION */
-.intro {
-  padding: 75px 7%;
-  text-align: center;
-  background: white;
-}
-
-.section-title {
-  font-size: 30px;
-  color: var(--navy);
-  margin-bottom: 18px;
-}
-
-.section-line {
-  width: 65px;
-  height: 4px;
-  background: var(--teal);
-  margin: 0 auto 25px;
-  border-radius: 5px;
-}
-
-.intro p {
-  max-width: 750px;
-  margin: auto;
-  font-size: 17px;
-  line-height: 2;
-  color: #536575;
-}
-
-/* VIDEO */
+/* VIDEO SECTION */
 .video-section {
-  padding: 70px 7%;
-  text-align: center;
-  background: #eef4f7;
+    margin-top: 120px;
 }
 
-.video-placeholder {
-  max-width: 850px;
-  height: 350px;
-  margin: 30px auto 0;
-  background: var(--navy);
-  border: 2px solid rgba(217,183,106,0.5);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 18px;
-  overflow: hidden;
+.video-section h2 {
+    font-size: 25px;
+    color: #050505;
+    font-weight: bold;
+    margin-bottom: 35px;
 }
 
-.play-icon {
-  font-size: 55px;
-  color: var(--gold);
-  margin-bottom: 12px;
+.play-button {
+    width: 69px;
+    height: 56px;
+    border: none;
+    border-radius: 14px;
+    background: #091345;
+    color: white;
+    font-size: 32px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
-/* CONTACT */
-.contact {
-  background: white;
-  text-align: center;
-  padding: 65px 20px;
-}
-
-.telegram-button {
-  display: inline-block;
-  margin-top: 22px;
-  padding: 13px 30px;
-  background: #229ed9;
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 8px;
+/* TELEGRAM FLOATING ICON */
+.telegram {
+    position: absolute;
+    right: 4.8%;
+    margin-top: 35px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #279dd5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
 }
 
 /* FOOTER */
 footer {
-  background: #0b2035;
-  color: white;
-  text-align: center;
-  padding: 40px 20px 22px;
+    min-height: 175px;
+    background: #091345;
+    color: white;
+    text-align: center;
+    padding: 18px 15px 12px;
 }
 
 .footer-logo {
-  width: 160px;
-  max-height: 100px;
-  object-fit: contain;
-  margin-bottom: 18px;
+    width: 95px;
+    height: 85px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 7px;
 }
 
-footer p {
-  color: #c5d2dc;
-  line-height: 1.9;
-  font-size: 14px;
+.socials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 5px;
 }
 
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.15);
-  margin-top: 25px;
-  padding-top: 18px;
-  font-size: 13px;
-  color: #aebdca;
+.socials a {
+    width: 21px;
+    height: 21px;
+    border: 1.5px solid white;
+    border-radius: 4px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.footer-handle {
+    font-family: Georgia, serif;
+    font-size: 12px;
+    color: white;
 }
 
 /* MOBILE */
 @media(max-width: 600px) {
-  header {
-    padding: 12px 4%;
-  }
+    header {
+        height: 110px;
+        justify-content: flex-start;
+        padding-left: 12px;
+    }
 
-  .header-logo {
-    height: 48px;
-    max-width: 110px;
-  }
+    .header-logo {
+        width: 75px;
+        height: 80px;
+    }
 
-  .header-title {
-    font-size: 14px;
-  }
+    .brand {
+        gap: 5px;
+    }
 
-  .login-top {
-    padding: 10px 13px;
-    font-size: 13px;
-  }
+    .brand-text .amharic {
+        font-size: 14px;
+    }
 
-  .hero {
-    min-height: 440px;
-    padding: 60px 20px;
-  }
+    .brand-text .english {
+        font-size: 14px;
+    }
 
-  .hero p {
-    font-size: 16px;
-  }
+    .login-small {
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
 
-  .video-placeholder {
-    height: 220px;
-  }
+    main {
+        min-height: 695px;
+        padding: 65px 14px 30px;
+    }
 
-  .section-title {
-    font-size: 25px;
-  }
+    .welcome-title {
+        font-size: 23px;
+        line-height: 1.8;
+    }
+
+    .login-main {
+        margin-top: 60px;
+        padding: 16px 35px;
+        font-size: 24px;
+    }
+
+    .video-section {
+        margin-top: 120px;
+    }
+
+    .video-section h2 {
+        font-size: 20px;
+    }
+
+    .telegram {
+        right: 5%;
+        margin-top: 30px;
+    }
 }
 </style>
 </head>
@@ -268,101 +267,77 @@ footer p {
 
 <!-- HEADER -->
 <header>
-  <img
-    src="https://i.ibb.co/kVjfrCdP/5-removebg-preview.png"
-    alt="IqraNet Logo"
-    class="header-logo"
-  >
 
-  <div class="header-title">IQ RANET MEDRESA</div>
+    <div class="brand">
+        <img
+            class="header-logo"
+            src="https://i.ibb.co/kVjfrCdP/5-removebg-preview.png"
+            alt="IqraNET Logo"
+        >
 
-  <a href="login.html" class="login-top">
-    መግቢያ
-  </a>
-</header>
+        <div class="brand-text">
+            <div class="amharic">ኢቅራኔት መድረሳ</div>
+            <div class="english">IqraNET MEDRESA</div>
+        </div>
+    </div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-content">
-
-    <h1>
-      እንኳን ወደ ኢቅራኔት መድረሳ
-      በደህና መጡ።
-    </h1>
-
-    <p>
-      ቁርአንን በትክክል ለመማርና
-      ለማስተማር የተዘጋጀ የኦንላይን
-      የቁርአን ትምህርት መድረሳ።
-    </p>
-
-    <a href="login.html" class="hero-button">
-      የኡስታዝ መግቢያ
+    <a href="login.html" class="login-small">
+        ♙ ግባ
     </a>
 
-  </div>
-</section>
+</header>
 
-<!-- INTRODUCTION -->
-<section class="intro">
+<!-- MAIN -->
+<main>
 
-  <h2 class="section-title">ስለ ኢቅራኔት መድረሳ</h2>
-  <div class="section-line"></div>
+    <h1 class="welcome-title">
+        ለኢቅራኔት መድረሳ አባላትና የተማሪዎች
+        አትንዳንስ መቆጣጠሪያ ድረ ገጽ
+    </h1>
 
-  <p>
-    ኢቅራኔት መድረሳ የቁርአን ትምህርትን
-    በኦንላይን ለማዳረስ የተቋቋመ መድረሳ ነው።
-    ተማሪዎች በተመደቡላቸው ኡስታዞች
-    በተዘጋጁ የትምህርት ፕሮግራሞች
-    የቁርአን ትምህርታቸውን ይከታተላሉ።
-  </p>
+    <a href="login.html" class="login-main">
+        ለመግባት
+    </a>
 
-</section>
+    <section class="video-section">
 
-<!-- INTRODUCTION VIDEO -->
-<section class="video-section">
+        <h2>
+            ስለ መድረሳው አጭር ስፖት ለመመልከት
+        </h2>
 
-  <h2 class="section-title">የመድረሳው መግቢያ</h2>
-  <div class="section-line"></div>
+        <button class="play-button" type="button"
+            aria-label="Introduction video">
+            ▶
+        </button>
 
-  <div class="video-placeholder">
-    <div>
-      <div class="play-icon">▶</div>
-      <p>የመድረሳው መግቢያ ቪዲዮ በቅርቡ</p>
-    </div>
-  </div>
+    </section>
 
-</section>
+    <a href="#" class="telegram" aria-label="Telegram">
+        ➤
+    </a>
 
-<!-- CONTACT -->
-<section class="contact">
-
-  <h2 class="section-title">ያግኙን</h2>
-  <div class="section-line"></div>
-
-  <p>ለተጨማሪ መረጃ በቴሌግራም ያግኙን።</p>
-
-  <a href="#" class="telegram-button">
-    Telegram
-  </a>
-
-</section>
+</main>
 
 <!-- FOOTER -->
 <footer>
 
-  <img
-    src="https://i.ibb.co/q31WJkdv/6-removebg-preview.png"
-    alt="IqraNet Footer Logo"
-    class="footer-logo"
-  >
+    <img
+        class="footer-logo"
+        src="https://i.ibb.co/q31WJkdv/6-removebg-preview.png"
+        alt="IqraNET Footer Logo"
+    >
 
-  <p>ኢቅራኔት መድረሳ</p>
-  <p>Online Quran Learning</p>
+    <div class="socials">
+        <a href="#" aria-label="Instagram">◎</a>
+        <a href="#" aria-label="Facebook">f</a>
+        <a href="#" aria-label="Telegram">➤</a>
+        <a href="#" aria-label="TikTok">♪</a>
+        <a href="#" aria-label="YouTube">▶</a>
+    </div>
 
-  <div class="footer-bottom">
-    © 2026 IqraNet Medresa. All Rights Reserved.
-  </div>
+    <div class="footer-handle">
+        @IqraNet
+    </div>
 
 </footer>
 
