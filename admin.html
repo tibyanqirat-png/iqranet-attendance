@@ -271,7 +271,7 @@ showNotice("ustazNotice",error.message || "Action failed.","error");
 }
 }
 
-document.getElementById("ustazTableBody").addEventListener("click",event=>{
+document.getElementById("ustazTableBody")?.addEventListener("click",event=>{
 const button = event.target.closest("button[data-action]");
 if (!button) return;
 handleUstazAction(button.dataset.id,button.dataset.action);
