@@ -683,6 +683,58 @@ async function initializeDashboard() {
     document.getElementById("app").style.display = "block";
 }
 
+async function loadMyStudents() {
+    const { data: sessionData } =
+        await supabaseClient.auth.getSession();
+
+    const session = sessionData?.session;
+    if (!session) return;
+
+    const { data: students, error } = await supabaseClient
+        .from("students")
+        .select("id, student_code, full_name, learning_days, free_days, lesson_start_time")
+        .eq("ustaz_id", session.user.id)
+        .eq("is_active", true)
+        .order("full_name");
+
+    const table = document.getElementById("studentsTable");
+    const emptyState = document.querySelector("#students .empty-state");
+
+    if (error) {
+        table.innerHTML = `
+            <tr>
+                <td colspan="5">Unable to load students: ${error.message}</td>
+            </tr>
+        `;
+        return;
+    }
+
+    if (!students || students.length === 0) {
+        table.innerHTML = "";
+        emptyState.style.display = "flex";
+        return;
+    }
+
+    emptyState.style.display = "none";
+
+    table.innerHTML = students.map(student => {
+        const days = (student.learning_days || []).join(", ");
+        const time = student.lesson_start_time
+            ? student.lesson_start_time.slice(0, 5)
+            : "—";
+
+        return `
+            <tr>
+                <td>${student.student_code}</td>
+                <td>${student.full_name}</td>
+                <td>—</td>
+                <td>${days} · ${time}</td>
+                <td>Active</td>
+            </tr>
+        `;
+    }).join("");
+}
+
 const navItems = document.querySelectorAll(".nav-item");
 const sections = document.querySelectorAll(".section");
 const pageTitle = document.getElementById("pageTitle");
@@ -737,6 +789,7 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
 });
 
 initializeDashboard();
+loadMyStudents();
 </script>
 
 </body>
