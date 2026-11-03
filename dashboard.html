@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,21 +33,11 @@ body {
     min-height: 100vh;
 }
 
-body.male {
-    background: #eaf4ff;
-}
+body.male { background: #eaf4ff; }
+body.female { background: #fff0f6; }
 
-body.female {
-    background: #fff0f6;
-}
-
-button {
-    font: inherit;
-}
-
-.app {
-    min-height: 100vh;
-}
+button { font: inherit; }
+.app { min-height: 100vh; }
 
 .sidebar {
     width: var(--sidebar-width);
@@ -155,13 +146,8 @@ button {
     cursor: pointer;
 }
 
-.section {
-    display: none;
-}
-
-.section.active {
-    display: block;
-}
+.section { display: none; }
+.section.active { display: block; }
 
 .welcome {
     background: white;
@@ -260,9 +246,7 @@ button {
     line-height: 1.5;
 }
 
-.table-wrap {
-    overflow-x: auto;
-}
+.table-wrap { overflow-x: auto; }
 
 table {
     width: 100%;
@@ -282,9 +266,7 @@ th {
     background: #f5f8fc;
 }
 
-td {
-    color: var(--muted);
-}
+td { color: var(--muted); }
 
 .account-info {
     display: grid;
@@ -299,9 +281,7 @@ td {
     overflow-wrap: anywhere;
 }
 
-.account-info .label {
-    color: var(--muted);
-}
+.account-info .label { color: var(--muted); }
 
 .logout-btn {
     border: 0;
@@ -316,9 +296,7 @@ td {
     gap: 13px;
 }
 
-.logout-btn:hover {
-    color: white;
-}
+.logout-btn:hover { color: white; }
 
 .page-footer {
     text-align: center;
@@ -327,9 +305,7 @@ td {
     padding: 25px 10px;
 }
 
-.overlay {
-    display: none;
-}
+.overlay { display: none; }
 
 .loading {
     min-height: 100vh;
@@ -341,13 +317,9 @@ td {
 }
 
 @media (max-width: 850px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
+    .sidebar { transform: translateX(-100%); }
 
-    .sidebar.open {
-        transform: translateX(0);
-    }
+    .sidebar.open { transform: translateX(0); }
 
     .overlay.show {
         display: block;
@@ -362,28 +334,16 @@ td {
         padding: 18px;
     }
 
-    .menu-toggle {
-        display: block;
-    }
-
-    .stats {
-        grid-template-columns: 1fr;
-    }
-
-    .topbar h1 {
-        font-size: 21px;
-    }
+    .menu-toggle { display: block; }
+    .stats { grid-template-columns: 1fr; }
+    .topbar h1 { font-size: 21px; }
 }
 
 @media (max-width: 480px) {
-    .main {
-        padding: 14px;
-    }
+    .main { padding: 14px; }
 
     .welcome,
-    .panel {
-        padding: 17px;
-    }
+    .panel { padding: 17px; }
 
     .account-info {
         grid-template-columns: 1fr;
@@ -458,7 +418,6 @@ td {
             </button>
         </header>
 
-        <!-- OVERVIEW -->
         <section class="section active" id="overview">
 
             <div class="welcome">
@@ -510,7 +469,6 @@ td {
 
         </section>
 
-        <!-- STUDENTS -->
         <section class="section" id="students">
             <div class="panel">
                 <h2>My Assigned Students</h2>
@@ -526,8 +484,7 @@ td {
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="studentsTable">
-                        </tbody>
+                        <tbody id="studentsTable"></tbody>
                     </table>
                 </div>
 
@@ -539,7 +496,6 @@ td {
             </div>
         </section>
 
-        <!-- SCHEDULE -->
         <section class="section" id="schedule">
             <div class="panel">
                 <h2>Weekly Schedule</h2>
@@ -551,7 +507,6 @@ td {
             </div>
         </section>
 
-        <!-- ATTENDANCE -->
         <section class="section" id="attendance">
             <div class="panel">
                 <h2>Daily Attendance</h2>
@@ -563,7 +518,6 @@ td {
             </div>
         </section>
 
-        <!-- WEEKLY PROGRESS -->
         <section class="section" id="progress">
             <div class="panel">
                 <h2>Weekly Student Progress</h2>
@@ -575,7 +529,6 @@ td {
             </div>
         </section>
 
-        <!-- HISTORY -->
         <section class="section" id="history">
             <div class="panel">
                 <h2>Attendance History</h2>
@@ -587,7 +540,6 @@ td {
             </div>
         </section>
 
-        <!-- ACCOUNT -->
         <section class="section" id="account">
             <div class="panel">
                 <h2>My Account</h2>
@@ -626,6 +578,17 @@ const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
 );
+
+/* SECURITY: Escape database values before inserting them into HTML. */
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    }[char]));
+}
 
 async function initializeDashboard() {
     const { data: sessionData, error: sessionError } =
@@ -701,11 +664,16 @@ async function loadMyStudents() {
     const emptyState = document.querySelector("#students .empty-state");
 
     if (error) {
-        table.innerHTML = `
-            <tr>
-                <td colspan="5">Unable to load students: ${error.message}</td>
-            </tr>
-        `;
+        table.textContent = "";
+
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 5;
+        cell.textContent = "Unable to load students: " + error.message;
+
+        row.appendChild(cell);
+        table.appendChild(row);
         return;
     }
 
@@ -718,17 +686,20 @@ async function loadMyStudents() {
     emptyState.style.display = "none";
 
     table.innerHTML = students.map(student => {
-        const days = (student.learning_days || []).join(", ");
+        const days = Array.isArray(student.learning_days)
+            ? student.learning_days.join(", ")
+            : "";
+
         const time = student.lesson_start_time
             ? student.lesson_start_time.slice(0, 5)
             : "—";
 
         return `
             <tr>
-                <td>${student.student_code}</td>
-                <td>${student.full_name}</td>
+                <td>${escapeHTML(student.student_code)}</td>
+                <td>${escapeHTML(student.full_name)}</td>
                 <td>—</td>
-                <td>${days} · ${time}</td>
+                <td>${escapeHTML(days)} · ${escapeHTML(time)}</td>
                 <td>Active</td>
             </tr>
         `;
@@ -794,3 +765,4 @@ loadMyStudents();
 
 </body>
 </html>
+```
