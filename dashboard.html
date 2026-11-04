@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +29,7 @@ button{cursor:pointer}
 .logo-area{height:105px;display:flex;justify-content:center;align-items:center;border-bottom:1px solid rgba(255,255,255,.13);margin-bottom:22px}
 .logo-area img{width:155px;max-height:85px;object-fit:contain}
 .nav-menu{display:flex;flex-direction:column;gap:7px}
-.nav-item{border:0;background:transparent;color:#dce5ff;padding:13px 14px;border-radius:9px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:13px;width:100%;font-size:14px;transition:.2s}
+.nav-item{border:0;background:transparent;color:#dce5ff;padding:13px 14px;border-radius:9px;text-align:left;display:flex;align-items:center;gap:13px;width:100%;font-size:14px;transition:.2s}
 .nav-item i{width:19px;text-align:center;font-size:16px}
 .nav-item:hover,.nav-item.active{background:var(--teal);color:var(--navy);font-weight:bold}
 .sidebar-bottom{margin-top:auto;border-top:1px solid rgba(255,255,255,.13);padding-top:14px}
@@ -61,7 +62,7 @@ td{color:var(--muted)}
 .account-info{display:grid;grid-template-columns:150px 1fr;gap:15px;font-size:14px}
 .account-info div{padding:12px 0;border-bottom:1px solid var(--border);overflow-wrap:anywhere}
 .account-info .label{color:var(--muted)}
-.logout-btn{border:0;background:transparent;color:#ffb7b7;cursor:pointer;width:100%;padding:13px 14px;text-align:left;display:flex;align-items:center;gap:13px}
+.logout-btn{border:0;background:transparent;color:#ffb7b7;width:100%;padding:13px 14px;text-align:left;display:flex;align-items:center;gap:13px}
 .logout-btn:hover{color:white}
 .page-footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 10px}
 .overlay{display:none}
@@ -70,6 +71,9 @@ td{color:var(--muted)}
 /* Weekly attendance */
 .attendance-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:15px}
 .attendance-toolbar button{border:0;border-radius:8px;padding:10px 13px;background:var(--navy);color:white;font-weight:bold}
+.attendance-toolbar button:disabled{opacity:.5;cursor:not-allowed}
+.attendance-toolbar .submit-btn{background:#087f5b;padding:11px 18px}
+.attendance-toolbar .submit-btn:disabled{background:#8a9a94}
 .attendance-date{font-size:13px;color:var(--muted);font-weight:bold}
 .attendance-legend{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 18px;font-size:12px;color:var(--muted)}
 .attendance-legend span{display:flex;align-items:center;gap:5px}
@@ -82,14 +86,18 @@ td{color:var(--muted)}
 .day-cell.locked{background:#f3f4f6;color:#a0a7b2}
 .day-cell.free{background:#e5e7eb;color:#8b929e}
 .day-cell.today{background:#f0fffb}
+.day-cell.submitted{background:#e9f8ef}
 .status-buttons{display:flex;justify-content:center;gap:4px}
 .status-btn{border:1px solid #d9e0e9;background:white;border-radius:6px;padding:6px 7px;font-size:14px;line-height:1}
 .status-btn.selected{border:2px solid var(--teal);background:#e4fbf5}
-.status-btn:disabled{opacity:.35;cursor:not-allowed}
+.status-btn:disabled{opacity:.55;cursor:not-allowed}
 .note-button{border:0;background:transparent;color:#718096;padding:4px 5px;margin-left:3px}
 .note-button.has-note{color:#b7791f}
 .note-button:disabled{opacity:.3;cursor:not-allowed}
 .attendance-message{font-size:13px;color:var(--muted);margin-top:12px;min-height:18px}
+.attendance-message.success{color:#087f5b;font-weight:bold}
+.attendance-message.error{color:#c0392b;font-weight:bold}
+.submitted-label{display:inline-flex;align-items:center;gap:6px;color:#087f5b;font-weight:bold;font-size:13px;margin-top:8px}
 .note-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:300;align-items:center;justify-content:center;padding:16px}
 .note-modal.show{display:flex}
 .note-card{background:white;width:min(480px,100%);padding:22px;border-radius:13px;box-shadow:0 15px 40px rgba(0,0,0,.2)}
@@ -185,8 +193,14 @@ td{color:var(--muted)}
     <div class="panel">
         <h2>Weekly Attendance</h2>
         <div class="attendance-toolbar">
-            <div class="attendance-date" id="attendanceWeekLabel">Current week</div>
-            <button type="button" id="refreshAttendance"><i class="fa-solid fa-rotate"></i> Refresh</button>
+            <div>
+                <div class="attendance-date" id="attendanceWeekLabel">Current week</div>
+                <div id="submissionLabel"></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button type="button" id="refreshAttendance"><i class="fa-solid fa-rotate"></i> Refresh</button>
+                <button type="button" class="submit-btn" id="submitAttendance"><i class="fa-solid fa-paper-plane"></i> Submit Attendance</button>
+            </div>
         </div>
         <div class="attendance-legend">
             <span>✅ Present</span><span>❌ Absent</span><span>🅿️ Permission</span>
@@ -244,7 +258,6 @@ td{color:var(--muted)}
 
 const SUPABASE_URL = "https://tovhgdektjjujcwcdctl.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_4yI3xgqHCCn2HR6yuzXGxw_DfEX-h96";
-
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 let currentUserId = null;
@@ -252,6 +265,10 @@ let myStudents = [];
 let attendanceRows = [];
 let weekDates = [];
 let noteTarget = null;
+let attendanceDraft = {};
+let attendanceSubmitted = false;
+let attendanceLoaded = false;
+let draftDirty = false;
 
 const DAY_NAMES = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 const STATUS_OPTIONS = [
@@ -292,10 +309,6 @@ function shortDate(dateString) {
     return new Date(Date.UTC(y,m-1,d)).toLocaleDateString("en-GB", {
         day:"2-digit",month:"short",timeZone:"UTC"
     });
-}
-
-function escapeAttribute(value) {
-    return escapeHTML(value).replace(/`/g,"&#96;");
 }
 
 async function initializeDashboard() {
@@ -398,6 +411,7 @@ async function loadMyStudents() {
 function buildWeek() {
     const monday = mondayOf(ethiopianToday());
     weekDates = Array.from({length:7},(_,i)=>addDays(monday,i));
+
     document.getElementById("attendanceWeekLabel").textContent =
         `Week: ${shortDate(weekDates[0])} – ${shortDate(weekDates[6])}`;
 
@@ -408,6 +422,14 @@ function buildWeek() {
         </tr>`;
 }
 
+function isStudentFreeToday(student) {
+    const todayName = new Intl.DateTimeFormat("en-US", {
+        weekday:"long",timeZone:"Africa/Addis_Ababa"
+    }).format(new Date());
+
+    return (student.free_days || []).includes(todayName);
+}
+
 async function loadWeeklyAttendance() {
     if (!currentUserId) return;
 
@@ -415,33 +437,80 @@ async function loadWeeklyAttendance() {
 
     const tbody = document.getElementById("attendanceBody");
     const message = document.getElementById("attendanceMessage");
-    tbody.innerHTML = '<tr><td colspan="10" class="empty-state">Loading weekly attendance...</td></tr>';
     message.textContent = "";
+    message.className = "attendance-message";
+    tbody.innerHTML = '<tr><td colspan="10" class="empty-state">Loading weekly attendance...</td></tr>';
 
     await loadMyStudents();
 
     if (!myStudents.length) {
         tbody.innerHTML = '<tr><td colspan="10" class="empty-state">No active students are assigned to you.</td></tr>';
+        attendanceLoaded = true;
         return;
     }
 
     const start = weekDates[0];
     const end = weekDates[6];
+    const today = ethiopianToday();
 
-    const {data,error} = await supabaseClient
-        .from("student_attendance")
-        .select("id,student_id,ustaz_id,attendance_date,status,note")
-        .eq("ustaz_id",currentUserId)
-        .gte("attendance_date",start)
-        .lte("attendance_date",end);
+    const [attendanceResult,submissionResult] = await Promise.all([
+        supabaseClient
+            .from("student_attendance")
+            .select("id,student_id,ustaz_id,attendance_date,status,note")
+            .eq("ustaz_id",currentUserId)
+            .gte("attendance_date",start)
+            .lte("attendance_date",end),
 
-    if (error) {
-        tbody.innerHTML = `<tr><td colspan="10" class="empty-state">Could not load attendance: ${escapeHTML(error.message)}</td></tr>`;
+        supabaseClient
+            .from("attendance_submissions")
+            .select("id,attendance_date,submitted_at")
+            .eq("ustaz_id",currentUserId)
+            .eq("attendance_date",today)
+            .maybeSingle()
+    ]);
+
+    if (attendanceResult.error) {
+        tbody.innerHTML = `<tr><td colspan="10" class="empty-state">Could not load attendance: ${escapeHTML(attendanceResult.error.message)}</td></tr>`;
         return;
     }
 
-    attendanceRows = data || [];
+    if (submissionResult.error) {
+        tbody.innerHTML = `<tr><td colspan="10" class="empty-state">Could not check submission status: ${escapeHTML(submissionResult.error.message)}</td></tr>`;
+        return;
+    }
+
+    attendanceRows = attendanceResult.data || [];
+    attendanceSubmitted = !!submissionResult.data;
+    attendanceDraft = {};
+
+    attendanceRows
+        .filter(row => row.attendance_date === today)
+        .forEach(row => {
+            attendanceDraft[row.student_id] = {
+                status:row.status,
+                note:row.note || ""
+            };
+        });
+
+    draftDirty = false;
+    attendanceLoaded = true;
+    updateSubmissionDisplay();
     renderAttendanceTable();
+}
+
+function updateSubmissionDisplay() {
+    const submitButton = document.getElementById("submitAttendance");
+    const label = document.getElementById("submissionLabel");
+
+    if (attendanceSubmitted) {
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fa-solid fa-lock"></i> Submitted';
+        label.innerHTML = '<span class="submitted-label"><i class="fa-solid fa-circle-check"></i> Attendance submitted and locked</span>';
+    } else {
+        submitButton.disabled = false;
+        submitButton.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Attendance';
+        label.innerHTML = '<span style="font-size:12px;color:#b7791f">Draft — changes are not saved until submission</span>';
+    }
 }
 
 function renderAttendanceTable() {
@@ -461,10 +530,10 @@ function renderAttendanceTable() {
             const row = attendanceRows.find(r =>
                 r.student_id === student.id && r.attendance_date === date
             );
+
             const dayName = DAY_NAMES[index];
             const isFree = (student.free_days || []).includes(dayName);
             const isToday = date === today;
-            const editable = isToday && !isFree;
 
             if (isFree) {
                 return '<td class="day-cell free">Free day</td>';
@@ -475,20 +544,30 @@ function renderAttendanceTable() {
                 return `<td class="day-cell locked">${status ? status.label : "—"}</td>`;
             }
 
-            return `<td class="day-cell today">
+            const draft = attendanceDraft[student.id] || {status:"",note:""};
+            const cellClass = attendanceSubmitted ? "submitted" : "today";
+
+            if (attendanceSubmitted) {
+                const status = STATUS_OPTIONS.find(s=>s.value===draft.status);
+                return `<td class="day-cell ${cellClass}">
+                    ${status ? status.label : "—"}
+                    ${draft.note ? '<i class="fa-solid fa-note-sticky" title="Note recorded" style="color:#b7791f;margin-left:5px"></i>' : ""}
+                </td>`;
+            }
+
+            return `<td class="day-cell ${cellClass}">
                 <div class="status-buttons">
                     ${STATUS_OPTIONS.map(status => `
                         <button type="button"
-                            class="status-btn ${row?.status===status.value?"selected":""}"
+                            class="status-btn ${draft.status===status.value?"selected":""}"
                             title="${status.title}"
                             aria-label="${status.title}"
-                            ${editable?"":"disabled"}
-                            onclick="saveAttendance('${student.id}','${date}','${status.value}')">
+                            onclick="setDraftAttendance('${student.id}','${status.value}')">
                             ${status.label}
                         </button>
                     `).join("")}
                     <button type="button"
-                        class="note-button ${row?.note?"has-note":""}"
+                        class="note-button ${draft.note?"has-note":""}"
                         title="Add or edit note"
                         aria-label="Add or edit note"
                         onclick="openNote('${student.id}','${date}')">
@@ -505,92 +584,41 @@ function renderAttendanceTable() {
             ${cells}
         </tr>`;
     }).join("");
+
+    updateSubmissionDisplay();
 }
 
-async function saveAttendance(studentId,date,status) {
-    if (date !== ethiopianToday()) {
-        document.getElementById("attendanceMessage").textContent = "Only today's attendance can be changed.";
-        return;
-    }
+function setDraftAttendance(studentId,status) {
+    if (attendanceSubmitted) return;
 
     const student = myStudents.find(s=>s.id===studentId);
-    if (!student) return;
+    if (!student || isStudentFreeToday(student)) return;
 
-    const todayName = new Intl.DateTimeFormat("en-US", {
-        weekday:"long",timeZone:"Africa/Addis_Ababa"
-    }).format(new Date());
+    if (!STATUS_OPTIONS.some(option=>option.value===status)) return;
 
-    if ((student.free_days || []).includes(todayName)) {
-        document.getElementById("attendanceMessage").textContent = "This is the student's free day.";
-        return;
+    if (!attendanceDraft[studentId]) {
+        attendanceDraft[studentId] = {status:"",note:""};
     }
 
-    const existing = attendanceRows.find(r =>
-        r.student_id===studentId && r.attendance_date===date
-    );
+    attendanceDraft[studentId].status = status;
+    draftDirty = true;
 
-    const message = document.getElementById("attendanceMessage");
-    message.textContent = "Saving attendance...";
-
-    let result;
-
-    if (existing) {
-        result = await supabaseClient
-            .from("student_attendance")
-            .update({status,updated_at:new Date().toISOString()})
-            .eq("id",existing.id)
-            .select()
-            .single();
-    } else {
-        result = await supabaseClient
-            .from("student_attendance")
-            .insert({
-                student_id:studentId,
-                ustaz_id:currentUserId,
-                attendance_date:date,
-                status,
-                note:""
-            })
-            .select()
-            .single();
-    }
-
-    if (result.error) {
-        message.textContent = "Could not save: " + result.error.message;
-        return;
-    }
-
-    const index = attendanceRows.findIndex(r =>
-        r.student_id===studentId && r.attendance_date===date
-    );
-
-    if (index >= 0) attendanceRows[index] = result.data;
-    else attendanceRows.push(result.data);
-
-    message.textContent = "Attendance saved.";
+    document.getElementById("attendanceMessage").textContent = "Draft updated. Remember to submit when finished.";
+    document.getElementById("attendanceMessage").className = "attendance-message";
     renderAttendanceTable();
 }
 
 function openNote(studentId,date) {
-    if (date !== ethiopianToday()) return;
+    if (date !== ethiopianToday() || attendanceSubmitted) return;
 
     const student = myStudents.find(s=>s.id===studentId);
-    if (!student) return;
+    if (!student || isStudentFreeToday(student)) return;
 
-    const todayName = new Intl.DateTimeFormat("en-US", {
-        weekday:"long",timeZone:"Africa/Addis_Ababa"
-    }).format(new Date());
-
-    if ((student.free_days || []).includes(todayName)) return;
-
-    const row = attendanceRows.find(r =>
-        r.student_id===studentId && r.attendance_date===date
-    );
+    const draft = attendanceDraft[studentId] || {status:"",note:""};
 
     noteTarget = {studentId,date};
-    document.getElementById("noteTitle").textContent =
-        "Note: " + student.full_name;
-    document.getElementById("noteText").value = row?.note || "";
+    document.getElementById("noteTitle").textContent = "Note: " + student.full_name;
+    document.getElementById("noteText").value = draft.note || "";
     document.getElementById("noteMessage").textContent = "";
     document.getElementById("noteModal").classList.add("show");
 }
@@ -600,60 +628,94 @@ function closeNote() {
     noteTarget = null;
 }
 
-async function saveNote() {
-    if (!noteTarget) return;
+function saveNote() {
+    if (!noteTarget || attendanceSubmitted) return;
 
     const note = document.getElementById("noteText").value.trim();
-    const {studentId,date} = noteTarget;
-    const existing = attendanceRows.find(r =>
-        r.student_id===studentId && r.attendance_date===date
-    );
+    const {studentId} = noteTarget;
 
-    const button = document.getElementById("saveNote");
-    const message = document.getElementById("noteMessage");
-    button.disabled = true;
-    message.textContent = "Saving...";
-
-    let result;
-
-    if (existing) {
-        result = await supabaseClient
-            .from("student_attendance")
-            .update({note,updated_at:new Date().toISOString()})
-            .eq("id",existing.id)
-            .select()
-            .single();
-    } else {
-        result = await supabaseClient
-            .from("student_attendance")
-            .insert({
-                student_id:studentId,
-                ustaz_id:currentUserId,
-                attendance_date:date,
-                status:"permission",
-                note
-            })
-            .select()
-            .single();
+    if (!attendanceDraft[studentId]) {
+        attendanceDraft[studentId] = {status:"",note:""};
     }
 
-    button.disabled = false;
-
-    if (result.error) {
-        message.textContent = "Could not save note: " + result.error.message;
-        return;
-    }
-
-    const index = attendanceRows.findIndex(r =>
-        r.student_id===studentId && r.attendance_date===date
-    );
-
-    if (index >= 0) attendanceRows[index] = result.data;
-    else attendanceRows.push(result.data);
+    attendanceDraft[studentId].note = note;
+    draftDirty = true;
 
     closeNote();
     renderAttendanceTable();
-    document.getElementById("attendanceMessage").textContent = "Note saved.";
+
+    const message = document.getElementById("attendanceMessage");
+    message.textContent = "Note added to draft. It will be saved when you submit attendance.";
+    message.className = "attendance-message";
+}
+
+async function submitDailyAttendance() {
+    if (attendanceSubmitted) return;
+
+    const today = ethiopianToday();
+    const requiredStudents = myStudents.filter(student=>!isStudentFreeToday(student));
+
+    if (!requiredStudents.length) {
+        const message = document.getElementById("attendanceMessage");
+        message.textContent = "There are no students requiring attendance today.";
+        message.className = "attendance-message error";
+        return;
+    }
+
+    const unmarked = requiredStudents.filter(student =>
+        !attendanceDraft[student.id] ||
+        !STATUS_OPTIONS.some(option=>option.value===attendanceDraft[student.id].status)
+    );
+
+    if (unmarked.length) {
+        const message = document.getElementById("attendanceMessage");
+        message.textContent = `${unmarked.length} student(s) still need an attendance status. Please mark every non-free student before submitting.`;
+        message.className = "attendance-message error";
+        return;
+    }
+
+    const rows = requiredStudents.map(student => ({
+        student_id:student.id,
+        status:attendanceDraft[student.id].status,
+        note:attendanceDraft[student.id].note || ""
+    }));
+
+    if (!confirm(`Submit attendance for ${rows.length} students today? After submission, you cannot edit it.`)) {
+        return;
+    }
+
+    const button = document.getElementById("submitAttendance");
+    const message = document.getElementById("attendanceMessage");
+
+    button.disabled = true;
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+    message.textContent = "Submitting attendance. Please wait...";
+    message.className = "attendance-message";
+
+    const {error} = await supabaseClient.rpc("submit_daily_attendance", {
+        p_attendance_date:today,
+        p_rows:rows
+    });
+
+    if (error) {
+        button.disabled = false;
+        updateSubmissionDisplay();
+        message.textContent = "Submission failed: " + error.message;
+        message.className = "attendance-message error";
+        return;
+    }
+
+    attendanceSubmitted = true;
+    draftDirty = false;
+
+    message.textContent = "Attendance submitted successfully. Today's attendance is now locked.";
+    message.className = "attendance-message success";
+
+    await loadWeeklyAttendance();
+
+    const successMessage = document.getElementById("attendanceMessage");
+    successMessage.textContent = "Attendance submitted successfully. Today's attendance is now locked.";
+    successMessage.className = "attendance-message success";
 }
 
 const navItems = document.querySelectorAll(".nav-item");
@@ -673,6 +735,14 @@ const titles = {
 navItems.forEach(item => {
     item.addEventListener("click", async () => {
         const target = item.dataset.section;
+
+        if (target === "attendance" && attendanceLoaded && draftDirty) {
+            if (!confirm("You have unsaved attendance changes. Leave this page and discard the draft?")) {
+                return;
+            }
+            draftDirty = false;
+        }
+
         navItems.forEach(nav=>nav.classList.remove("active"));
         item.classList.add("active");
         sections.forEach(section=>section.classList.remove("active"));
@@ -680,7 +750,7 @@ navItems.forEach(item => {
         pageTitle.textContent = titles[target];
         closeSidebar();
 
-        if (target==="attendance") await loadWeeklyAttendance();
+        if (target==="attendance" && !attendanceLoaded) await loadWeeklyAttendance();
         if (target==="students") await loadMyStudents();
     });
 });
@@ -701,12 +771,20 @@ function closeSidebar() {
 overlay.addEventListener("click",closeSidebar);
 
 document.getElementById("logoutBtn").addEventListener("click",async()=>{
+    if (draftDirty && !confirm("You have unsaved attendance changes. Log out and discard them?")) return;
     if (!confirm("Are you sure you want to log out?")) return;
     await supabaseClient.auth.signOut();
     window.location.replace("login.html");
 });
 
-document.getElementById("refreshAttendance").addEventListener("click",loadWeeklyAttendance);
+document.getElementById("refreshAttendance").addEventListener("click",async()=>{
+    if (draftDirty && !confirm("Refreshing will discard your unsaved attendance changes. Continue?")) return;
+    draftDirty = false;
+    attendanceLoaded = false;
+    await loadWeeklyAttendance();
+});
+
+document.getElementById("submitAttendance").addEventListener("click",submitDailyAttendance);
 document.getElementById("cancelNote").addEventListener("click",closeNote);
 document.getElementById("saveNote").addEventListener("click",saveNote);
 
