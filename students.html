@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +41,7 @@ button {
     cursor:pointer;
     font-weight:bold;
 }
+button:disabled { opacity:.6; cursor:not-allowed; }
 .primary { background:var(--navy); color:white; }
 .secondary { background:#e8edf5; color:var(--navy); }
 .danger { background:#fee2e2; color:#b91c1c; }
@@ -62,7 +62,7 @@ button {
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:16px;
 }
-.field { display:flex; flex-direction:column; gap:7px; }
+.field { display:flex; flex-direction:column; gap:7px; min-width:0; }
 .field label { font-size:13px; font-weight:bold; }
 .field input,.field select {
     width:100%;
@@ -72,6 +72,12 @@ button {
     background:white;
     color:var(--text);
 }
+.time-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+.time-help { font-size:11px; color:var(--muted); line-height:1.5; }
 .days {
     display:flex;
     flex-wrap:wrap;
@@ -100,7 +106,7 @@ button {
     border-radius:8px;
 }
 .table-wrap { overflow-x:auto; }
-table { width:100%; border-collapse:collapse; min-width:750px; }
+table { width:100%; border-collapse:collapse; min-width:850px; }
 th,td {
     padding:13px 10px;
     text-align:left;
@@ -116,6 +122,16 @@ td { color:var(--muted); }
 .message { margin-top:14px; font-size:13px; line-height:1.5; }
 .message.error { color:#b91c1c; }
 .message.ok { color:#15803d; }
+.period-label {
+    display:inline-block;
+    padding:5px 8px;
+    border-radius:6px;
+    background:#eef3fa;
+    color:var(--navy);
+    font-weight:bold;
+    font-size:12px;
+}
+.period-missing { color:#b42318; font-weight:bold; }
 small { color:var(--muted); }
 @media(max-width:650px) {
     body { padding:14px; }
@@ -168,8 +184,40 @@ small { color:var(--muted); }
             </div>
 
             <div class="field">
-                <label for="lessonTime">Lesson Starting Time</label>
-                <input id="lessonTime" type="time" required>
+                <label for="lessonPeriod">Lesson Period</label>
+                <select id="lessonPeriod" required>
+                    <option value="">Select period</option>
+                    <option value="ጠዋት">ጠዋት</option>
+                    <option value="ቀን">ቀን</option>
+                    <option value="ማታ">ማታ</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Lesson Starting Time (Ethiopian Clock)</label>
+                <div class="time-grid">
+                    <select id="lessonHour" required disabled>
+                        <option value="">Select hour</option>
+                    </select>
+                    <select id="lessonMinute" required>
+                        <option value="">Minute</option>
+                        <option value="00">00</option>
+                        <option value="05">05</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                        <option value="40">40</option>
+                        <option value="45">45</option>
+                        <option value="50">50</option>
+                        <option value="55">55</option>
+                    </select>
+                </div>
+                <small class="time-help">
+                    Choose the period first. Available hours will match that period.
+                </small>
             </div>
 
             <div class="field">
@@ -227,7 +275,7 @@ small { color:var(--muted); }
                     <th>Assigned Ustaz</th>
                     <th>Learning Days</th>
                     <th>Free Days</th>
-                    <th>Starting Time</th>
+                    <th>Lesson Time</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -241,6 +289,8 @@ small { color:var(--muted); }
 </div>
 
 <script>
+"use strict";
+
 const SUPABASE_URL = "https://tovhgdektjjujcwcdctl.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_4yI3xgqHCCn2HR6yuzXGxw_DfEX-h96";
 
@@ -255,6 +305,28 @@ let currentTab = "active";
 let editingId = null;
 
 const $ = id => document.getElementById(id);
+
+const PERIOD_HOURS = {
+    "ጠዋት": [11, 1, 2, 3],
+    "ቀን": [4, 5, 6, 7, 8, 9, 10, 11],
+    "ማታ": [12, 1, 2, 3, 4, 5, 6]
+};
+
+const PERIOD_ORDER = {
+    "ጠዋት": 0,
+    "ቀን": 1,
+    "ማታ": 2
+};
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+    })[char]);
+}
 
 async function initialize() {
     const { data: sessionData, error: sessionError } =
@@ -279,9 +351,37 @@ async function initialize() {
         return;
     }
 
+    updateHourOptions();
     await loadUstazs();
     await loadStudents();
 }
+
+function updateHourOptions(selectedHour = "") {
+    const period = $("lessonPeriod").value;
+    const hourSelect = $("lessonHour");
+    const hours = PERIOD_HOURS[period] || [];
+
+    hourSelect.innerHTML = '<option value="">Select hour</option>';
+
+    hours.forEach(hour => {
+        const option = document.createElement("option");
+        option.value = String(hour).padStart(2, "0");
+        option.textContent = hour + ":00";
+        hourSelect.appendChild(option);
+    });
+
+    hourSelect.disabled = !period;
+
+    if (selectedHour && hours.includes(Number(selectedHour))) {
+        hourSelect.value = String(Number(selectedHour)).padStart(2, "0");
+    } else {
+        hourSelect.value = "";
+    }
+}
+
+$("lessonPeriod").addEventListener("change", () => {
+    updateHourOptions();
+});
 
 async function loadUstazs() {
     const select = $("ustazSelect");
@@ -317,7 +417,7 @@ async function loadStudents() {
 
     const { data, error } = await db
         .from("students")
-        .select("id,student_code,full_name,ustaz_id,learning_days,free_days,lesson_start_time,is_active")
+        .select("id,student_code,full_name,ustaz_id,learning_days,free_days,lesson_start_time,lesson_period,is_active")
         .order("created_at", { ascending: false });
 
     if (error) {
@@ -331,14 +431,51 @@ async function loadStudents() {
     renderStudents();
 }
 
+function timeSortValue(student) {
+    const period = student.lesson_period;
+    const hour = Number(String(student.lesson_start_time || "").slice(0, 2));
+    const minute = Number(String(student.lesson_start_time || "").slice(3, 5));
+
+    const periodOrder = PERIOD_ORDER[period];
+    const hours = PERIOD_HOURS[period] || [];
+    const hourOrder = hours.indexOf(hour);
+
+    if (periodOrder === undefined || hourOrder < 0) {
+        return [99, 99, 99];
+    }
+
+    return [periodOrder, hourOrder, Number.isFinite(minute) ? minute : 0];
+}
+
+function compareStudentTime(a, b) {
+    const x = timeSortValue(a);
+    const y = timeSortValue(b);
+
+    for (let i = 0; i < x.length; i++) {
+        if (x[i] !== y[i]) return x[i] - y[i];
+    }
+    return (a.full_name || "").localeCompare(b.full_name || "");
+}
+
+function formatLessonTime(student) {
+    if (!student.lesson_period) {
+        return '<span class="period-missing">Period not set</span>';
+    }
+
+    const time = String(student.lesson_start_time || "").slice(0, 5);
+    return `<span class="period-label">${escapeHTML(student.lesson_period)} ${escapeHTML(time || "—")}</span>`;
+}
+
 function renderStudents() {
     const search = $("searchInput").value.trim().toLowerCase();
 
-    const filtered = students.filter(s =>
-        s.is_active === (currentTab === "active") &&
-        ((s.full_name || "").toLowerCase().includes(search) ||
-         (s.student_code || "").toLowerCase().includes(search))
-    );
+    const filtered = students
+        .filter(s =>
+            s.is_active === (currentTab === "active") &&
+            ((s.full_name || "").toLowerCase().includes(search) ||
+             (s.student_code || "").toLowerCase().includes(search))
+        )
+        .sort(compareStudentTime);
 
     $("tableTitle").textContent =
         currentTab === "active" ? "Active Students" : "Archived Students";
@@ -360,7 +497,7 @@ function renderStudents() {
             <td>${escapeHTML(ustazName)}</td>
             <td>${escapeHTML((s.learning_days || []).join(", "))}</td>
             <td>${escapeHTML((s.free_days || []).join(", ") || "None")}</td>
-            <td>${escapeHTML(String(s.lesson_start_time || "").slice(0,5))}</td>
+            <td>${formatLessonTime(s)}</td>
             <td>
                 <div class="actions">
                     ${currentTab === "active"
@@ -379,13 +516,20 @@ async function saveStudent(event) {
     const code = $("studentCode").value.trim();
     const name = $("fullName").value.trim();
     const ustazId = $("ustazSelect").value;
-    const time = $("lessonTime").value;
+    const period = $("lessonPeriod").value;
+    const hour = $("lessonHour").value;
+    const minute = $("lessonMinute").value;
 
     const learning = getChecked("learningDays");
     const free = getChecked("freeDays");
 
-    if (!code || !name || !ustazId || !time) {
-        showMessage("Please complete all required fields.", true);
+    if (!code || !name || !ustazId || !period || !hour || !minute) {
+        showMessage("Please complete all required fields, including the Ethiopian lesson period and time.", true);
+        return;
+    }
+
+    if (!PERIOD_HOURS[period]?.includes(Number(hour))) {
+        showMessage("Select a valid hour for the selected lesson period.", true);
         return;
     }
 
@@ -405,7 +549,9 @@ async function saveStudent(event) {
         ustaz_id: ustazId,
         learning_days: learning,
         free_days: free,
-        lesson_start_time: time
+        lesson_start_time: `${hour}:${minute}:00`,
+        lesson_period: period,
+        updated_at: new Date().toISOString()
     };
 
     $("saveBtn").disabled = true;
@@ -419,6 +565,7 @@ async function saveStudent(event) {
             .eq("id", editingId)
             .select();
     } else {
+        delete record.updated_at;
         result = await db.from("students")
             .insert(record)
             .select();
@@ -446,13 +593,23 @@ function editStudent(id) {
     $("saveBtn").textContent = "Save Changes";
     $("cancelEdit").classList.remove("hidden");
 
-    $("studentCode").value = s.student_code;
-    $("fullName").value = s.full_name;
-    $("ustazSelect").value = s.ustaz_id;
-    $("lessonTime").value = String(s.lesson_start_time || "").slice(0,5);
+    $("studentCode").value = s.student_code || "";
+    $("fullName").value = s.full_name || "";
+    $("ustazSelect").value = s.ustaz_id || "";
+
+    $("lessonPeriod").value = s.lesson_period || "";
+    updateHourOptions(String(s.lesson_start_time || "").slice(0, 2));
+
+    $("lessonMinute").value = String(s.lesson_start_time || "").slice(3, 5) || "";
 
     setChecked("learningDays", s.learning_days || []);
     setChecked("freeDays", s.free_days || []);
+
+    if (!s.lesson_period) {
+        showMessage("This student has no lesson period assigned yet. Select the correct period and time before saving.", true);
+    } else {
+        $("formMessage").textContent = "";
+    }
 
     $("formPanel").scrollIntoView({ behavior:"smooth" });
 }
@@ -520,6 +677,7 @@ function resetForm() {
     $("studentForm").reset();
     setChecked("learningDays", []);
     setChecked("freeDays", []);
+    updateHourOptions();
     $("formTitle").textContent = "Add New Student";
     $("saveBtn").textContent = "Add Student";
     $("cancelEdit").classList.add("hidden");
@@ -529,16 +687,6 @@ function resetForm() {
 function showMessage(message, isError) {
     $("formMessage").textContent = message;
     $("formMessage").className = "message " + (isError ? "error" : "ok");
-}
-
-function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#39;"
-    })[char]);
 }
 
 $("studentForm").addEventListener("submit", saveStudent);
