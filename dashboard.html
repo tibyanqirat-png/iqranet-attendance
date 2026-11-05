@@ -513,6 +513,36 @@ function updateSubmissionDisplay() {
     }
 }
 
+function getTimeSort(student) {
+    const periodOrder = {"ጠዋት":0,"ቀን":1,"ማታ":2};
+    const hourOrders = {
+        "ጠዋት":[11,12,1,2,3],
+        "ቀን":[4,5,6,7,8,9,10,11],
+        "ማታ":[12,1,2,3,4,5,6]
+    };
+
+    const period = student.lesson_period;
+    const hour = Number(String(student.lesson_start_time || "").slice(0,2));
+    const minute = Number(String(student.lesson_start_time || "").slice(3,5));
+    const index = (hourOrders[period] || []).indexOf(hour);
+
+    return [
+        periodOrder[period] ?? 99,
+        index < 0 ? 99 : index,
+        Number.isFinite(minute) ? minute : 0
+    ];
+}
+
+function sortAttendanceStudents(students) {
+    return [...students].sort((a,b) => {
+        const x = getTimeSort(a), y = getTimeSort(b);
+        for (let i = 0; i < 3; i++) {
+            if (x[i] !== y[i]) return x[i] - y[i];
+        }
+        return (a.full_name || "").localeCompare(b.full_name || "");
+    });
+}
+
 function renderAttendanceTable() {
     const today = ethiopianToday();
     const tbody = document.getElementById("attendanceBody");
@@ -522,7 +552,7 @@ function renderAttendanceTable() {
         return;
     }
 
-    tbody.innerHTML = myStudents.map(student => {
+    tbody.innerHTML = sortAttendanceStudents(myStudents).map(student => {
         const time = student.lesson_start_time ? student.lesson_start_time.slice(0,5) : "—";
         const period = student.lesson_period || "—";
 
