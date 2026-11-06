@@ -9,6 +9,9 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+<!-- Plyr Video Player -->
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+
 <style>
 * {
     margin: 0;
@@ -144,26 +147,27 @@ h1 {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.90);
+    background: rgba(0,0,0,0.92);
     z-index: 10000;
     align-items: center;
     justify-content: center;
-    padding: 50px 16px 16px;
+    padding: 55px 12px 15px;
 }
 
 .video-container {
     position: relative;
-    width: min(850px, calc(100vw - 32px), calc((100dvh - 90px) * 1.7778));
+    width: min(850px, calc(100vw - 24px), calc((100dvh - 85px) * 1.7778));
     aspect-ratio: 16 / 9;
     flex-shrink: 0;
 }
 
-.video-container iframe {
-    display: block;
+.video-container .plyr {
     width: 100%;
     height: 100%;
-    border: none;
     border-radius: 12px;
+    --plyr-color-main: #229ED9;
+    --plyr-video-control-color: #ffffff;
+    --plyr-video-control-background-hover: rgba(34,158,217,0.8);
 }
 
 .video-close {
@@ -179,6 +183,7 @@ h1 {
     font-size: 27px;
     line-height: 36px;
     cursor: pointer;
+    z-index: 10;
 }
 
 .telegram-float {
@@ -299,11 +304,7 @@ footer p {
         bottom: 18px;
     }
 
-    .video-overlay {
-        padding: 48px 12px 12px;
-    }
-
-    .video-container iframe {
+    .video-container .plyr {
         border-radius: 8px;
     }
 }
@@ -361,42 +362,13 @@ footer p {
             &times;
         </button>
 
-        <iframe
-            id="registrationVideo"
-            src="https://drive.google.com/file/d/1mMQCmYAnY5LU42ulSJEWO1J15iFZVVT_/preview"
-            allow="autoplay; fullscreen"
-            allowfullscreen>
-        </iframe>
+        <div id="registrationVideo"
+            data-plyr-provider="youtube"
+            data-plyr-embed-id="m7OfQgMzkgs">
+        </div>
 
     </div>
 </div>
-
-<script>
-function openVideo() {
-    document.getElementById('videoPlayer').style.display = 'flex';
-}
-
-function closeVideo() {
-    const player = document.getElementById('videoPlayer');
-    const video = document.getElementById('registrationVideo');
-
-    player.style.display = 'none';
-
-    video.src = 'https://drive.google.com/file/d/1mMQCmYAnY5LU42ulSJEWO1J15iFZVVT_/preview';
-}
-
-document.getElementById('videoPlayer').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeVideo();
-    }
-});
-
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closeVideo();
-    }
-});
-</script>
 
 <a href="#" class="telegram-float" aria-label="Telegram">
     <i class="fa-brands fa-telegram"></i>
@@ -434,6 +406,64 @@ document.addEventListener('keydown', function(e) {
     <p>© 2026 IqraNet Medresa. All Rights Reserved.</p>
     <p>@IqraNet</p>
 </footer>
+
+<!-- Plyr JavaScript -->
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+
+<script>
+
+const registrationPlayer = new Plyr('#registrationVideo', {
+    controls: [
+        'play-large',
+        'play',
+        'progress',
+        'current-time',
+        'duration',
+        'mute',
+        'volume',
+        'settings',
+        'fullscreen'
+    ],
+
+    autoplay: false,
+    hideControls: true,
+    clickToPlay: true,
+    resetOnEnd: false,
+
+    youtube: {
+        noCookie: true,
+        rel: 0,
+        modestbranding: 1
+    }
+});
+
+function openVideo() {
+    document.getElementById('videoPlayer').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    registrationPlayer.play().catch(() => {});
+}
+
+function closeVideo() {
+    registrationPlayer.stop();
+
+    document.getElementById('videoPlayer').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+document.getElementById('videoPlayer').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeVideo();
+    }
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeVideo();
+    }
+});
+
+</script>
 
 </body>
 </html>
