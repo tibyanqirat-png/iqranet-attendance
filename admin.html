@@ -8,20 +8,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-:root {
-    --navy:#091345;
-    --teal:#20bfa9;
-    --mint:#e8fff5;
-    --white:#fff;
-    --text:#17233f;
-    --muted:#718096;
-    --border:rgba(9,19,69,.10);
-    --sidebar-width:255px;
-}
+:root{--navy:#091345;--teal:#20bfa9;--mint:#e8fff5;--white:#fff;--text:#17233f;--muted:#718096;--border:rgba(9,19,69,.10);--sidebar-width:255px}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:var(--mint);color:var(--text);min-height:100vh}
-button,input,select{font:inherit}
-button{cursor:pointer}
+button,input,select{font:inherit}button{cursor:pointer}
 .loading{min-height:100vh;display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:bold;padding:25px;text-align:center}
 .sidebar{width:var(--sidebar-width);height:100vh;position:fixed;left:0;top:0;background:var(--navy);color:white;padding:20px 14px;display:flex;flex-direction:column;z-index:100;transition:transform .25s}
 .logo-area{height:105px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(255,255,255,.13);margin-bottom:20px}
@@ -37,8 +27,7 @@ button{cursor:pointer}
 .topbar h1{color:var(--navy);font-size:25px}
 .topbar p{color:var(--muted);font-size:13px;margin-top:5px}
 .menu-toggle{display:none;width:42px;height:42px;border:0;border-radius:8px;background:var(--navy);color:white}
-.section{display:none}
-.section.active{display:block}
+.section{display:none}.section.active{display:block}
 .welcome{background:white;padding:24px;border-radius:14px;border:1px solid var(--border);margin-bottom:20px}
 .welcome h2{color:var(--navy);font-size:21px;margin-bottom:8px}
 .welcome p{color:var(--muted);font-size:14px;line-height:1.6}
@@ -50,9 +39,7 @@ button{cursor:pointer}
 .panel{background:white;border:1px solid var(--border);border-radius:13px;padding:22px;margin-bottom:19px}
 .panel h2{color:var(--navy);font-size:18px;margin-bottom:17px}
 .empty-state{min-height:145px;border:1px dashed #bdc9d9;border-radius:10px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;gap:10px;color:var(--muted)}
-.empty-state i{color:#9aabc0;font-size:27px}
-.empty-state strong{color:var(--navy);font-size:14px}
-.empty-state p{font-size:13px;line-height:1.5}
+.empty-state i{color:#9aabc0;font-size:27px}.empty-state strong{color:var(--navy);font-size:14px}.empty-state p{font-size:13px;line-height:1.5}
 .management-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:18px}
 .search-box{flex:1;min-width:200px;position:relative}
 .search-box i{position:absolute;left:13px;top:13px;color:var(--muted)}
@@ -63,38 +50,32 @@ button{cursor:pointer}
 .table-wrap{width:100%;overflow-x:auto}
 table{width:100%;border-collapse:collapse;min-width:850px}
 th,td{padding:13px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:13px}
-th{background:#f5f8fc;color:var(--navy);font-size:12px}
-td{color:var(--text)}
+th{background:#f5f8fc;color:var(--navy);font-size:12px}td{color:var(--text)}
 .status{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:bold}
-.status.pending{background:#fff4d6;color:#946200}
-.status.approved{background:#d9f8e8;color:#137547}
-.status.rejected{background:#ffe2e2;color:#b42318}
+.status.pending{background:#fff4d6;color:#946200}.status.approved{background:#d9f8e8;color:#137547}.status.rejected{background:#ffe2e2;color:#b42318}
 .table-message{padding:22px;text-align:center;color:var(--muted);font-size:13px}
 .result-count{font-size:12px;color:var(--muted);margin-top:13px}
 .notice{padding:12px 14px;border-radius:8px;margin-bottom:15px;font-size:13px;display:none}
-.notice.error{display:block;background:#ffe8e8;color:#a11}
-.notice.success{display:block;background:#def8e9;color:#126b43}
+.notice.error{display:block;background:#ffe8e8;color:#a11}.notice.success{display:block;background:#def8e9;color:#126b43}
 .action-menu{position:relative;display:inline-block}
 .dots-btn{width:36px;height:34px;border:1px solid var(--border);border-radius:7px;background:white;color:var(--navy);font-size:19px}
 .dots-btn:hover{background:#eef3fa}
 .dropdown-menu{display:none;position:absolute;right:0;top:39px;width:175px;background:white;border:1px solid var(--border);border-radius:9px;box-shadow:0 8px 25px rgba(0,0,0,.13);z-index:20;padding:5px}
 .dropdown-menu.open{display:block}
 .dropdown-menu button{width:100%;border:0;background:white;text-align:left;padding:11px 10px;border-radius:6px;font-size:12px;color:var(--text)}
-.dropdown-menu button:hover{background:#f1f5fa}
-.dropdown-menu button.remove-option{color:#b42318}
-.dropdown-menu i{width:20px}
+.dropdown-menu button:hover{background:#f1f5fa}.dropdown-menu button.remove-option{color:#b42318}.dropdown-menu i{width:20px}
 .page-footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 10px}
 .overlay{display:none}
 
-/* Attendance management */
+/* Attendance */
 .ustaz-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px}
 .ustaz-attendance-card{border:1px solid var(--border);border-radius:11px;background:#fff;padding:17px;text-align:left;color:var(--text);transition:.15s}
 .ustaz-attendance-card:hover{border-color:var(--teal);box-shadow:0 5px 18px rgba(9,19,69,.08);transform:translateY(-1px)}
 .ustaz-attendance-card strong{display:block;color:var(--navy);font-size:15px;margin-bottom:7px}
 .ustaz-attendance-card span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
 .attendance-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:15px}
-.attendance-toolbar button{border:0;border-radius:8px;padding:10px 13px;background:var(--navy);color:white;font-weight:bold}
-.attendance-toolbar .back-btn{background:#e8edf5;color:var(--navy)}
+.attendance-toolbar button,.attendance-actions button{border:0;border-radius:8px;padding:10px 13px;background:var(--navy);color:white;font-weight:bold}
+.attendance-toolbar .back-btn,.attendance-actions button.back-btn{background:#e8edf5;color:var(--navy)}
 .attendance-week-label{font-size:13px;color:var(--muted);font-weight:bold}
 .attendance-legend{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 18px;font-size:12px;color:var(--muted)}
 .attendance-table{min-width:1050px}
@@ -108,36 +89,52 @@ td{color:var(--text)}
 .attendance-note{display:block;max-width:150px;white-space:normal;font-size:11px;color:#8a6418;margin-top:4px}
 .attendance-status{font-size:16px}
 .attendance-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
-.attendance-actions button{border:0;border-radius:8px;padding:10px 14px;background:var(--navy);color:white;font-weight:bold}
-.attendance-actions button.back-btn{background:#e8edf5;color:var(--navy)}
 .attendance-subtitle{font-size:13px;color:var(--muted);margin:-8px 0 16px}
 .attendance-error{padding:15px;color:#b42318;font-size:13px}
+
+/* Student Management - isolated styles */
+.student-management .sm-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.student-management .sm-tabs button{background:#e5eaf2;color:var(--navy);border:0;border-radius:8px;padding:11px 16px;font-weight:bold}
+.student-management .sm-tabs button.active{background:var(--teal)}
+.student-management .sm-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.student-management .sm-field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.student-management .sm-field label{font-size:13px;font-weight:bold}
+.student-management .sm-field input,.student-management .sm-field select{width:100%;padding:12px;border:1px solid #d5dce7;border-radius:8px;background:white;color:var(--text)}
+.student-management .sm-time-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.student-management .sm-help{font-size:11px;color:var(--muted);line-height:1.5}
+.student-management .sm-days{display:flex;flex-wrap:wrap;gap:12px;margin-top:5px}
+.student-management .sm-days label{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:normal}
+.student-management .sm-form-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.student-management .sm-btn{border:0;border-radius:8px;padding:11px 16px;font-weight:bold}
+.student-management .sm-primary{background:var(--navy);color:white}
+.student-management .sm-secondary{background:#e8edf5;color:var(--navy)}
+.student-management .sm-danger{background:#fee2e2;color:#b91c1c}
+.student-management .sm-success{background:#dcfce7;color:#166534}
+.student-management .sm-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.student-management .sm-toolbar input{flex:1;min-width:180px;padding:12px;border:1px solid #d5dce7;border-radius:8px}
+.student-management .sm-actions{display:flex;gap:7px}
+.student-management .sm-actions button{padding:8px 10px;font-size:12px}
+.student-management .sm-empty{text-align:center;padding:30px;color:var(--muted)}
+.student-management .sm-hidden{display:none!important}
+.student-management .sm-message{margin-top:14px;font-size:13px;line-height:1.5}
+.student-management .sm-message.error{color:#b91c1c}
+.student-management .sm-message.ok{color:#15803d}
+.student-management .period-label{display:inline-block;padding:5px 8px;border-radius:6px;background:#eef3fa;color:var(--navy);font-weight:bold;font-size:12px}
+.student-management .period-missing{color:#b42318;font-weight:bold}
+.student-management small{color:var(--muted)}
 @media(max-width:1000px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:850px){
-.sidebar{transform:translateX(-100%)}
-.sidebar.open{transform:translateX(0)}
-.overlay.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90}
-.main{margin-left:0;padding:18px}
-.menu-toggle{display:block}
-}
-@media(max-width:480px){
-.stats{grid-template-columns:1fr}
-.main{padding:14px}
-.panel,.welcome{padding:17px}
-.topbar h1{font-size:21px}
-}
+@media(max-width:850px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.overlay.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90}.main{margin-left:0;padding:18px}.menu-toggle{display:block}}
+@media(max-width:650px){.student-management .sm-form-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.stats{grid-template-columns:1fr}.main{padding:14px}.panel,.welcome{padding:17px}.topbar h1{font-size:21px}}
 @media print{
-    body{background:white!important}
-    body *{visibility:hidden!important}
-    #attendancePrintArea,#attendancePrintArea *{visibility:visible!important}
-    #attendancePrintArea{position:absolute!important;left:0!important;top:0!important;width:100%!important;padding:0!important;margin:0!important;border:0!important;box-shadow:none!important}
-    #attendancePrintArea .table-wrap{overflow:visible!important}
-    #attendancePrintArea table{min-width:0!important;width:100%!important}
-    #attendancePrintArea th,#attendancePrintArea td{font-size:9px!important;padding:6px 3px!important}
-    #attendancePrintArea .attendance-toolbar button,
-    #attendancePrintArea .attendance-actions,
-    #attendancePrintArea .attendance-legend{display:none!important}
-    @page{size:landscape;margin:10mm}
+body{background:white!important}body *{visibility:hidden!important}
+#attendancePrintArea,#attendancePrintArea *{visibility:visible!important}
+#attendancePrintArea{position:absolute!important;left:0!important;top:0!important;width:100%!important;padding:0!important;margin:0!important;border:0!important;box-shadow:none!important}
+#attendancePrintArea .table-wrap{overflow:visible!important}
+#attendancePrintArea table{min-width:0!important;width:100%!important}
+#attendancePrintArea th,#attendancePrintArea td{font-size:9px!important;padding:6px 3px!important}
+#attendancePrintArea .attendance-actions,#attendancePrintArea .attendance-legend{display:none!important}
+@page{size:landscape;margin:10mm}
 }
 </style>
 </head>
@@ -147,14 +144,11 @@ td{color:var(--text)}
 
 <div id="app" style="display:none">
 <aside class="sidebar" id="sidebar">
-    <div class="logo-area">
-        <img src="https://i.ibb.co/kVjfrCdP/5-removebg-preview.png" alt="IqraNet Logo">
-    </div>
-
+    <div class="logo-area"><img src="https://i.ibb.co/kVjfrCdP/5-removebg-preview.png" alt="IqraNet Logo"></div>
     <nav class="nav-menu">
         <button class="nav-item active" data-section="overview"><i class="fa-solid fa-house"></i> Overview</button>
         <button class="nav-item" data-section="ustazs"><i class="fa-solid fa-chalkboard-user"></i> Ustaz Management</button>
-        <button class="nav-item" onclick="window.location.href='students.html'"><i class="fa-solid fa-users"></i> Student Management</button>
+        <button class="nav-item" data-section="students"><i class="fa-solid fa-users"></i> Student Management</button>
         <button class="nav-item" data-section="attendance"><i class="fa-solid fa-clipboard-check"></i> Attendance Management</button>
         <button class="nav-item" data-section="progress"><i class="fa-solid fa-file-lines"></i> Weekly Progress</button>
         <button class="nav-item" data-section="penalties"><i class="fa-solid fa-scale-balanced"></i> Penalties & Rules</button>
@@ -164,20 +158,13 @@ td{color:var(--text)}
         <button class="nav-item" data-section="removedUstazs"><i class="fa-solid fa-box-archive"></i> Removed Ustazs</button>
         <button class="nav-item" data-section="audit"><i class="fa-solid fa-clock-rotate-left"></i> Audit History</button>
     </nav>
-
-    <div class="sidebar-bottom">
-        <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-    </div>
+    <div class="sidebar-bottom"><button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button></div>
 </aside>
 
 <div class="overlay" id="overlay"></div>
-
 <main class="main">
 <header class="topbar">
-    <div>
-        <h1 id="pageTitle">Admin Overview</h1>
-        <p>IqraNet Medresa · Administration Panel</p>
-    </div>
+    <div><h1 id="pageTitle">Admin Overview</h1><p>IqraNet Medresa · Administration Panel</p></div>
     <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
 </header>
 
@@ -197,64 +184,95 @@ td{color:var(--text)}
 </section>
 
 <section class="section" id="ustazs">
-    <div class="panel">
-        <h2>Ustaz Management</h2>
-        <div id="ustazNotice" class="notice"></div>
-        <div class="management-toolbar">
-            <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="ustazSearch" type="search" placeholder="Search name, email or phone..."></div>
-            <select id="ustazFilter" class="filter-select">
-                <option value="all">All registrations</option>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
-            </select>
-            <button class="refresh-btn" id="refreshUstazs"><i class="fa-solid fa-rotate"></i> Refresh</button>
-        </div>
-        <div class="table-wrap">
-            <table>
-                <thead><tr><th>Full Name</th><th>Gender</th><th>Phone</th><th>Email</th><th>Registered</th><th>Approval</th><th>Options</th></tr></thead>
-                <tbody id="ustazTableBody"><tr><td colspan="7" class="table-message">Ustaz registrations will load here.</td></tr></tbody>
-            </table>
-        </div>
-        <div class="result-count" id="ustazResultCount"></div>
-    </div>
+<div class="panel">
+<h2>Ustaz Management</h2><div id="ustazNotice" class="notice"></div>
+<div class="management-toolbar">
+<div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="ustazSearch" type="search" placeholder="Search name, email or phone..."></div>
+<select id="ustazFilter" class="filter-select"><option value="all">All registrations</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
+<button class="refresh-btn" id="refreshUstazs"><i class="fa-solid fa-rotate"></i> Refresh</button>
+</div>
+<div class="table-wrap"><table><thead><tr><th>Full Name</th><th>Gender</th><th>Phone</th><th>Email</th><th>Registered</th><th>Approval</th><th>Options</th></tr></thead><tbody id="ustazTableBody"><tr><td colspan="7" class="table-message">Ustaz registrations will load here.</td></tr></tbody></table></div>
+<div class="result-count" id="ustazResultCount"></div>
+</div>
 </section>
 
-<section class="section" id="students"><div class="panel"><h2>Student Management</h2><div class="empty-state"><i class="fa-solid fa-users"></i><strong>Use Student Management</strong><p>Open the Student Management page to add and manage students.</p></div></div></section>
+<!-- Student Management is now inside the admin panel -->
+<section class="section student-management" id="students">
+<div class="panel">
+    <h2><i class="fa-solid fa-users"></i> Student Management</h2>
+    <div class="sm-tabs">
+        <button type="button" id="smActiveTab" class="active">Active Students</button>
+        <button type="button" id="smArchivedTab">Archived Students</button>
+    </div>
+</div>
+
+<section class="panel" id="smFormPanel">
+    <h2 id="smFormTitle">Add New Student</h2>
+    <form id="smStudentForm">
+        <div class="sm-form-grid">
+            <div class="sm-field"><label for="smStudentCode">Existing Student Code</label><input id="smStudentCode" required placeholder="e.g. S001"></div>
+            <div class="sm-field"><label for="smFullName">Student Full Name</label><input id="smFullName" required placeholder="Student full name"></div>
+            <div class="sm-field"><label for="smUstazSelect">Assigned Ustaz</label><select id="smUstazSelect" required><option value="">Loading Ustazs...</option></select></div>
+            <div class="sm-field"><label for="smLessonPeriod">Lesson Period</label><select id="smLessonPeriod" required><option value="">Select period</option><option value="ጠዋት">ጠዋት</option><option value="ቀን">ቀን</option><option value="ማታ">ማታ</option></select></div>
+            <div class="sm-field">
+                <label>Lesson Starting Time (Ethiopian Clock)</label>
+                <div class="sm-time-grid">
+                    <select id="smLessonHour" required disabled><option value="">Select hour</option></select>
+                    <select id="smLessonMinute" required>
+                        <option value="">Minute</option>
+                        <option value="00">00</option><option value="05">05</option><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="30">30</option><option value="35">35</option><option value="40">40</option><option value="45">45</option><option value="50">50</option><option value="55">55</option>
+                    </select>
+                </div>
+                <small class="sm-help">Choose the period first. Available hours will match that period.</small>
+            </div>
+            <div class="sm-field"><label>Learning Days</label><div class="sm-days" id="smLearningDays">
+                <label><input type="checkbox" value="Monday"> Mon</label><label><input type="checkbox" value="Tuesday"> Tue</label><label><input type="checkbox" value="Wednesday"> Wed</label><label><input type="checkbox" value="Thursday"> Thu</label><label><input type="checkbox" value="Friday"> Fri</label><label><input type="checkbox" value="Saturday"> Sat</label><label><input type="checkbox" value="Sunday"> Sun</label>
+            </div></div>
+            <div class="sm-field"><label>Free Days</label><div class="sm-days" id="smFreeDays">
+                <label><input type="checkbox" value="Monday"> Mon</label><label><input type="checkbox" value="Tuesday"> Tue</label><label><input type="checkbox" value="Wednesday"> Wed</label><label><input type="checkbox" value="Thursday"> Thu</label><label><input type="checkbox" value="Friday"> Fri</label><label><input type="checkbox" value="Saturday"> Sat</label><label><input type="checkbox" value="Sunday"> Sun</label>
+            </div></div>
+        </div>
+        <div class="sm-form-actions">
+            <button class="sm-btn sm-primary" type="submit" id="smSaveBtn">Add Student</button>
+            <button class="sm-btn sm-secondary sm-hidden" type="button" id="smCancelEdit">Cancel</button>
+        </div>
+        <p id="smFormMessage" class="sm-message"></p>
+    </form>
+</section>
+
+<div class="panel">
+    <h2 id="smTableTitle">Active Students</h2>
+    <div class="sm-toolbar">
+        <input id="smSearchInput" placeholder="Search by student name or code...">
+        <button class="sm-btn sm-secondary" type="button" id="smRefresh"><i class="fa-solid fa-rotate"></i> Refresh</button>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Student Code</th><th>Full Name</th><th>Assigned Ustaz</th><th>Learning Days</th><th>Free Days</th><th>Lesson Time</th><th>Actions</th></tr></thead>
+            <tbody id="smStudentsBody"><tr><td colspan="7" class="sm-empty">Loading students...</td></tr></tbody>
+        </table>
+    </div>
+</div>
+</section>
+
 <section class="section" id="schedule"><div class="panel"><h2>Schedule Management</h2><div class="empty-state"><i class="fa-solid fa-calendar-days"></i><strong>No schedules created yet</strong><p>Manage student lesson days and timetables here.</p></div></div></section>
 
 <section class="section" id="attendance">
-    <div class="panel" id="attendancePrintArea">
-        <h2 id="attendanceTitle">Attendance Management</h2>
-        <div id="attendanceCardsView">
-            <p class="attendance-subtitle">Select an active Ustaz to view their students' weekly attendance.</p>
-            <div id="attendanceUstazCards" class="ustaz-card-grid">
-                <div class="table-message">Loading Ustazs...</div>
-            </div>
-        </div>
-
-        <div id="attendanceTableView" style="display:none">
-            <div class="attendance-actions">
-                <button type="button" class="back-btn" id="backToUstazCards"><i class="fa-solid fa-arrow-left"></i> Ustaz List</button>
-                <button type="button" id="printAttendance"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
-                <button type="button" id="refreshSelectedAttendance"><i class="fa-solid fa-rotate"></i> Refresh</button>
-            </div>
-            <div class="attendance-toolbar">
-                <strong id="selectedUstazName"></strong>
-                <span class="attendance-week-label" id="adminWeekLabel"></span>
-            </div>
-            <div class="attendance-legend">
-                <span>✅ Present</span><span>❌ Absent</span><span>🅿️ Permission</span><span>Gray = Free day / locked day</span>
-            </div>
-            <div class="table-wrap">
-                <table class="attendance-table">
-                    <thead id="adminAttendanceHead"></thead>
-                    <tbody id="adminAttendanceBody"><tr><td colspan="10" class="table-message">Select a Ustaz.</td></tr></tbody>
-                </table>
-            </div>
-            <p id="adminAttendanceMessage" class="attendance-error"></p>
-        </div>
-    </div>
+<div class="panel" id="attendancePrintArea">
+<h2 id="attendanceTitle">Attendance Management</h2>
+<div id="attendanceCardsView"><p class="attendance-subtitle">Select an active Ustaz to view their students' weekly attendance.</p><div id="attendanceUstazCards" class="ustaz-card-grid"><div class="table-message">Loading Ustazs...</div></div></div>
+<div id="attendanceTableView" style="display:none">
+<div class="attendance-actions">
+<button type="button" class="back-btn" id="backToUstazCards"><i class="fa-solid fa-arrow-left"></i> Ustaz List</button>
+<button type="button" id="printAttendance"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
+<button type="button" id="refreshSelectedAttendance"><i class="fa-solid fa-rotate"></i> Refresh</button>
+</div>
+<div class="attendance-toolbar"><strong id="selectedUstazName"></strong><span class="attendance-week-label" id="adminWeekLabel"></span></div>
+<div class="attendance-legend"><span>✅ Present</span><span>❌ Absent</span><span>🅿️ Permission</span><span>Gray = Free day / locked day</span></div>
+<div class="table-wrap"><table class="attendance-table"><thead id="adminAttendanceHead"></thead><tbody id="adminAttendanceBody"><tr><td colspan="10" class="table-message">Select a Ustaz.</td></tr></tbody></table></div>
+<p id="adminAttendanceMessage" class="attendance-error"></p>
+</div>
+</div>
 </section>
 
 <section class="section" id="progress"><div class="panel"><h2>Weekly Progress Reports</h2><div class="empty-state"><i class="fa-solid fa-file-lines"></i><strong>No reports yet</strong><p>Weekly student progress reports will appear here.</p></div></div></section>
@@ -264,35 +282,19 @@ td{color:var(--text)}
 <section class="section" id="settings"><div class="panel"><h2>Admin Settings</h2><div class="empty-state"><i class="fa-solid fa-gear"></i><strong>No settings configured yet</strong><p>System-wide settings will be managed here.</p></div></div></section>
 
 <section class="section" id="removedUstazs">
-    <div class="panel">
-        <h2>Removed Ustazs</h2>
-        <div id="removedNotice" class="notice"></div>
-        <div class="management-toolbar">
-            <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="removedSearch" type="search" placeholder="Search removed Ustazs..."></div>
-            <button class="refresh-btn" id="refreshRemoved"><i class="fa-solid fa-rotate"></i> Refresh</button>
-        </div>
-        <div class="table-wrap">
-            <table>
-                <thead><tr><th>Full Name</th><th>Gender</th><th>Phone</th><th>Email</th><th>Registered</th><th>Action</th></tr></thead>
-                <tbody id="removedTableBody"><tr><td colspan="6" class="table-message">Removed Ustazs will appear here.</td></tr></tbody>
-            </table>
-        </div>
-        <div class="result-count" id="removedResultCount"></div>
-    </div>
+<div class="panel">
+<h2>Removed Ustazs</h2><div id="removedNotice" class="notice"></div>
+<div class="management-toolbar"><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="removedSearch" type="search" placeholder="Search removed Ustazs..."></div><button class="refresh-btn" id="refreshRemoved"><i class="fa-solid fa-rotate"></i> Refresh</button></div>
+<div class="table-wrap"><table><thead><tr><th>Full Name</th><th>Gender</th><th>Phone</th><th>Email</th><th>Registered</th><th>Action</th></tr></thead><tbody id="removedTableBody"><tr><td colspan="6" class="table-message">Removed Ustazs will appear here.</td></tr></tbody></table></div>
+<div class="result-count" id="removedResultCount"></div>
+</div>
 </section>
 
 <section class="section" id="audit">
-    <div class="panel">
-        <h2>Audit History</h2>
-        <div id="auditNotice" class="notice"></div>
-        <button class="refresh-btn" id="refreshAudit"><i class="fa-solid fa-rotate"></i> Refresh</button>
-        <div class="table-wrap" style="margin-top:18px">
-            <table>
-                <thead><tr><th>Date</th><th>Action</th><th>Target</th><th>Details</th><th>Admin</th></tr></thead>
-                <tbody id="auditTableBody"><tr><td colspan="5" class="table-message">Audit records will appear here.</td></tr></tbody>
-            </table>
-        </div>
-    </div>
+<div class="panel">
+<h2>Audit History</h2><div id="auditNotice" class="notice"></div><button class="refresh-btn" id="refreshAudit"><i class="fa-solid fa-rotate"></i> Refresh</button>
+<div class="table-wrap" style="margin-top:18px"><table><thead><tr><th>Date</th><th>Action</th><th>Target</th><th>Details</th><th>Admin</th></tr></thead><tbody id="auditTableBody"><tr><td colspan="5" class="table-message">Audit records will appear here.</td></tr></tbody></table></div>
+</div>
 </section>
 
 <footer class="page-footer">© 2026 IqraNet Medresa. All Rights Reserved. · @IqraNet</footer>
@@ -302,630 +304,340 @@ td{color:var(--text)}
 <script>
 "use strict";
 
-const SUPABASE_URL = "https://tovhgdektjjujcwcdctl.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_4yI3xgqHCCn2HR6yuzXGxw_DfEX-h96";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const SUPABASE_URL="https://tovhgdektjjujcwcdctl.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_4yI3xgqHCCn2HR6yuzXGxw_DfEX-h96";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 
-let ustazRecords = [];
-let currentAdminRole = null;
-let removedUstazRecords = [];
-let selectedAttendanceUstaz = null;
-let selectedStudents = [];
-let selectedAttendanceRows = [];
-let selectedWeekDates = [];
+let ustazRecords=[],currentAdminRole=null,removedUstazRecords=[];
+let selectedAttendanceUstaz=null,selectedStudents=[],selectedAttendanceRows=[],selectedWeekDates=[];
+let studentRecords=[],studentUstazRecords=[],studentCurrentTab="active",studentEditingId=null;
 
-const titles = {
-    overview:"Admin Overview",ustazs:"Ustaz Management",students:"Student Management",
-    schedule:"Schedule Management",attendance:"Attendance Management",
-    progress:"Weekly Progress",penalties:"Penalties & Rules",
-    reports:"Reports & Statistics",admins:"Admin Management",
-    settings:"Admin Settings",removedUstazs:"Removed Ustazs",audit:"Audit History"
-};
+const titles={overview:"Admin Overview",ustazs:"Ustaz Management",students:"Student Management",schedule:"Schedule Management",attendance:"Attendance Management",progress:"Weekly Progress",penalties:"Penalties & Rules",reports:"Reports & Statistics",admins:"Admin Management",settings:"Admin Settings",removedUstazs:"Removed Ustazs",audit:"Audit History"};
+const DAY_NAMES=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const PERIOD_HOURS={"ጠዋት":[11,12,1,2,3],"ቀን":[4,5,6,7,8,9,10,11],"ማታ":[12,1,2,3,4,5,6]};
+const PERIOD_ORDER={"ጠዋት":0,"ቀን":1,"ማታ":2};
+const $=id=>document.getElementById(id);
 
-const DAY_NAMES = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-const $ = id => document.getElementById(id);
+function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]));}
+function formatDate(value){if(!value)return "—";const date=new Date(value);return Number.isNaN(date.getTime())?"—":date.toLocaleString();}
+function showNotice(id,message,type){const notice=$(id);if(!notice)return;notice.textContent=message;notice.className="notice "+type;}
+function showLoadingError(message){$("loading").textContent=message;$("loading").style.color="#b42318";}
 
-function escapeHTML(value){
-    return String(value ?? "").replace(/[&<>"']/g,char=>({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-    })[char]);
-}
-
-function formatDate(value){
-    if(!value)return "—";
-    const date=new Date(value);
-    return Number.isNaN(date.getTime())?"—":date.toLocaleString();
-}
-
-function showNotice(id,message,type){
-    const notice=$(id);
-    if(!notice)return;
-    notice.textContent=message;
-    notice.className="notice "+type;
-}
-
-function showLoadingError(message){
-    $("loading").textContent=message;
-    $("loading").style.color="#b42318";
-}
-
+/* Admin authentication */
 async function initializeAdmin(){
-    try{
-        if(!window.supabase){
-            showLoadingError("Supabase could not load. Check your internet connection and refresh.");
-            return;
-        }
-
-        const {data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
-        if(sessionError)throw sessionError;
-        const session=sessionData?.session;
-
-        if(!session){
-            window.location.replace("login.html");
-            return;
-        }
-
-        const {data:admin,error}=await supabaseClient
-            .from("admin_users")
-            .select("role,is_active")
-            .eq("user_id",session.user.id)
-            .maybeSingle();
-
-        if(error)throw error;
-
-        if(!admin || !admin.is_active){
-            alert("You do not have permission to access the Admin Panel.");
-            window.location.replace("dashboard.html");
-            return;
-        }
-
-        currentAdminRole=admin.role;
-
-        if(currentAdminRole!=="super_admin"){
-            const adminNav=document.querySelector('[data-section="admins"]');
-            if(adminNav)adminNav.style.display="none";
-        }
-
-        $("welcomeTitle").textContent=
-            currentAdminRole==="super_admin"?"Welcome, Super Admin":"Welcome, Admin";
-
-        $("loading").style.display="none";
-        $("app").style.display="block";
-
-        await loadUstazs();
-        await loadAdminStudentCount();
-
-    }catch(error){
-        console.error("Admin initialization error:",error);
-        showLoadingError("Admin panel could not load: "+(error.message||"Unknown error"));
-    }
+try{
+if(!window.supabase){showLoadingError("Supabase could not load. Check your internet connection and refresh.");return;}
+const {data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
+if(sessionError)throw sessionError;
+const session=sessionData?.session;
+if(!session){window.location.replace("login.html");return;}
+const {data:admin,error}=await supabaseClient.from("admin_users").select("role,is_active").eq("user_id",session.user.id).maybeSingle();
+if(error)throw error;
+if(!admin||!admin.is_active){alert("You do not have permission to access the Admin Panel.");window.location.replace("dashboard.html");return;}
+currentAdminRole=admin.role;
+if(currentAdminRole!=="super_admin"){const adminNav=document.querySelector('[data-section="admins"]');if(adminNav)adminNav.style.display="none";}
+$("welcomeTitle").textContent=currentAdminRole==="super_admin"?"Welcome, Super Admin":"Welcome, Admin";
+$("loading").style.display="none";$("app").style.display="block";
+await loadUstazs();
+await loadAdminStudentCount();
+await loadStudentUstazs();
+}catch(error){console.error("Admin initialization error:",error);showLoadingError("Admin panel could not load: "+(error.message||"Unknown error"));}
 }
 
+/* Navigation */
 document.querySelectorAll(".nav-item[data-section]").forEach(item=>{
-    item.addEventListener("click",async()=>{
-        const target=item.dataset.section;
-        if(!$(target))return;
-
-        document.querySelectorAll(".nav-item").forEach(nav=>nav.classList.remove("active"));
-        item.classList.add("active");
-        document.querySelectorAll(".section").forEach(section=>section.classList.remove("active"));
-        $(target).classList.add("active");
-        $("pageTitle").textContent=titles[target]||"Admin Panel";
-
-        if(target==="ustazs")await loadUstazs();
-        if(target==="removedUstazs")await loadRemovedUstazs();
-        if(target==="audit")await loadAuditHistory();
-        if(target==="attendance")await loadAttendanceUstazCards();
-
-        closeSidebar();
-    });
+item.addEventListener("click",async()=>{
+const target=item.dataset.section;if(!$(target))return;
+document.querySelectorAll(".nav-item").forEach(nav=>nav.classList.remove("active"));
+item.classList.add("active");
+document.querySelectorAll(".section").forEach(section=>section.classList.remove("active"));
+$(target).classList.add("active");$("pageTitle").textContent=titles[target]||"Admin Panel";
+if(target==="ustazs")await loadUstazs();
+if(target==="students")await loadStudents();
+if(target==="removedUstazs")await loadRemovedUstazs();
+if(target==="audit")await loadAuditHistory();
+if(target==="attendance")await loadAttendanceUstazCards();
+closeSidebar();
 });
-
-function closeSidebar(){
-    $("sidebar")?.classList.remove("open");
-    $("overlay")?.classList.remove("show");
-}
-
-$("menuToggle").addEventListener("click",()=>{
-    $("sidebar").classList.add("open");
-    $("overlay").classList.add("show");
 });
+function closeSidebar(){$("sidebar")?.classList.remove("open");$("overlay")?.classList.remove("show");}
+$("menuToggle").addEventListener("click",()=>{$("sidebar").classList.add("open");$("overlay").classList.add("show");});
 $("overlay").addEventListener("click",closeSidebar);
+$("logoutBtn").addEventListener("click",async()=>{if(!confirm("Are you sure you want to log out?"))return;await supabaseClient.auth.signOut();window.location.replace("login.html");});
 
-$("logoutBtn").addEventListener("click",async()=>{
-    if(!confirm("Are you sure you want to log out?"))return;
-    await supabaseClient.auth.signOut();
-    window.location.replace("login.html");
-});
-
+/* Ustaz management */
 async function managementAction(payload){
-    const {data,error}=await supabaseClient.functions.invoke("manage-ustaz",{body:payload});
-    if(error)throw new Error(error.message||"Management request failed.");
-    if(data?.error)throw new Error(data.error);
-    if(!data?.success)throw new Error("The action could not be confirmed.");
-    return data;
+const {data,error}=await supabaseClient.functions.invoke("manage-ustaz",{body:payload});
+if(error)throw new Error(error.message||"Management request failed.");
+if(data?.error)throw new Error(data.error);
+if(!data?.success)throw new Error("The action could not be confirmed.");
+return data;
 }
-
 async function loadUstazs(){
-    const tbody=$("ustazTableBody");
-    tbody.innerHTML='<tr><td colspan="7" class="table-message">Loading Ustazs...</td></tr>';
-
-    const {data,error}=await supabaseClient
-        .from("ustaz_registrations")
-        .select("id,full_name,gender,phone,email,approval_status,account_status,created_at,is_admin")
-        .eq("is_admin",false)
-        .eq("account_status","active")
-        .order("created_at",{ascending:false});
-
-    if(error){
-        console.error("Ustaz loading error:",error);
-        tbody.innerHTML=`<tr><td colspan="7" class="table-message">${escapeHTML(error.message)}</td></tr>`;
-        showNotice("ustazNotice","Unable to load Ustaz registrations. Check database permissions.","error");
-        return;
-    }
-
-    ustazRecords=data||[];
-    updateStatistics();
-    renderUstazTable();
+const tbody=$("ustazTableBody");tbody.innerHTML='<tr><td colspan="7" class="table-message">Loading Ustazs...</td></tr>';
+const {data,error}=await supabaseClient.from("ustaz_registrations").select("id,full_name,gender,phone,email,approval_status,account_status,created_at,is_admin").eq("is_admin",false).eq("account_status","active").order("created_at",{ascending:false});
+if(error){console.error("Ustaz loading error:",error);tbody.innerHTML=`<tr><td colspan="7" class="table-message">${escapeHTML(error.message)}</td></tr>`;showNotice("ustazNotice","Unable to load Ustaz registrations. Check database permissions.","error");return;}
+ustazRecords=data||[];updateStatistics();renderUstazTable();
 }
-
 async function loadAdminStudentCount(){
-    const {count,error}=await supabaseClient
-        .from("students")
-        .select("id",{count:"exact",head:true});
-
-    if(!error)$("totalStudents").textContent=count ?? 0;
+const {count,error}=await supabaseClient.from("students").select("id",{count:"exact",head:true});
+if(!error)$("totalStudents").textContent=count??0;
 }
-
 function updateStatistics(){
-    $("totalUstazs").textContent=ustazRecords.length;
-    $("pendingUstazs").textContent=ustazRecords.filter(u=>u.approval_status==="pending").length;
-    $("approvedUstazs").textContent=ustazRecords.filter(u=>u.approval_status==="approved").length;
+$("totalUstazs").textContent=ustazRecords.length;
+$("pendingUstazs").textContent=ustazRecords.filter(u=>u.approval_status==="pending").length;
+$("approvedUstazs").textContent=ustazRecords.filter(u=>u.approval_status==="approved").length;
 }
-
 function renderUstazTable(){
-    const tbody=$("ustazTableBody");
-    const search=$("ustazSearch").value.trim().toLowerCase();
-    const approvalFilter=$("ustazFilter").value;
-
-    const filtered=ustazRecords.filter(u=>{
-        const text=`${u.full_name||""} ${u.email||""} ${u.phone||""}`.toLowerCase();
-        return text.includes(search)&&(approvalFilter==="all"||u.approval_status===approvalFilter);
-    });
-
-    if(!filtered.length){
-        tbody.innerHTML='<tr><td colspan="7" class="table-message">No active Ustazs found.</td></tr>';
-        $("ustazResultCount").textContent="Showing 0 active Ustazs";
-        return;
-    }
-
-    tbody.innerHTML=filtered.map(u=>{
-        const approval=["pending","approved","rejected"].includes(u.approval_status)?u.approval_status:"pending";
-        return `<tr>
-            <td>${escapeHTML(u.full_name)}</td><td>${escapeHTML(u.gender)}</td>
-            <td>${escapeHTML(u.phone)}</td><td>${escapeHTML(u.email)}</td>
-            <td>${formatDate(u.created_at)}</td>
-            <td><span class="status ${approval}">${approval.toUpperCase()}</span></td>
-            <td><div class="action-menu">
-                <button class="dots-btn" type="button" aria-label="Ustaz options" aria-expanded="false">⋮</button>
-                <div class="dropdown-menu">
-                    <button type="button" data-action="edit" data-id="${escapeHTML(u.id)}"><i class="fa-solid fa-pen"></i> Edit Information</button>
-                    <button type="button" class="remove-option" data-action="remove" data-id="${escapeHTML(u.id)}"><i class="fa-solid fa-user-minus"></i> Remove User</button>
-                </div>
-            </div></td>
-        </tr>`;
-    }).join("");
-
-    $("ustazResultCount").textContent=`Showing ${filtered.length} active Ustazs`;
+const tbody=$("ustazTableBody"),search=$("ustazSearch").value.trim().toLowerCase(),approvalFilter=$("ustazFilter").value;
+const filtered=ustazRecords.filter(u=>`${u.full_name||""} ${u.email||""} ${u.phone||""}`.toLowerCase().includes(search)&&(approvalFilter==="all"||u.approval_status===approvalFilter));
+if(!filtered.length){tbody.innerHTML='<tr><td colspan="7" class="table-message">No active Ustazs found.</td></tr>';$("ustazResultCount").textContent="Showing 0 active Ustazs";return;}
+tbody.innerHTML=filtered.map(u=>{
+const approval=["pending","approved","rejected"].includes(u.approval_status)?u.approval_status:"pending";
+return `<tr><td>${escapeHTML(u.full_name)}</td><td>${escapeHTML(u.gender)}</td><td>${escapeHTML(u.phone)}</td><td>${escapeHTML(u.email)}</td><td>${formatDate(u.created_at)}</td><td><span class="status ${approval}">${approval.toUpperCase()}</span></td><td><div class="action-menu"><button class="dots-btn" type="button" aria-label="Ustaz options" aria-expanded="false">⋮</button><div class="dropdown-menu"><button type="button" data-action="edit" data-id="${escapeHTML(u.id)}"><i class="fa-solid fa-pen"></i> Edit Information</button><button type="button" class="remove-option" data-action="remove" data-id="${escapeHTML(u.id)}"><i class="fa-solid fa-user-minus"></i> Remove User</button></div></div></td></tr>`;
+}).join("");
+$("ustazResultCount").textContent=`Showing ${filtered.length} active Ustazs`;
 }
-
 document.addEventListener("click",event=>{
-    const dots=event.target.closest(".dots-btn");
-    if(dots){
-        const menu=dots.nextElementSibling;
-        const wasOpen=menu.classList.contains("open");
-        document.querySelectorAll(".dropdown-menu.open").forEach(m=>m.classList.remove("open"));
-        document.querySelectorAll(".dots-btn").forEach(b=>b.setAttribute("aria-expanded","false"));
-        if(!wasOpen){menu.classList.add("open");dots.setAttribute("aria-expanded","true");}
-        return;
-    }
-    if(!event.target.closest(".dropdown-menu")){
-        document.querySelectorAll(".dropdown-menu.open").forEach(m=>m.classList.remove("open"));
-        document.querySelectorAll(".dots-btn").forEach(b=>b.setAttribute("aria-expanded","false"));
-    }
+const dots=event.target.closest(".dots-btn");
+if(dots){const menu=dots.nextElementSibling,wasOpen=menu.classList.contains("open");document.querySelectorAll(".dropdown-menu.open").forEach(m=>m.classList.remove("open"));document.querySelectorAll(".dots-btn").forEach(b=>b.setAttribute("aria-expanded","false"));if(!wasOpen){menu.classList.add("open");dots.setAttribute("aria-expanded","true");}return;}
+if(!event.target.closest(".dropdown-menu")){document.querySelectorAll(".dropdown-menu.open").forEach(m=>m.classList.remove("open"));document.querySelectorAll(".dots-btn").forEach(b=>b.setAttribute("aria-expanded","false"));}
 });
-
-$("ustazTableBody").addEventListener("click",event=>{
-    const button=event.target.closest("button[data-action]");
-    if(!button)return;
-    const id=button.dataset.id;
-    const action=button.dataset.action;
-    document.querySelectorAll(".dropdown-menu.open").forEach(m=>m.classList.remove("open"));
-    document.querySelectorAll(".dots-btn").forEach(b=>b.setAttribute("aria-expanded","false"));
-    handleUstazAction(id,action);
-});
-
+$("ustazTableBody").addEventListener("click",event=>{const button=event.target.closest("button[data-action]");if(!button)return;const id=button.dataset.id,action=button.dataset.action;document.querySelectorAll(".dropdown-menu.open").forEach(m=>m.classList.remove("open"));document.querySelectorAll(".dots-btn").forEach(b=>b.setAttribute("aria-expanded","false"));handleUstazAction(id,action);});
 async function handleUstazAction(id,action){
-    const record=ustazRecords.find(u=>u.id===id);
-    if(!record)return;
-
-    try{
-        if(action==="edit"){
-            const full_name=prompt("Full name:",record.full_name||"");
-            if(full_name===null)return;
-            const gender=prompt("Gender: enter Male or Female",record.gender||"");
-            if(gender===null)return;
-            const phone=prompt("Phone number in +251 format:",record.phone||"");
-            if(phone===null)return;
-
-            if(full_name.trim().split(/\s+/).length<2||
-                !["Male","Female"].includes(gender.trim())||
-                !/^\+251[79][0-9]{8}$/.test(phone.trim())){
-                alert("Please enter at least two name words, Male or Female, and a valid Ethiopian +251 phone number.");
-                return;
-            }
-
-            if(!confirm("Save these profile changes?"))return;
-
-            await managementAction({
-                action:"edit_profile",target_user_id:id,
-                full_name:full_name.trim(),gender:gender.trim(),phone:phone.trim()
-            });
-
-            showNotice("ustazNotice","Ustaz information updated successfully.","success");
-            await loadUstazs();
-
-        }else if(action==="remove"){
-            if(!confirm(
-                `Remove ${record.full_name} from IqraNet?\n\nTheir account will be disabled and they will disappear from Ustaz Management.\n\nTheir registration and historical records will remain saved in the database.`
-            ))return;
-
-            await managementAction({action:"archive",target_user_id:id});
-            ustazRecords=ustazRecords.filter(u=>u.id!==id);
-            updateStatistics();
-            renderUstazTable();
-            showNotice("ustazNotice",`${record.full_name} has been removed. Their history remains saved.`,"success");
-        }
-    }catch(error){
-        console.error("Ustaz action error:",error);
-        showNotice("ustazNotice",error.message||"The action failed.","error");
-    }
+const record=ustazRecords.find(u=>u.id===id);if(!record)return;
+try{
+if(action==="edit"){
+const full_name=prompt("Full name:",record.full_name||"");if(full_name===null)return;
+const gender=prompt("Gender: enter Male or Female",record.gender||"");if(gender===null)return;
+const phone=prompt("Phone number in +251 format:",record.phone||"");if(phone===null)return;
+if(full_name.trim().split(/\s+/).length<2||!["Male","Female"].includes(gender.trim())||!/^\+251[79][0-9]{8}$/.test(phone.trim())){alert("Please enter at least two name words, Male or Female, and a valid Ethiopian +251 phone number.");return;}
+if(!confirm("Save these profile changes?"))return;
+await managementAction({action:"edit_profile",target_user_id:id,full_name:full_name.trim(),gender:gender.trim(),phone:phone.trim()});
+showNotice("ustazNotice","Ustaz information updated successfully.","success");await loadUstazs();
+}else if(action==="remove"){
+if(!confirm(`Remove ${record.full_name} from IqraNet?\n\nTheir account will be disabled and they will disappear from Ustaz Management.\n\nTheir registration and historical records will remain saved in the database.`))return;
+await managementAction({action:"archive",target_user_id:id});ustazRecords=ustazRecords.filter(u=>u.id!==id);updateStatistics();renderUstazTable();showNotice("ustazNotice",`${record.full_name} has been removed. Their history remains saved.`,"success");
 }
-
+}catch(error){console.error("Ustaz action error:",error);showNotice("ustazNotice",error.message||"The action failed.","error");}
+}
 $("ustazSearch").addEventListener("input",renderUstazTable);
 $("ustazFilter").addEventListener("change",renderUstazTable);
 $("refreshUstazs").addEventListener("click",loadUstazs);
 
 /* Removed Ustazs */
 async function loadRemovedUstazs(){
-    const tbody=$("removedTableBody");
-    tbody.innerHTML='<tr><td colspan="6" class="table-message">Loading removed Ustazs...</td></tr>';
-
-    const {data,error}=await supabaseClient
-        .from("ustaz_registrations")
-        .select("id,full_name,gender,phone,email,created_at,is_admin,account_status")
-        .eq("is_admin",false).eq("account_status","removed")
-        .order("created_at",{ascending:false});
-
-    if(error){
-        tbody.innerHTML=`<tr><td colspan="6" class="table-message">${escapeHTML(error.message)}</td></tr>`;
-        showNotice("removedNotice","Unable to load removed Ustazs.","error");
-        return;
-    }
-
-    removedUstazRecords=data||[];
-    renderRemovedUstazs();
+const tbody=$("removedTableBody");tbody.innerHTML='<tr><td colspan="6" class="table-message">Loading removed Ustazs...</td></tr>';
+const {data,error}=await supabaseClient.from("ustaz_registrations").select("id,full_name,gender,phone,email,created_at,is_admin,account_status").eq("is_admin",false).eq("account_status","removed").order("created_at",{ascending:false});
+if(error){tbody.innerHTML=`<tr><td colspan="6" class="table-message">${escapeHTML(error.message)}</td></tr>`;showNotice("removedNotice","Unable to load removed Ustazs.","error");return;}
+removedUstazRecords=data||[];renderRemovedUstazs();
 }
-
 function renderRemovedUstazs(){
-    const tbody=$("removedTableBody");
-    const search=$("removedSearch").value.trim().toLowerCase();
-    const filtered=removedUstazRecords.filter(u=>
-        `${u.full_name||""} ${u.email||""} ${u.phone||""}`.toLowerCase().includes(search)
-    );
-
-    if(!filtered.length){
-        tbody.innerHTML='<tr><td colspan="6" class="table-message">No removed Ustazs found.</td></tr>';
-        $("removedResultCount").textContent="Showing 0 removed Ustazs";
-        return;
-    }
-
-    tbody.innerHTML=filtered.map(u=>`
-        <tr>
-            <td>${escapeHTML(u.full_name)}</td><td>${escapeHTML(u.gender)}</td>
-            <td>${escapeHTML(u.phone)}</td><td>${escapeHTML(u.email)}</td>
-            <td>${formatDate(u.created_at)}</td>
-            <td><button class="refresh-btn" type="button" data-restore-id="${escapeHTML(u.id)}"><i class="fa-solid fa-rotate-left"></i> Restore</button></td>
-        </tr>
-    `).join("");
-
-    $("removedResultCount").textContent=`Showing ${filtered.length} removed Ustazs`;
+const tbody=$("removedTableBody"),search=$("removedSearch").value.trim().toLowerCase();
+const filtered=removedUstazRecords.filter(u=>`${u.full_name||""} ${u.email||""} ${u.phone||""}`.toLowerCase().includes(search));
+if(!filtered.length){tbody.innerHTML='<tr><td colspan="6" class="table-message">No removed Ustazs found.</td></tr>';$("removedResultCount").textContent="Showing 0 removed Ustazs";return;}
+tbody.innerHTML=filtered.map(u=>`<tr><td>${escapeHTML(u.full_name)}</td><td>${escapeHTML(u.gender)}</td><td>${escapeHTML(u.phone)}</td><td>${escapeHTML(u.email)}</td><td>${formatDate(u.created_at)}</td><td><button class="refresh-btn" type="button" data-restore-id="${escapeHTML(u.id)}"><i class="fa-solid fa-rotate-left"></i> Restore</button></td></tr>`).join("");
+$("removedResultCount").textContent=`Showing ${filtered.length} removed Ustazs`;
 }
-
 $("removedSearch").addEventListener("input",renderRemovedUstazs);
 $("refreshRemoved").addEventListener("click",loadRemovedUstazs);
-
 $("removedTableBody").addEventListener("click",async event=>{
-    const button=event.target.closest("button[data-restore-id]");
-    if(!button)return;
-
-    const id=button.dataset.restoreId;
-    const record=removedUstazRecords.find(u=>u.id===id);
-    if(!record)return;
-
-    if(!confirm(`Restore ${record.full_name}?\n\nTheir account will be reactivated and they will appear in Ustaz Management again.`))return;
-
-    button.disabled=true;
-    button.textContent="Restoring...";
-
-    try{
-        await managementAction({action:"restore",target_user_id:id});
-        removedUstazRecords=removedUstazRecords.filter(u=>u.id!==id);
-        renderRemovedUstazs();
-        showNotice("removedNotice",`${record.full_name} has been restored successfully.`,"success");
-    }catch(error){
-        showNotice("removedNotice",error.message||"Could not restore this account.","error");
-        button.disabled=false;
-        button.innerHTML='<i class="fa-solid fa-rotate-left"></i> Restore';
-    }
+const button=event.target.closest("button[data-restore-id]");if(!button)return;
+const id=button.dataset.restoreId,record=removedUstazRecords.find(u=>u.id===id);if(!record)return;
+if(!confirm(`Restore ${record.full_name}?\n\nTheir account will be reactivated and they will appear in Ustaz Management again.`))return;
+button.disabled=true;button.textContent="Restoring...";
+try{await managementAction({action:"restore",target_user_id:id});removedUstazRecords=removedUstazRecords.filter(u=>u.id!==id);renderRemovedUstazs();showNotice("removedNotice",`${record.full_name} has been restored successfully.`,"success");}
+catch(error){showNotice("removedNotice",error.message||"Could not restore this account.","error");button.disabled=false;button.innerHTML='<i class="fa-solid fa-rotate-left"></i> Restore';}
 });
 
 /* Audit history */
 async function loadAuditHistory(){
-    const tbody=$("auditTableBody");
-    tbody.innerHTML='<tr><td colspan="5" class="table-message">Loading audit history...</td></tr>';
-
-    const {data,error}=await supabaseClient
-        .from("admin_audit_logs")
-        .select("id,actor_user_id,action,target_user_id,details,created_at")
-        .order("created_at",{ascending:false})
-        .limit(200);
-
-    if(error){
-        tbody.innerHTML=`<tr><td colspan="5" class="table-message">${escapeHTML(error.message)}</td></tr>`;
-        showNotice("auditNotice","Unable to load audit history. Check the audit table policy.","error");
-        return;
-    }
-
-    if(!data||!data.length){
-        tbody.innerHTML='<tr><td colspan="5" class="table-message">No audit records yet.</td></tr>';
-        return;
-    }
-
-    tbody.innerHTML=data.map(row=>`
-        <tr>
-            <td>${formatDate(row.created_at)}</td>
-            <td>${escapeHTML(row.action)}</td>
-            <td>${escapeHTML(row.target_user_id)}</td>
-            <td>${escapeHTML(JSON.stringify(row.details||{}))}</td>
-            <td>${escapeHTML(row.actor_user_id)}</td>
-        </tr>
-    `).join("");
+const tbody=$("auditTableBody");tbody.innerHTML='<tr><td colspan="5" class="table-message">Loading audit history...</td></tr>';
+const {data,error}=await supabaseClient.from("admin_audit_logs").select("id,actor_user_id,action,target_user_id,details,created_at").order("created_at",{ascending:false}).limit(200);
+if(error){tbody.innerHTML=`<tr><td colspan="5" class="table-message">${escapeHTML(error.message)}</td></tr>`;showNotice("auditNotice","Unable to load audit history. Check the audit table policy.","error");return;}
+if(!data||!data.length){tbody.innerHTML='<tr><td colspan="5" class="table-message">No audit records yet.</td></tr>';return;}
+tbody.innerHTML=data.map(row=>`<tr><td>${formatDate(row.created_at)}</td><td>${escapeHTML(row.action)}</td><td>${escapeHTML(row.target_user_id)}</td><td>${escapeHTML(JSON.stringify(row.details||{}))}</td><td>${escapeHTML(row.actor_user_id)}</td></tr>`).join("");
 }
-
 $("refreshAudit").addEventListener("click",loadAuditHistory);
 
-/* Attendance Management */
-function ethiopianToday(){
-    return new Intl.DateTimeFormat("en-CA",{
-        timeZone:"Africa/Addis_Ababa",
-        year:"numeric",month:"2-digit",day:"2-digit"
-    }).format(new Date());
+/* Student Management */
+function smShowMessage(message,isError){$("smFormMessage").textContent=message;$("smFormMessage").className="sm-message "+(isError?"error":"ok");}
+function smGetChecked(id){return [...$(id).querySelectorAll('input[type="checkbox"]:checked')].map(input=>input.value);}
+function smSetChecked(id,values){$(id).querySelectorAll('input[type="checkbox"]').forEach(input=>{input.checked=values.includes(input.value);});}
+function updateStudentHourOptions(selectedHour=""){
+const period=$("smLessonPeriod").value,hourSelect=$("smLessonHour"),hours=PERIOD_HOURS[period]||[];
+hourSelect.innerHTML='<option value="">Select hour</option>';
+hours.forEach(hour=>{const option=document.createElement("option");option.value=String(hour).padStart(2,"0");option.textContent=hour+":00";hourSelect.appendChild(option);});
+hourSelect.disabled=!period;
+if(selectedHour&&hours.includes(Number(selectedHour)))hourSelect.value=String(Number(selectedHour)).padStart(2,"0");else hourSelect.value="";
 }
-
-function addDays(dateString,amount){
-    const [y,m,d]=dateString.split("-").map(Number);
-    return new Date(Date.UTC(y,m-1,d+amount)).toISOString().slice(0,10);
+async function loadStudentUstazs(){
+const select=$("smUstazSelect");select.innerHTML='<option value="">Select Ustaz</option>';
+const {data,error}=await supabaseClient.from("ustaz_registrations").select("id,full_name,gender").eq("approval_status","approved").eq("account_status","active").eq("is_admin",false).order("full_name");
+if(error){select.innerHTML='<option value="">Could not load Ustazs</option>';smShowMessage(error.message,true);return;}
+studentUstazRecords=data||[];
+studentUstazRecords.forEach(u=>{const option=document.createElement("option");option.value=u.id;option.textContent=u.full_name+(u.gender?" ("+u.gender+")":"");select.appendChild(option);});
 }
-
-function mondayOf(dateString){
-    const [y,m,d]=dateString.split("-").map(Number);
-    const date=new Date(Date.UTC(y,m-1,d));
-    const weekday=(date.getUTCDay()+6)%7;
-    date.setUTCDate(date.getUTCDate()-weekday);
-    return date.toISOString().slice(0,10);
+async function loadStudents(){
+$("smStudentsBody").innerHTML='<tr><td colspan="7" class="sm-empty">Loading students...</td></tr>';
+const {data,error}=await supabaseClient.from("students").select("id,student_code,full_name,ustaz_id,learning_days,free_days,lesson_start_time,lesson_period,is_active").order("created_at",{ascending:false});
+if(error){$("smStudentsBody").innerHTML=`<tr><td colspan="7" class="sm-empty">Could not load students: ${escapeHTML(error.message)}</td></tr>`;return;}
+studentRecords=data||[];renderStudents();await loadAdminStudentCount();
 }
-
-function shortDate(dateString){
-    const [y,m,d]=dateString.split("-").map(Number);
-    return new Date(Date.UTC(y,m-1,d)).toLocaleDateString("en-GB",{
-        day:"2-digit",month:"short",timeZone:"UTC"
-    });
+function studentTimeSortValue(student){
+const period=student.lesson_period,hour=Number(String(student.lesson_start_time||"").slice(0,2)),minute=Number(String(student.lesson_start_time||"").slice(3,5));
+const periodOrder=PERIOD_ORDER[period],hours=PERIOD_HOURS[period]||[],hourOrder=hours.indexOf(hour);
+if(periodOrder===undefined||hourOrder<0)return [99,99,99];
+return [periodOrder,hourOrder,Number.isFinite(minute)?minute:0];
 }
+function compareStudentTime(a,b){
+const x=studentTimeSortValue(a),y=studentTimeSortValue(b);
+for(let i=0;i<x.length;i++)if(x[i]!==y[i])return x[i]-y[i];
+return (a.full_name||"").localeCompare(b.full_name||"");
+}
+function formatStudentLessonTime(student){
+if(!student.lesson_period)return '<span class="period-missing">Period not set</span>';
+const time=String(student.lesson_start_time||"").slice(0,5);
+return `<span class="period-label">${escapeHTML(student.lesson_period)} ${escapeHTML(time||"—")}</span>`;
+}
+function renderStudents(){
+const search=$("smSearchInput").value.trim().toLowerCase();
+const filtered=studentRecords.filter(s=>s.is_active===(studentCurrentTab==="active")&&((s.full_name||"").toLowerCase().includes(search)||(s.student_code||"").toLowerCase().includes(search))).sort(compareStudentTime);
+$("smTableTitle").textContent=studentCurrentTab==="active"?"Active Students":"Archived Students";
+if(!filtered.length){$("smStudentsBody").innerHTML='<tr><td colspan="7" class="sm-empty">No students found.</td></tr>';return;}
+$("smStudentsBody").innerHTML=filtered.map(s=>{
+const ustaz=studentUstazRecords.find(u=>u.id===s.ustaz_id),ustazName=ustaz?ustaz.full_name:"Unknown Ustaz";
+return `<tr>
+<td>${escapeHTML(s.student_code)}</td><td>${escapeHTML(s.full_name)}</td><td>${escapeHTML(ustazName)}</td>
+<td>${escapeHTML((s.learning_days||[]).join(", "))}</td><td>${escapeHTML((s.free_days||[]).join(", ")||"None")}</td><td>${formatStudentLessonTime(s)}</td>
+<td><div class="sm-actions">${studentCurrentTab==="active"?`<button type="button" class="sm-btn sm-secondary" data-sm-edit="${escapeHTML(s.id)}">Edit</button><button type="button" class="sm-btn sm-danger" data-sm-archive="${escapeHTML(s.id)}">Archive</button>`:`<button type="button" class="sm-btn sm-success" data-sm-restore="${escapeHTML(s.id)}">Restore</button>`}</div></td>
+</tr>`;
+}).join("");
+}
+function resetStudentForm(){
+studentEditingId=null;$("smStudentForm").reset();smSetChecked("smLearningDays",[]);smSetChecked("smFreeDays",[]);
+updateStudentHourOptions();$("smFormTitle").textContent="Add New Student";$("smSaveBtn").textContent="Add Student";$("smCancelEdit").classList.add("sm-hidden");$("smFormMessage").textContent="";
+}
+function editStudent(id){
+const s=studentRecords.find(x=>x.id===id);if(!s)return;
+studentEditingId=id;$("smFormTitle").textContent="Edit Student";$("smSaveBtn").textContent="Save Changes";$("smCancelEdit").classList.remove("sm-hidden");
+$("smStudentCode").value=s.student_code||"";$("smFullName").value=s.full_name||"";$("smUstazSelect").value=s.ustaz_id||"";
+$("smLessonPeriod").value=s.lesson_period||"";updateStudentHourOptions(String(s.lesson_start_time||"").slice(0,2));
+$("smLessonMinute").value=String(s.lesson_start_time||"").slice(3,5)||"";
+smSetChecked("smLearningDays",s.learning_days||[]);smSetChecked("smFreeDays",s.free_days||[]);
+if(!s.lesson_period)smShowMessage("This student has no lesson period assigned yet. Select the correct period and time before saving.",true);else $("smFormMessage").textContent="";
+$("smFormPanel").scrollIntoView({behavior:"smooth"});
+}
+async function saveStudent(event){
+event.preventDefault();
+const code=$("smStudentCode").value.trim(),name=$("smFullName").value.trim(),ustazId=$("smUstazSelect").value,period=$("smLessonPeriod").value,hour=$("smLessonHour").value,minute=$("smLessonMinute").value;
+const learning=smGetChecked("smLearningDays"),free=smGetChecked("smFreeDays");
+if(!code||!name||!ustazId||!period||!hour||!minute){smShowMessage("Please complete all required fields, including the Ethiopian lesson period and time.",true);return;}
+if(!PERIOD_HOURS[period]?.includes(Number(hour))){smShowMessage("Select a valid hour for the selected lesson period.",true);return;}
+if(!learning.length){smShowMessage("Select at least one learning day.",true);return;}
+if(learning.some(day=>free.includes(day))){smShowMessage("A day cannot be both a learning day and a free day.",true);return;}
+const record={student_code:code,full_name:name,ustaz_id:ustazId,learning_days:learning,free_days:free,lesson_start_time:`${hour}:${minute}:00`,lesson_period:period,updated_at:new Date().toISOString()};
+$("smSaveBtn").disabled=true;$("smSaveBtn").textContent="Saving...";
+let result;
+try{
+if(studentEditingId){result=await supabaseClient.from("students").update(record).eq("id",studentEditingId).select();}
+else{delete record.updated_at;result=await supabaseClient.from("students").insert(record).select();}
+}catch(error){result={error};}
+$("smSaveBtn").disabled=false;$("smSaveBtn").textContent=studentEditingId?"Save Changes":"Add Student";
+if(result.error){smShowMessage(result.error.message,true);return;}
+smShowMessage(studentEditingId?"Student updated successfully.":"Student added successfully.",false);
+resetStudentForm();await loadStudents();
+}
+async function archiveStudent(id){
+const s=studentRecords.find(x=>x.id===id);if(!s||!confirm("Archive "+s.full_name+"? Attendance history will be preserved."))return;
+const {error}=await supabaseClient.from("students").update({is_active:false,updated_at:new Date().toISOString()}).eq("id",id);
+if(error){alert(error.message);return;}await loadStudents();
+}
+async function restoreStudent(id){
+const s=studentRecords.find(x=>x.id===id);if(!s||!confirm("Restore "+s.full_name+"?"))return;
+const {error}=await supabaseClient.from("students").update({is_active:true,updated_at:new Date().toISOString()}).eq("id",id);
+if(error){alert(error.message);return;}await loadStudents();
+}
+function showStudentTab(tab){
+studentCurrentTab=tab;
+$("smActiveTab").classList.toggle("active",tab==="active");
+$("smArchivedTab").classList.toggle("active",tab==="archived");
+$("smFormPanel").classList.toggle("sm-hidden",tab!=="active");
+if(tab==="archived"&&studentEditingId)resetStudentForm();
+renderStudents();
+}
+$("smLessonPeriod").addEventListener("change",()=>updateStudentHourOptions());
+$("smStudentForm").addEventListener("submit",saveStudent);
+$("smCancelEdit").addEventListener("click",resetStudentForm);
+$("smActiveTab").addEventListener("click",()=>showStudentTab("active"));
+$("smArchivedTab").addEventListener("click",()=>showStudentTab("archived"));
+$("smSearchInput").addEventListener("input",renderStudents);
+$("smRefresh").addEventListener("click",loadStudents);
+$("smStudentsBody").addEventListener("click",event=>{
+const edit=event.target.closest("[data-sm-edit]"),archive=event.target.closest("[data-sm-archive]"),restore=event.target.closest("[data-sm-restore]");
+if(edit)editStudent(edit.dataset.smEdit);
+if(archive)archiveStudent(archive.dataset.smArchive);
+if(restore)restoreStudent(restore.dataset.smRestore);
+});
 
+/* Attendance management */
+function ethiopianToday(){return new Intl.DateTimeFormat("en-CA",{timeZone:"Africa/Addis_Ababa",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());}
+function addDays(dateString,amount){const [y,m,d]=dateString.split("-").map(Number);return new Date(Date.UTC(y,m-1,d+amount)).toISOString().slice(0,10);}
+function mondayOf(dateString){const [y,m,d]=dateString.split("-").map(Number);const date=new Date(Date.UTC(y,m-1,d));const weekday=(date.getUTCDay()+6)%7;date.setUTCDate(date.getUTCDate()-weekday);return date.toISOString().slice(0,10);}
+function shortDate(dateString){const [y,m,d]=dateString.split("-").map(Number);return new Date(Date.UTC(y,m-1,d)).toLocaleDateString("en-GB",{day:"2-digit",month:"short",timeZone:"UTC"});}
 function getTimeSort(student){
-    const periodOrder={"ጠዋት":0,"ቀን":1,"ማታ":2};
-    const hourOrders={
-        "ጠዋት":[11,12,1,2,3],
-        "ቀን":[4,5,6,7,8,9,10,11],
-        "ማታ":[12,1,2,3,4,5,6]
-    };
-
-    const period=student.lesson_period;
-    const hour=Number(String(student.lesson_start_time||"").slice(0,2));
-    const minute=Number(String(student.lesson_start_time||"").slice(3,5));
-    const index=(hourOrders[period]||[]).indexOf(hour);
-
-    return [
-        periodOrder[period]??99,
-        index<0?99:index,
-        Number.isFinite(minute)?minute:0
-    ];
+const periodOrder={"ጠዋት":0,"ቀን":1,"ማታ":2},hourOrders={"ጠዋት":[11,12,1,2,3],"ቀን":[4,5,6,7,8,9,10,11],"ማታ":[12,1,2,3,4,5,6]};
+const period=student.lesson_period,hour=Number(String(student.lesson_start_time||"").slice(0,2)),minute=Number(String(student.lesson_start_time||"").slice(3,5)),index=(hourOrders[period]||[]).indexOf(hour);
+return [periodOrder[period]??99,index<0?99:index,Number.isFinite(minute)?minute:0];
 }
-
 function sortAttendanceStudents(students){
-    return [...students].sort((a,b)=>{
-        const x=getTimeSort(a),y=getTimeSort(b);
-        for(let i=0;i<3;i++)if(x[i]!==y[i])return x[i]-y[i];
-        return (a.full_name||"").localeCompare(b.full_name||"");
-    });
+return [...students].sort((a,b)=>{const x=getTimeSort(a),y=getTimeSort(b);for(let i=0;i<3;i++)if(x[i]!==y[i])return x[i]-y[i];return (a.full_name||"").localeCompare(b.full_name||"");});
 }
-
 async function loadAttendanceUstazCards(){
-    $("attendanceCardsView").style.display="block";
-    $("attendanceTableView").style.display="none";
-    $("attendanceTitle").textContent="Attendance Management";
-
-    const container=$("attendanceUstazCards");
-    container.innerHTML='<div class="table-message">Loading active approved Ustazs...</div>';
-
-    const {data,error}=await supabaseClient
-        .from("ustaz_registrations")
-        .select("id,full_name,gender,email,phone,approval_status,account_status,is_admin")
-        .eq("is_admin",false)
-        .eq("account_status","active")
-        .eq("approval_status","approved")
-        .order("full_name");
-
-    if(error){
-        container.innerHTML=`<div class="attendance-error">Could not load Ustazs: ${escapeHTML(error.message)}</div>`;
-        return;
-    }
-
-    if(!data||!data.length){
-        container.innerHTML='<div class="empty-state"><strong>No active approved Ustazs found.</strong></div>';
-        return;
-    }
-
-    container.innerHTML=data.map(u=>`
-        <button type="button" class="ustaz-attendance-card" data-ustaz-id="${escapeHTML(u.id)}">
-            <strong><i class="fa-solid fa-chalkboard-user"></i> ${escapeHTML(u.full_name)}</strong>
-            <span>${escapeHTML(u.gender||"")}</span>
-            <span>${escapeHTML(u.email||u.phone||"")}</span>
-            <span><i class="fa-solid fa-arrow-right"></i> View weekly attendance</span>
-        </button>
-    `).join("");
+$("attendanceCardsView").style.display="block";$("attendanceTableView").style.display="none";$("attendanceTitle").textContent="Attendance Management";
+const container=$("attendanceUstazCards");container.innerHTML='<div class="table-message">Loading active approved Ustazs...</div>';
+const {data,error}=await supabaseClient.from("ustaz_registrations").select("id,full_name,gender,email,phone,approval_status,account_status,is_admin").eq("is_admin",false).eq("account_status","active").eq("approval_status","approved").order("full_name");
+if(error){container.innerHTML=`<div class="attendance-error">Could not load Ustazs: ${escapeHTML(error.message)}</div>`;return;}
+if(!data||!data.length){container.innerHTML='<div class="empty-state"><strong>No active approved Ustazs found.</strong></div>';return;}
+container.innerHTML=data.map(u=>`<button type="button" class="ustaz-attendance-card" data-ustaz-id="${escapeHTML(u.id)}"><strong><i class="fa-solid fa-chalkboard-user"></i> ${escapeHTML(u.full_name)}</strong><span>${escapeHTML(u.gender||"")}</span><span>${escapeHTML(u.email||u.phone||"")}</span><span><i class="fa-solid fa-arrow-right"></i> View weekly attendance</span></button>`).join("");
 }
-
-$("attendanceUstazCards").addEventListener("click",event=>{
-    const card=event.target.closest("[data-ustaz-id]");
-    if(card)openUstazAttendance(card.dataset.ustazId);
-});
-
+$("attendanceUstazCards").addEventListener("click",event=>{const card=event.target.closest("[data-ustaz-id]");if(card)openUstazAttendance(card.dataset.ustazId);});
 async function openUstazAttendance(ustazId){
-    const {data:ustaz,error:ustazError}=await supabaseClient
-        .from("ustaz_registrations")
-        .select("id,full_name")
-        .eq("id",ustazId)
-        .maybeSingle();
-
-    if(ustazError||!ustaz){
-        alert("Could not load this Ustaz.");
-        return;
-    }
-
-    selectedAttendanceUstaz=ustaz;
-    $("attendanceCardsView").style.display="none";
-    $("attendanceTableView").style.display="block";
-    $("attendanceTitle").textContent="Weekly Attendance";
-    $("selectedUstazName").textContent=ustaz.full_name;
-    await loadSelectedUstazAttendance();
+const {data:ustaz,error:ustazError}=await supabaseClient.from("ustaz_registrations").select("id,full_name").eq("id",ustazId).maybeSingle();
+if(ustazError||!ustaz){alert("Could not load this Ustaz.");return;}
+selectedAttendanceUstaz=ustaz;$("attendanceCardsView").style.display="none";$("attendanceTableView").style.display="block";$("attendanceTitle").textContent="Weekly Attendance";$("selectedUstazName").textContent=ustaz.full_name;await loadSelectedUstazAttendance();
 }
-
 async function loadSelectedUstazAttendance(){
-    if(!selectedAttendanceUstaz)return;
-
-    const tbody=$("adminAttendanceBody");
-    tbody.innerHTML='<tr><td colspan="10" class="table-message">Loading weekly attendance...</td></tr>';
-    $("adminAttendanceMessage").textContent="";
-
-    const monday=mondayOf(ethiopianToday());
-    selectedWeekDates=Array.from({length:7},(_,i)=>addDays(monday,i));
-
-    $("adminWeekLabel").textContent=
-        `Week: ${shortDate(selectedWeekDates[0])} – ${shortDate(selectedWeekDates[6])}`;
-
-    $("adminAttendanceHead").innerHTML=`<tr>
-        <th>Student Code</th><th>Time</th><th>Student Name</th>
-        ${DAY_NAMES.map((day,i)=>`<th>${day}<br>${shortDate(selectedWeekDates[i])}</th>`).join("")}
-    </tr>`;
-
-    const {data:students,error:studentError}=await supabaseClient
-        .from("students")
-        .select("id,student_code,full_name,learning_days,free_days,lesson_start_time,lesson_period,is_active")
-        .eq("ustaz_id",selectedAttendanceUstaz.id)
-        .eq("is_active",true);
-
-    if(studentError){
-        tbody.innerHTML=`<tr><td colspan="10" class="attendance-error">${escapeHTML(studentError.message)}</td></tr>`;
-        return;
-    }
-
-    selectedStudents=sortAttendanceStudents(students||[]);
-
-    if(!selectedStudents.length){
-        tbody.innerHTML='<tr><td colspan="10" class="table-message">This Ustaz has no active assigned students.</td></tr>';
-        return;
-    }
-
-    const {data:attendance,error:attendanceError}=await supabaseClient
-        .from("student_attendance")
-        .select("id,student_id,ustaz_id,attendance_date,status,note")
-        .eq("ustaz_id",selectedAttendanceUstaz.id)
-        .gte("attendance_date",selectedWeekDates[0])
-        .lte("attendance_date",selectedWeekDates[6]);
-
-    if(attendanceError){
-        tbody.innerHTML=`<tr><td colspan="10" class="attendance-error">${escapeHTML(attendanceError.message)}</td></tr>`;
-        return;
-    }
-
-    selectedAttendanceRows=attendance||[];
-    renderAdminAttendanceTable();
+if(!selectedAttendanceUstaz)return;
+const tbody=$("adminAttendanceBody");tbody.innerHTML='<tr><td colspan="10" class="table-message">Loading weekly attendance...</td></tr>';$("adminAttendanceMessage").textContent="";
+const monday=mondayOf(ethiopianToday());selectedWeekDates=Array.from({length:7},(_,i)=>addDays(monday,i));
+$("adminWeekLabel").textContent=`Week: ${shortDate(selectedWeekDates[0])} – ${shortDate(selectedWeekDates[6])}`;
+$("adminAttendanceHead").innerHTML=`<tr><th>Student Code</th><th>Time</th><th>Student Name</th>${DAY_NAMES.map((day,i)=>`<th>${day}<br>${shortDate(selectedWeekDates[i])}</th>`).join("")}</tr>`;
+const {data:students,error:studentError}=await supabaseClient.from("students").select("id,student_code,full_name,learning_days,free_days,lesson_start_time,lesson_period,is_active").eq("ustaz_id",selectedAttendanceUstaz.id).eq("is_active",true);
+if(studentError){tbody.innerHTML=`<tr><td colspan="10" class="attendance-error">${escapeHTML(studentError.message)}</td></tr>`;return;}
+selectedStudents=sortAttendanceStudents(students||[]);
+if(!selectedStudents.length){tbody.innerHTML='<tr><td colspan="10" class="table-message">This Ustaz has no active assigned students.</td></tr>';return;}
+const {data:attendance,error:attendanceError}=await supabaseClient.from("student_attendance").select("id,student_id,ustaz_id,attendance_date,status,note").eq("ustaz_id",selectedAttendanceUstaz.id).gte("attendance_date",selectedWeekDates[0]).lte("attendance_date",selectedWeekDates[6]);
+if(attendanceError){tbody.innerHTML=`<tr><td colspan="10" class="attendance-error">${escapeHTML(attendanceError.message)}</td></tr>`;return;}
+selectedAttendanceRows=attendance||[];renderAdminAttendanceTable();
 }
-
 function renderAdminAttendanceTable(){
-    const today=ethiopianToday();
-    const tbody=$("adminAttendanceBody");
-
-    tbody.innerHTML=selectedStudents.map(student=>{
-        const time=student.lesson_start_time?student.lesson_start_time.slice(0,5):"—";
-        const period=student.lesson_period||"Period not set";
-
-        const cells=selectedWeekDates.map((date,index)=>{
-            const row=selectedAttendanceRows.find(r=>
-                r.student_id===student.id&&r.attendance_date===date
-            );
-            const isFree=(student.free_days||[]).includes(DAY_NAMES[index]);
-            const isToday=date===today;
-
-            if(isFree)return '<td class="attendance-cell free">Free day</td>';
-
-            if(!isToday){
-                const symbols={present:"✅",absent:"❌",permission:"🅿️"};
-                return `<td class="attendance-cell locked">
-                    <span class="attendance-status">${symbols[row?.status]||"—"}</span>
-                    ${row?.note?`<span class="attendance-note">${escapeHTML(row.note)}</span>`:""}
-                </td>`;
-            }
-
-            const symbols={present:"✅",absent:"❌",permission:"🅿️"};
-            return `<td class="attendance-cell today">
-                <span class="attendance-status">${symbols[row?.status]||"—"}</span>
-                ${row?.note?`<span class="attendance-note" title="${escapeHTML(row.note)}">${escapeHTML(row.note)}</span>`:""}
-            </td>`;
-        }).join("");
-
-        return `<tr>
-            <td>${escapeHTML(student.student_code)}</td>
-            <td>${escapeHTML(period)} ${escapeHTML(time)}</td>
-            <td>${escapeHTML(student.full_name)}</td>
-            ${cells}
-        </tr>`;
-    }).join("");
+const today=ethiopianToday(),tbody=$("adminAttendanceBody");
+tbody.innerHTML=selectedStudents.map(student=>{
+const time=student.lesson_start_time?student.lesson_start_time.slice(0,5):"—",period=student.lesson_period||"Period not set";
+const cells=selectedWeekDates.map((date,index)=>{
+const row=selectedAttendanceRows.find(r=>r.student_id===student.id&&r.attendance_date===date),isFree=(student.free_days||[]).includes(DAY_NAMES[index]);
+if(isFree)return '<td class="attendance-cell free">Free day</td>';
+const symbols={present:"✅",absent:"❌",permission:"🅿️"};
+if(date!==today)return `<td class="attendance-cell locked"><span class="attendance-status">${symbols[row?.status]||"—"}</span>${row?.note?`<span class="attendance-note">${escapeHTML(row.note)}</span>`:""}</td>`;
+return `<td class="attendance-cell today"><span class="attendance-status">${symbols[row?.status]||"—"}</span>${row?.note?`<span class="attendance-note" title="${escapeHTML(row.note)}">${escapeHTML(row.note)}</span>`:""}</td>`;
+}).join("");
+return `<tr><td>${escapeHTML(student.student_code)}</td><td>${escapeHTML(period)} ${escapeHTML(time)}</td><td>${escapeHTML(student.full_name)}</td>${cells}</tr>`;
+}).join("");
 }
-
-$("backToUstazCards").addEventListener("click",()=>{
-    selectedAttendanceUstaz=null;
-    loadAttendanceUstazCards();
-});
-
+$("backToUstazCards").addEventListener("click",()=>{selectedAttendanceUstaz=null;loadAttendanceUstazCards();});
 $("refreshSelectedAttendance").addEventListener("click",loadSelectedUstazAttendance);
-
-$("printAttendance").addEventListener("click",()=>{
-    if(!selectedAttendanceUstaz)return;
-    window.print();
-});
+$("printAttendance").addEventListener("click",()=>{if(!selectedAttendanceUstaz)return;window.print();});
 
 initializeAdmin();
 </script>
