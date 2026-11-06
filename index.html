@@ -296,30 +296,86 @@ footer p {
 </button>
 </section>
 
-<div id="videoPlayer" style="
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.85);
-    z-index:10000;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-">
-    <div style="width:100%;max-width:850px;position:relative;aspect-ratio:16/9;">
-        <button onclick="document.getElementById('videoPlayer').style.display='none'"
-            style="position:absolute;right:0;top:-45px;background:none;
-            border:0;color:white;font-size:32px;cursor:pointer;">&times;</button>
+
+<div id="videoPlayer" class="video-overlay">
+    <div class="video-container">
+        <button class="video-close"
+            onclick="closeVideo()"
+            aria-label="Close video">&times;</button>
 
         <iframe
             src="https://drive.google.com/file/d/1mMQCmYAnY5LU42ulSJEWO1J15iFZVVT_/preview"
-            width="100%"
-            height="100%"
             allow="autoplay"
             allowfullscreen
-            style="border:0;border-radius:12px;">
+            style="border:0;">
         </iframe>
     </div>
+</div>
+
+<style>
+.video-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.video-container {
+    width: 100%;
+    max-width: 850px;
+    position: relative;
+}
+
+.video-container iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border-radius: 12px;
+}
+
+.video-close {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 8px);
+    background: #fff;
+    color: #091345;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    font-size: 27px;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .video-overlay {
+        padding: 12px;
+    }
+
+    .video-container {
+        width: 100%;
+    }
+
+    .video-container iframe {
+        border-radius: 8px;
+    }
+}
+</style>
+
+<script>
+function closeVideo() {
+    const player = document.getElementById('videoPlayer');
+    player.style.display = 'none';
+    player.querySelector('iframe').src =
+        'https://drive.google.com/file/d/1mMQCmYAnY5LU42ulSJEWO1J15iFZVVT_/preview';
+}
+</script>
+
 </div>
 
 <a href="#" class="telegram-float" aria-label="Telegram">
