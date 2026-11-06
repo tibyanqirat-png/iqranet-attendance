@@ -412,6 +412,7 @@ footer p {
 
 <script>
 
+
 const registrationPlayer = new Plyr('#registrationVideo', {
     controls: [
         'play-large',
@@ -430,12 +431,24 @@ const registrationPlayer = new Plyr('#registrationVideo', {
     clickToPlay: true,
     resetOnEnd: false,
 
+    settings: ['quality', 'speed'],
+
+    quality: {
+        default: 720,
+        options: [1080, 720, 480, 360, 240, 144],
+        forced: true,
+        onChange: function(newQuality) {
+            console.log('Selected quality:', newQuality);
+        }
+    },
+
     youtube: {
         noCookie: true,
         rel: 0,
         modestbranding: 1
     }
 });
+
 
 function openVideo() {
     document.getElementById('videoPlayer').style.display = 'flex';
