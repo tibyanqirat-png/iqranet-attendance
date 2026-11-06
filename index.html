@@ -138,6 +138,49 @@ h1 {
     background: #172568;
 }
 
+/* VIDEO POPUP */
+
+.video-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.90);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 16px 16px;
+}
+
+.video-container {
+    position: relative;
+    width: min(850px, calc(100vw - 32px), calc((100dvh - 90px) * 1.7778));
+    aspect-ratio: 16 / 9;
+    flex-shrink: 0;
+}
+
+.video-container iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 12px;
+}
+
+.video-close {
+    position: absolute;
+    right: 0;
+    top: -43px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: white;
+    color: #091345;
+    font-size: 27px;
+    line-height: 36px;
+    cursor: pointer;
+}
+
 .telegram-float {
     position: fixed;
     right: 22px;
@@ -255,6 +298,14 @@ footer p {
         right: 15px;
         bottom: 18px;
     }
+
+    .video-overlay {
+        padding: 48px 12px 12px;
+    }
+
+    .video-container iframe {
+        border-radius: 8px;
+    }
 }
 </style>
 </head>
@@ -289,115 +340,63 @@ footer p {
 <section class="video-section">
     <h2>ስለ ምዝገባው አጋዥ ቪዲዮ ለመመልከት</h2>
 
-    <button class="video-button" type="button"
+    <button class="video-button"
+        type="button"
         aria-label="Play video"
-        onclick="document.getElementById('videoPlayer').style.display='flex'">
-    <i class="fa-solid fa-play"></i>
-</button>
+        onclick="openVideo()">
+        <i class="fa-solid fa-play"></i>
+    </button>
 </section>
 
+<!-- VIDEO PLAYER -->
 
+<div id="videoPlayer" class="video-overlay">
 
-<div id="videoPlayer" style="
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.85);
-    z-index:10000;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-">
-    <div style="width:100%;max-width:850px;position:relative;aspect-ratio:16/9;">
-        <button onclick="document.getElementById('videoPlayer').style.display='none'"
-            style="position:absolute;right:0;top:-45px;background:none;
-            border:0;color:white;font-size:32px;cursor:pointer;">&times;</button>
+    <div class="video-container">
+
+        <button class="video-close"
+            type="button"
+            onclick="closeVideo()"
+            aria-label="Close video">
+            &times;
+        </button>
 
         <iframe
+            id="registrationVideo"
             src="https://drive.google.com/file/d/1mMQCmYAnY5LU42ulSJEWO1J15iFZVVT_/preview"
-            width="100%"
-            height="100%"
-            allow="autoplay"
-            allowfullscreen
-            style="border:0;border-radius:12px;">
+            allow="autoplay; fullscreen"
+            allowfullscreen>
         </iframe>
+
     </div>
 </div>
 
-<style>
-.video-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    z-index: 10000;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-}
-
-.video-container {
-    width: 100%;
-    max-width: 850px;
-    position: relative;
-}
-
-.video-container iframe {
-    display: block;
-    width: 100%;
-    height: min(56.25vw, 478px);
-    max-height: 70vh;
-    border: 0;
-    border-radius: 12px;
-}
-
-@media (max-width: 600px) {
-    .video-container iframe {
-        width: 100%;
-        height: 56.25vw;
-        max-height: 55vh;
-    }
-}
-
-.video-close {
-    position: absolute;
-    right: 0;
-    bottom: calc(100% + 8px);
-    background: #fff;
-    color: #091345;
-    border: none;
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    font-size: 27px;
-    cursor: pointer;
-}
-
-@media (max-width: 600px) {
-    .video-overlay {
-        padding: 12px;
-    }
-
-    .video-container {
-        width: 100%;
-    }
-
-    .video-container iframe {
-        border-radius: 8px;
-    }
-}
-</style>
-
 <script>
+function openVideo() {
+    document.getElementById('videoPlayer').style.display = 'flex';
+}
+
 function closeVideo() {
     const player = document.getElementById('videoPlayer');
-    player.style.display = 'none';
-    player.querySelector('iframe').src =
-        'https://drive.google.com/file/d/1mMQCmYAnY5LU42ulSJEWO1J15iFZVVT_/preview';
-}
-</script>
+    const video = document.getElementById('registrationVideo');
 
-</div>
+    player.style.display = 'none';
+
+    video.src = 'https://drive.google.com/file/d/1mMQCmYAnY5LU42ulSJEWO1J15iFZVVT_/preview';
+}
+
+document.getElementById('videoPlayer').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeVideo();
+    }
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeVideo();
+    }
+});
+</script>
 
 <a href="#" class="telegram-float" aria-label="Telegram">
     <i class="fa-brands fa-telegram"></i>
