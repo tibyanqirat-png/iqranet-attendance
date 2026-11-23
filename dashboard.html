@@ -724,7 +724,7 @@ async function submitDailyAttendance() {
         return;
     }
 
-    const rows = requiredStudents.map(student => ({
+        const rows = requiredStudents.map(student => ({
         student_id:student.id,
         status:attendanceDraft[student.id].status,
         note:attendanceDraft[student.id].note || ""
@@ -803,8 +803,7 @@ async function loadWeeklyProgress() {
     progressSubmitted = existing.length > 0;
     const submitBtn = document.getElementById("submitProgress");
     const statusLbl = document.getElementById("progressStatusLabel");
-
-        const isSunday = new Intl.DateTimeFormat("en-US", {
+    const isSunday = new Intl.DateTimeFormat("en-US", {
         weekday: "long", timeZone: "Africa/Addis_Ababa"
     }).format(new Date()) === "Sunday";
 
@@ -841,15 +840,15 @@ async function loadWeeklyProgress() {
             <td>${inputHtml}</td>
         </tr>`;
     }).join("");
-
+    progressLoaded = true;
+}
 
 async function submitWeeklyProgress() {
     const isSunday = new Intl.DateTimeFormat("en-US", {
-    weekday: "long", timeZone: "Africa/Addis_Ababa"
+        weekday: "long", timeZone: "Africa/Addis_Ababa"
     }).format(new Date()) === "Sunday";
     if (!isSunday || progressSubmitted) return;
 
-    if (progressSubmitted) return;
     const monday = mondayOf(ethiopianToday());
     const inputs = [...document.querySelectorAll("[data-progress-student]")];
     const rows = [];
@@ -924,8 +923,8 @@ navItems.forEach(item => {
         closeSidebar();
 
         if (target==="attendance" && !attendanceLoaded) await loadWeeklyAttendance();
-        if (target==="students") await loadMyStudents()
-        if (target === "progress" && !progressLoaded) await loadWeeklyProgress();
+        if (target==="students") await loadMyStudents();
+        if (target==="progress" && !progressLoaded) await loadWeeklyProgress();
     });
 });
 
@@ -959,15 +958,14 @@ document.getElementById("refreshAttendance").addEventListener("click",async()=>{
 });
 
 document.getElementById("submitAttendance").addEventListener("click",submitDailyAttendance);
+document.getElementById("refreshProgress").addEventListener("click", () => { progressLoaded = false; loadWeeklyProgress(); });
+document.getElementById("submitProgress").addEventListener("click", submitWeeklyProgress);
 document.getElementById("cancelNote").addEventListener("click",closeNote);
 document.getElementById("saveNote").addEventListener("click",saveNote);
 
 document.getElementById("noteModal").addEventListener("click",event=>{
     if (event.target.id==="noteModal") closeNote();
 });
-
-document.getElementById("refreshProgress").addEventListener("click", () => { progressLoaded = false; loadWeeklyProgress(); });
-document.getElementById("submitProgress").addEventListener("click", submitWeeklyProgress);
 
 initializeDashboard();
 </script>
