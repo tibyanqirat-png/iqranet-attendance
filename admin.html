@@ -264,13 +264,11 @@ body{background:white!important}body *{visibility:hidden!important}
 <div id="attendanceTableView" style="display:none">
 <div class="attendance-actions">
 <button type="button" class="back-btn" id="backToUstazCards"><i class="fa-solid fa-arrow-left"></i> Ustaz List</button>
+<button type="button" class="back-btn" id="prevAttendanceWeek"><i class="fa-solid fa-chevron-left"></i> Previous Week</button>
+<button type="button" class="back-btn" id="currentAttendanceWeek">Current Week</button>
+<button type="button" class="back-btn" id="nextAttendanceWeek" disabled>Next Week <i class="fa-solid fa-chevron-right"></i></button>
 <button type="button" id="printAttendance"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
 <button type="button" id="refreshSelectedAttendance"><i class="fa-solid fa-rotate"></i> Refresh</button>
-</div>
-<div class="attendance-toolbar"><strong id="selectedUstazName"></strong><span class="attendance-week-label" id="adminWeekLabel"></span></div>
-<div class="attendance-legend"><span>✅ Present</span><span>❌ Absent</span><span>🅿️ Permission</span><span>Gray = Free day / locked day</span></div>
-<div class="table-wrap"><table class="attendance-table"><thead id="adminAttendanceHead"></thead><tbody id="adminAttendanceBody"><tr><td colspan="10" class="table-message">Select a Ustaz.</td></tr></tbody></table></div>
-<p id="adminAttendanceMessage" class="attendance-error"></p>
 </div>
 </div>
 </section>
