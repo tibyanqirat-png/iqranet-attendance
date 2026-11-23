@@ -330,6 +330,7 @@ const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHA
 
 let ustazRecords=[],currentAdminRole=null,removedUstazRecords=[];
 let selectedAttendanceUstaz=null,selectedStudents=[],selectedAttendanceRows=[],selectedWeekDates=[];
+let attendanceWeekOffset = 0;
 let studentRecords=[],studentUstazRecords=[],studentCurrentTab="active",studentEditingId=null;
 
 const titles={overview:"Admin Overview",ustazs:"Ustaz Management",students:"Student Management",schedule:"Schedule Management",attendance:"Attendance Management",progress:"Weekly Progress",penalties:"Penalties & Rules",reports:"Reports & Statistics",admins:"Admin Management",settings:"Admin Settings",removedUstazs:"Removed Ustazs",audit:"Audit History"};
