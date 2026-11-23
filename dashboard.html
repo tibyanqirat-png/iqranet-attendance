@@ -907,7 +907,8 @@ navItems.forEach(item => {
         closeSidebar();
 
         if (target==="attendance" && !attendanceLoaded) await loadWeeklyAttendance();
-        if (target==="students") await loadMyStudents();
+        if (target==="students") await loadMyStudents()
+        if (target === "progress" && !progressLoaded) await loadWeeklyProgress();
     });
 });
 
