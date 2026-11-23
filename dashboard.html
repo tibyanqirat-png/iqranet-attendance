@@ -949,9 +949,10 @@ document.getElementById("noteModal").addEventListener("click",event=>{
     if (event.target.id==="noteModal") closeNote();
 });
 
-initializeDashboard();
-</script>
 document.getElementById("refreshProgress").addEventListener("click", () => { progressLoaded = false; loadWeeklyProgress(); });
 document.getElementById("submitProgress").addEventListener("click", submitWeeklyProgress);
+
+initializeDashboard();
+</script>
 </body>
 </html>
