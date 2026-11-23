@@ -219,8 +219,28 @@ td{color:var(--muted)}
 </section>
 
 <section class="section" id="progress">
-    <div class="panel"><h2>Weekly Student Progress</h2><div class="empty-state"><i class="fa-solid fa-file-lines"></i><strong>No progress reports yet</strong><p>Weekly reports for your assigned students will appear here.</p></div></div>
+    <div class="panel">
+        <h2>Weekly Student Progress</h2>
+        <div class="attendance-toolbar">
+            <div>
+                <div class="attendance-date" id="progressWeekLabel">Current week</div>
+                <div id="progressStatusLabel"></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button type="button" id="refreshProgress"><i class="fa-solid fa-rotate"></i> Refresh</button>
+                <button type="button" class="submit-btn" id="submitProgress"><i class="fa-solid fa-paper-plane"></i> Submit Progress</button>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Student Code</th><th>Time</th><th>Student Name</th><th>Surah / Page Reached</th></tr></thead>
+                <tbody id="progressBody"><tr><td colspan="4" class="empty-state">Loading weekly progress...</td></tr></tbody>
+            </table>
+        </div>
+        <p id="progressMessage" class="attendance-message"></p>
+    </div>
 </section>
+
 <section class="section" id="history">
     <div class="panel"><h2>Attendance History</h2><div class="empty-state"><i class="fa-solid fa-clock-rotate-left"></i><strong>Use Weekly Attendance to view records</strong><p>Historical attendance records are displayed in the weekly table as weeks change.</p></div></div>
 </section>
