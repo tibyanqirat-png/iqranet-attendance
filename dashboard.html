@@ -950,5 +950,7 @@ document.getElementById("noteModal").addEventListener("click",event=>{
 
 initializeDashboard();
 </script>
+document.getElementById("refreshProgress").addEventListener("click", () => { progressLoaded = false; loadWeeklyProgress(); });
+document.getElementById("submitProgress").addEventListener("click", submitWeeklyProgress);
 </body>
 </html>
