@@ -844,6 +844,11 @@ async function loadWeeklyProgress() {
 
 
 async function submitWeeklyProgress() {
+    const isSunday = new Intl.DateTimeFormat("en-US", {
+    weekday: "long", timeZone: "Africa/Addis_Ababa"
+    }).format(new Date()) === "Sunday";
+    if (!isSunday || progressSubmitted) return;
+
     if (progressSubmitted) return;
     const monday = mondayOf(ethiopianToday());
     const inputs = [...document.querySelectorAll("[data-progress-student]")];
