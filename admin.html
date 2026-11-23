@@ -275,7 +275,29 @@ body{background:white!important}body *{visibility:hidden!important}
 </div>
 </section>
 
-<section class="section" id="progress"><div class="panel"><h2>Weekly Progress Reports</h2><div class="empty-state"><i class="fa-solid fa-file-lines"></i><strong>No reports yet</strong><p>Weekly student progress reports will appear here.</p></div></div></section>
+<section class="section" id="progress">
+<div class="panel">
+<h2 id="progressAdminTitle">Weekly Progress Reports</h2>
+<div id="progressCardsView">
+    <p class="attendance-subtitle">Select an active Ustaz to view their students' weekly progress.</p>
+    <div id="progressUstazCards" class="ustaz-card-grid"><div class="table-message">Loading Ustazs...</div></div>
+</div>
+<div id="progressTableView" style="display:none">
+    <div class="attendance-actions">
+        <button type="button" class="back-btn" id="backToProgressCards"><i class="fa-solid fa-arrow-left"></i> Ustaz List</button>
+        <button type="button" id="refreshSelectedProgress"><i class="fa-solid fa-rotate"></i> Refresh</button>
+    </div>
+    <div class="attendance-toolbar"><strong id="selectedProgressUstazName"></strong><span class="attendance-week-label" id="adminProgressWeekLabel"></span></div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Student Code</th><th>Time</th><th>Student Name</th><th>Surah / Page Reached</th><th>Submitted At</th></tr></thead>
+            <tbody id="adminProgressBody"><tr><td colspan="5" class="table-message">Select a Ustaz.</td></tr></tbody>
+        </table>
+    </div>
+</div>
+</div>
+</section>
+
 <section class="section" id="penalties"><div class="panel"><h2>Penalties & Rules</h2><div class="empty-state"><i class="fa-solid fa-scale-balanced"></i><strong>No rules configured yet</strong><p>Configure attendance rules and penalties here.</p></div></div></section>
 <section class="section" id="reports"><div class="panel"><h2>Reports & Statistics</h2><div class="empty-state"><i class="fa-solid fa-chart-pie"></i><strong>No statistics available yet</strong><p>System-wide reports will appear here.</p></div></div></section>
 <section class="section" id="admins"><div class="panel"><h2>Admin Management</h2><div class="empty-state"><i class="fa-solid fa-user-shield"></i><strong>Admin management is not connected yet</strong><p>The Super Admin will be able to manage additional Admins here.</p></div></div></section>
