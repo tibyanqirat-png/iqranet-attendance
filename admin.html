@@ -661,6 +661,66 @@ $("backToUstazCards").addEventListener("click",()=>{selectedAttendanceUstaz=null
 $("refreshSelectedAttendance").addEventListener("click",loadSelectedUstazAttendance);
 $("printAttendance").addEventListener("click",()=>{if(!selectedAttendanceUstaz)return;window.print();});
 
+let selectedProgressUstaz = null;
+
+async function loadProgressUstazCards() {
+    $("progressCardsView").style.display = "block";
+    $("progressTableView").style.display = "none";
+    $("progressAdminTitle").textContent = "Weekly Progress Reports";
+    const container = $("progressUstazCards");
+    container.innerHTML = '<div class="table-message">Loading active approved Ustazs...</div>';
+    const { data, error } = await supabaseClient.from("ustaz_registrations").select("id,full_name,gender,email,phone").eq("is_admin", false).eq("account_status", "active").eq("approval_status", "approved").order("full_name");
+    if (error) { container.innerHTML = `<div class="attendance-error">Error: ${escapeHTML(error.message)}</div>`; return; }
+    if (!data || !data.length) { container.innerHTML = '<div class="empty-state"><strong>No active approved Ustazs found.</strong></div>'; return; }
+    container.innerHTML = data.map(u => `<button type="button" class="ustaz-attendance-card" data-prog-ustaz-id="${escapeHTML(u.id)}"><strong><i class="fa-solid fa-chalkboard-user"></i> ${escapeHTML(u.full_name)}</strong><span>${escapeHTML(u.gender || "")}</span><span>${escapeHTML(u.email || u.phone || "")}</span><span><i class="fa-solid fa-arrow-right"></i> View weekly progress</span></button>`).join("");
+}
+
+$("progressUstazCards").addEventListener("click", async event => {
+    const card = event.target.closest("[data-prog-ustaz-id]");
+    if (!card) return;
+    const { data: ustaz } = await supabaseClient.from("ustaz_registrations").select("id,full_name").eq("id", card.dataset.progUstazId).maybeSingle();
+    if (!ustaz) return;
+    selectedProgressUstaz = ustaz;
+    $("progressCardsView").style.display = "none";
+    $("progressTableView").style.display = "block";
+    $("progressAdminTitle").textContent = "Weekly Progress";
+    $("selectedProgressUstazName").textContent = ustaz.full_name;
+    await loadSelectedUstazProgress();
+});
+
+async function loadSelectedUstazProgress() {
+    if (!selectedProgressUstaz) return;
+    const tbody = $("adminProgressBody");
+    tbody.innerHTML = '<tr><td colspan="5" class="table-message">Loading weekly progress...</td></tr>';
+    const monday = mondayOf(ethiopianToday());
+    const sunday = addDays(monday, 6);
+    $("adminProgressWeekLabel").textContent = `Week: ${shortDate(monday)} – ${shortDate(sunday)}`;
+
+    const { data: students, error: sErr } = await supabaseClient.from("students").select("id,student_code,full_name,lesson_start_time,lesson_period").eq("ustaz_id", selectedProgressUstaz.id).eq("is_active", true);
+    if (sErr) { tbody.innerHTML = `<tr><td colspan="5" class="attendance-error">${escapeHTML(sErr.message)}</td></tr>`; return; }
+    const sorted = sortAttendanceStudents(students || []);
+    if (!sorted.length) { tbody.innerHTML = '<tr><td colspan="5" class="table-message">This Ustaz has no active students.</td></tr>'; return; }
+
+    const { data: progress, error: pErr } = await supabaseClient.from("weekly_progress").select("student_id,surah_page,submitted_at").eq("ustaz_id", selectedProgressUstaz.id).eq("week_start", monday);
+    if (pErr) { tbody.innerHTML = `<tr><td colspan="5" class="attendance-error">${escapeHTML(pErr.message)}</td></tr>`; return; }
+
+    tbody.innerHTML = sorted.map(s => {
+        const row = (progress || []).find(p => p.student_id === s.id);
+        const time = s.lesson_start_time ? s.lesson_start_time.slice(0, 5) : "—";
+        const period = s.lesson_period || "—";
+        return `<tr>
+            <td><strong>${escapeHTML(s.student_code)}</strong></td>
+            <td>${escapeHTML(period)} ${escapeHTML(time)}</td>
+            <td>${escapeHTML(s.full_name)}</td>
+            <td>${row ? `<strong>${escapeHTML(row.surah_page)}</strong>` : '<span style="color:#b42318">Not submitted</span>'}</td>
+            <td>${row ? formatDate(row.submitted_at) : "—"}</td>
+        </tr>`;
+    }).join("");
+}
+
+$("backToProgressCards").addEventListener("click", () => { selectedProgressUstaz = null; loadProgressUstazCards(); });
+$("refreshSelectedProgress").addEventListener("click", loadSelectedUstazProgress);
+
 initializeAdmin();
 </script>
 </body>
