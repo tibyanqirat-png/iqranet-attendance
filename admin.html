@@ -633,13 +633,19 @@ $("attendanceUstazCards").addEventListener("click",event=>{const card=event.targ
 async function openUstazAttendance(ustazId){
 const {data:ustaz,error:ustazError}=await supabaseClient.from("ustaz_registrations").select("id,full_name").eq("id",ustazId).maybeSingle();
 if(ustazError||!ustaz){alert("Could not load this Ustaz.");return;}
-selectedAttendanceUstaz=ustaz;$("attendanceCardsView").style.display="none";$("attendanceTableView").style.display="block";$("attendanceTitle").textContent="Weekly Attendance";$("selectedUstazName").textContent=ustaz.full_name;await loadSelectedUstazAttendance();
+selectedAttendanceUstaz=ustaz;
+attendanceWeekOffset=0;
+$("attendanceCardsView").style.display="none";$("attendanceTableView").style.display="block";$("attendanceTitle").textContent="Weekly Attendance";$("selectedUstazName").textContent=ustaz.full_name;await loadSelectedUstazAttendance();
 }
 async function loadSelectedUstazAttendance(){
 if(!selectedAttendanceUstaz)return;
 const tbody=$("adminAttendanceBody");tbody.innerHTML='<tr><td colspan="10" class="table-message">Loading weekly attendance...</td></tr>';$("adminAttendanceMessage").textContent="";
-const monday=mondayOf(ethiopianToday());selectedWeekDates=Array.from({length:7},(_,i)=>addDays(monday,i));
-$("adminWeekLabel").textContent=`Week: ${shortDate(selectedWeekDates[0])} – ${shortDate(selectedWeekDates[6])}`;
+const baseMonday=mondayOf(ethiopianToday());
+const monday=addDays(baseMonday,attendanceWeekOffset*7);
+selectedWeekDates=Array.from({length:7},(_,i)=>addDays(monday,i));
+$("nextAttendanceWeek").disabled=attendanceWeekOffset>=0;
+$("currentAttendanceWeek").disabled=attendanceWeekOffset===0;
+$("adminWeekLabel").textContent=`Week: ${shortDate(selectedWeekDates[0])} – ${shortDate(selectedWeekDates[6])}${attendanceWeekOffset===0?" (Current)":" (History)"}`;
 $("adminAttendanceHead").innerHTML=`<tr><th>Student Code</th><th>Time</th><th>Student Name</th>${DAY_NAMES.map((day,i)=>`<th>${day}<br>${shortDate(selectedWeekDates[i])}</th>`).join("")}</tr>`;
 const {data:students,error:studentError}=await supabaseClient.from("students").select("id,student_code,full_name,learning_days,free_days,lesson_start_time,lesson_period,is_active").eq("ustaz_id",selectedAttendanceUstaz.id).eq("is_active",true);
 if(studentError){tbody.innerHTML=`<tr><td colspan="10" class="attendance-error">${escapeHTML(studentError.message)}</td></tr>`;return;}
