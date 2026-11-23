@@ -768,6 +768,112 @@ async function submitDailyAttendance() {
     successMessage.className = "attendance-message success";
 }
 
+let progressLoaded = false;
+let progressSubmitted = false;
+
+async function loadWeeklyProgress() {
+    if (!currentUserId) return;
+    const monday = mondayOf(ethiopianToday());
+    const sunday = addDays(monday, 6);
+    document.getElementById("progressWeekLabel").textContent = `Week: ${shortDate(monday)} – ${shortDate(sunday)}`;
+    const tbody = document.getElementById("progressBody");
+    const msg = document.getElementById("progressMessage");
+    msg.textContent = "";
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-state">Loading students...</td></tr>';
+
+    await loadMyStudents();
+    if (!myStudents.length) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No active students assigned.</td></tr>';
+        progressLoaded = true;
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .from("weekly_progress")
+        .select("student_id, surah_page")
+        .eq("ustaz_id", currentUserId)
+        .eq("week_start", monday);
+
+    if (error) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty-state">Error: ${escapeHTML(error.message)}</td></tr>`;
+        return;
+    }
+
+    const existing = data || [];
+    progressSubmitted = existing.length > 0;
+    const submitBtn = document.getElementById("submitProgress");
+    const statusLbl = document.getElementById("progressStatusLabel");
+
+    if (progressSubmitted) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Submitted';
+        statusLbl.innerHTML = '<span class="submitted-label"><i class="fa-solid fa-circle-check"></i> Weekly progress submitted and locked</span>';
+    } else {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Progress';
+        statusLbl.innerHTML = '<span style="font-size:12px;color:#b7791f">Fill Surah/Page for all students and submit once for this week</span>';
+    }
+
+    tbody.innerHTML = sortAttendanceStudents(myStudents).map(s => {
+        const record = existing.find(r => r.student_id === s.id);
+        const time = s.lesson_start_time ? s.lesson_start_time.slice(0, 5) : "—";
+        const period = s.lesson_period || "—";
+        const inputHtml = progressSubmitted
+            ? `<strong>${escapeHTML(record?.surah_page || "—")}</strong>`
+            : `<input type="text" data-progress-student="${s.id}" placeholder="e.g. Al-Baqarah 142 / Page 22" style="width:100%;padding:9px;border:1px solid #cbd5df;border-radius:7px">`;
+        return `<tr>
+            <td class="student-code">${escapeHTML(s.student_code)}</td>
+            <td class="student-time">${escapeHTML(period)} ${escapeHTML(time)}</td>
+            <td>${escapeHTML(s.full_name)}</td>
+            <td>${inputHtml}</td>
+        </tr>`;
+    }).join("");
+    progressLoaded = true;
+}
+
+async function submitWeeklyProgress() {
+    if (progressSubmitted) return;
+    const monday = mondayOf(ethiopianToday());
+    const inputs = [...document.querySelectorAll("[data-progress-student]")];
+    const rows = [];
+    for (const input of inputs) {
+        const val = input.value.trim();
+        if (!val) {
+            const msg = document.getElementById("progressMessage");
+            msg.textContent = "Please enter Surah / Page for every student before submitting.";
+            msg.className = "attendance-message error";
+            input.focus();
+            return;
+        }
+        rows.push({
+            student_id: input.dataset.progressStudent,
+            ustaz_id: currentUserId,
+            week_start: monday,
+            surah_page: val
+        });
+    }
+
+    if (!confirm(`Submit weekly progress for ${rows.length} students? You cannot edit it after submission.`)) return;
+
+    const btn = document.getElementById("submitProgress");
+    const msg = document.getElementById("progressMessage");
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+
+    const { error } = await supabaseClient.from("weekly_progress").insert(rows);
+    if (error) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Progress';
+        msg.textContent = "Submission failed: " + error.message;
+        msg.className = "attendance-message error";
+        return;
+    }
+
+    msg.textContent = "Weekly progress submitted successfully!";
+    msg.className = "attendance-message success";
+    await loadWeeklyProgress();
+}
+
 const navItems = document.querySelectorAll(".nav-item");
 const sections = document.querySelectorAll(".section");
 const pageTitle = document.getElementById("pageTitle");
